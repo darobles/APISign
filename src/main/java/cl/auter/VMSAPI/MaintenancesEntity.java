@@ -27,6 +27,13 @@ public class MaintenancesEntity {
 	private String type; 
 	private String responsable;
 	private String status;
+	private String observation;
+	public String getObservation() {
+		return observation;
+	}
+	public void setObservation(String observation) {
+		this.observation = observation;
+	}
 	//@JsonIgnore --> para omitir un dato
 	//@transient  --> para variables que no existen en BD
 	public int getId() {
