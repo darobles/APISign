@@ -15,12 +15,9 @@ public class MaintenancesEntity {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int    id;
-	@Override
-	public String toString() {
-		return "MaintenancesEntity [id=" + id + ", vms_code=" + vms_code + ", location=" + location + ", mant_date="
-				+ mant_date + ", type=" + type + ", responsable=" + responsable + ", status=" + status + "]";
-	}
-	private String vms_code;
+	
+	
+	private int    vms_code;
 	private String location;
 	@JsonProperty("date")
 	private String mant_date;
@@ -28,6 +25,12 @@ public class MaintenancesEntity {
 	private String responsable;
 	private String status;
 	private String observation;
+	
+	@Override
+	public String toString() {
+		return "MaintenancesEntity [id=" + id + ", vms_code=" + vms_code + ", location=" + location + ", mant_date="
+				+ mant_date + ", type=" + type + ", responsable=" + responsable + ", status=" + status + "]";
+	}
 	public String getObservation() {
 		return observation;
 	}
@@ -42,10 +45,10 @@ public class MaintenancesEntity {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getVms_code() {
+	public int getVms_code() {
 		return vms_code;
 	}
-	public void setVms_code(String vms_code) {
+	public void setVms_code(int vms_code) {
 		this.vms_code = vms_code;
 	}
 	public String getLocation() {
