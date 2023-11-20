@@ -1,5 +1,6 @@
 package cl.auter.VMSAPI;
 
+import java.text.ParseException;
 import java.util.List;
 
 import javax.json.Json;
@@ -17,8 +18,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import cl.auter.util.DecodeJwt;
+import cl.auter.util.JWTResponse;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MaintenancesController {
 	
 	private final MaintenancesRepository recRepository;
+	private       DecodeJwt     decJwt = new DecodeJwt();
 	
 	@Autowired
 	public MaintenancesController(MaintenancesRepository recRepository) {
@@ -33,68 +39,101 @@ public class MaintenancesController {
 	}
 	
 	@GetMapping("")
-	public List<MaintenancesEntity> findAll(){
-		return recRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+	public List<MaintenancesEntity> findAll(@RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+			return recRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+		}
+		else {
+			return null;
+		}
+		
 	}
 	
 	@GetMapping("/{id}")
-    public MaintenancesEntity findMantById(@PathVariable(value = "id") int id) {
-		try {
-			return recRepository.findById(id)
-				      .orElseThrow(() -> null);
+    public MaintenancesEntity findMantById(@PathVariable(value = "id") int id, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+			try {
+				return recRepository.findById(id)
+					      .orElseThrow(() -> null);
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				return null;
+			}
 		}
-		catch(Exception e) {
-			System.out.println(e);
+		else {
 			return null;
 		}
+			
     }
 	
 	@PostMapping("")
-	public ResponseEntity<JsonObject> saveNewMaintenance(@RequestBody MaintenancesEntity json) {
-		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		try {
-			recRepository.save(json);
-			jsn.add("result", "success");
+	public ResponseEntity<JsonObject> saveNewMaintenance(@RequestBody MaintenancesEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			try {
+				recRepository.save(json);
+				jsn.add("result", "success");
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result", "error");
+				jsn.add("detail", e.toString());
+			}
+			
+			return ResponseEntity.ok(jsn.build());
 		}
-		catch(Exception e) {
-			System.out.println(e);
-			jsn.add("result", "error");
-			jsn.add("detail", e.toString());
+		else {
+			return null;
 		}
-		
-		return ResponseEntity.ok(jsn.build());
+			
     }
 	
 	@PutMapping("")
-	public ResponseEntity<JsonObject> editMaintenance(@RequestBody MaintenancesEntity json) {
-		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		try {
-			recRepository.save(json);
-			jsn.add("result", "success");
+	public ResponseEntity<JsonObject> editMaintenance(@RequestBody MaintenancesEntity json,@RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			try {
+				recRepository.save(json);
+				jsn.add("result", "success");
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result", "error");
+				jsn.add("detail", e.toString());
+			}
+			
+			return ResponseEntity.ok(jsn.build());
 		}
-		catch(Exception e) {
-			System.out.println(e);
-			jsn.add("result", "error");
-			jsn.add("detail", e.toString());
-		}
-		
-		return ResponseEntity.ok(jsn.build());
+		else {
+			return null;
+		}		
     }
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<JsonObject> deleteMaintenance(@PathVariable(value = "id") int id) {
-		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		try {
-			recRepository.deleteById(id);
-			jsn.add("result", "success");
+	public ResponseEntity<JsonObject> deleteMaintenance(@PathVariable(value = "id") int id, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			try {
+				recRepository.deleteById(id);
+				jsn.add("result", "success");
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result", "error");
+				jsn.add("detail", e.toString());
+			}
+			
+			return ResponseEntity.ok(jsn.build());
 		}
-		catch(Exception e) {
-			System.out.println(e);
-			jsn.add("result", "error");
-			jsn.add("detail", e.toString());
-		}
-		
-		return ResponseEntity.ok(jsn.build());
+		else {
+			return null;
+		}	
     }
 
 }

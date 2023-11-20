@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.text.ParseException;
 import java.util.Base64;
 import java.util.List;
 import java.io.FileInputStream;
@@ -14,11 +15,16 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +36,8 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.JWSSigner;
 
+import cl.auter.util.DecodeJwt;
+import cl.auter.util.JWTResponse;
 import cl.auter.util.Util;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -38,6 +46,7 @@ import cl.auter.util.Util;
 public class UsersController {
 	
 	private final UsersRepository usrRepository;
+	private       DecodeJwt       decJwt = new DecodeJwt();
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	
 	@Autowired
@@ -45,29 +54,165 @@ public class UsersController {
 		this.usrRepository = usrRepository;
 	}
 	
-	
-	@PostMapping("/insert")
-	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json) {
-		JsonObjectBuilder jsn = Json.createObjectBuilder();
-		Util util = new Util();
-		try {
-			UsersEntity newuser = new UsersEntity();
-			
-			newuser.setUsername( json.getUsername());
-			newuser.setNombre(   json.getNombre() );
-			newuser.setPassword( util.createMD5Hash(json.getPassword()) );
-			
-			usrRepository.save(newuser);
-			jsn.add("result", "success");
+	@GetMapping("")
+	public List<UsersEntity> findAll(@RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+			return usrRepository.findAll();
 		}
-		catch(Exception e) {
-			System.out.println(e);
-			jsn.add("result", "error");
-			jsn.add("detail", e.toString());
+		else {
+			return null;
 		}
 		
-		return ResponseEntity.ok(jsn.build());
+	}
+	
+	@GetMapping("/{username}")
+	public UsersEntity findByUsername(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+			return usrRepository.findByUsername(username);
+		}
+		else {
+			return null;
+		}
+		
+	}
+	
+	@PostMapping("/validate_password")
+	public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn  = Json.createObjectBuilder();
+			Util              util = new Util();
+			try {
+				UsersEntity user = usrRepository.findByUsername(json.getUsername());
+				if ( util.createMD5Hash(json.getPassword()).equals(user.getPassword()) ) {
+					UsersEntity newuser = new UsersEntity();
+					newuser.setId(user.getId());
+					newuser.setUsername( user.getUsername());
+					newuser.setNombre(   user.getNombre() );
+					newuser.setPassword( util.createMD5Hash(json.getNewPassword()) );
+					newuser.setUser_type(user.getUser_type() );
+					usrRepository.save(newuser);
+					jsn.add("result","success");
+				}
+				else {
+					jsn.add("result","error");
+				}
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result","error");
+			}
+			return ResponseEntity.ok(jsn.build());
+		}
+		else {
+			return null;
+		}
+	}
+	
+	@PutMapping("/update")
+	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn  = Json.createObjectBuilder();
+			Util              util = new Util();
+			try {
+				UsersEntity user = usrRepository.findByUsername(json.getUsername());
+				UsersEntity newuser = new UsersEntity();
+				newuser.setId(user.getId());
+				newuser.setUsername( json.getUsername());
+				newuser.setNombre(   json.getNombre() );
+				newuser.setPassword( user.getPassword() );
+				newuser.setUser_type(json.getUser_type() );
+				usrRepository.save(newuser);
+				jsn.add("result","success");
+	
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result","error");
+			}
+			return ResponseEntity.ok(jsn.build());
+		}
+		else{
+			return null;
+		}
+			
+	}
+	
+	@DeleteMapping("/{username}")
+	public ResponseEntity<JsonObject> deleteUser(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn     = Json.createObjectBuilder();
+	        UsersEntity       usuario = usrRepository.findByUsername(username);
+	        if (usuario != null) {
+	        	try {
+	        		usrRepository.delete(usuario);
+	        		jsn.add("result", "success");
+	        	}
+	        	catch(Exception e) {
+	        		System.out.println(e);
+	        		jsn.add("result", "error");
+	        	}        	
+	        }
+	        else {
+	        	jsn.add("result", "usuario no encontrado");
+	        }
+	        return ResponseEntity.ok(jsn.build());
+		}
+		else {
+			return null;
+		}
+			
     }
+	
+	
+	@PostMapping("/insert")
+	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			Util util = new Util();
+			try {
+				UsersEntity newuser = new UsersEntity();
+				
+				List<UsersEntity> users = usrRepository.findAll();
+				Boolean find = false;
+				for ( int i = 0 ; i < users.size() ; i ++ ) {
+					if ( users.get(i).getUsername().equals(json.getUsername()) ) {
+						find = true;
+						break;
+					}
+				}
+				
+				if ( find == false ) {
+					newuser.setUsername( json.getUsername());
+					newuser.setNombre(   json.getNombre() );
+					newuser.setPassword( util.createMD5Hash(json.getPassword()) );
+					newuser.setUser_type(json.getUser_type() );
+					usrRepository.save(newuser);
+					jsn.add("result", "success");
+				}
+				else {
+					jsn.add("result", "duplicated username");
+				}
+			}
+			catch(Exception e) {
+				System.out.println(e);
+				jsn.add("result", "error");
+				jsn.add("detail", e.toString());
+			}
+			
+			return ResponseEntity.ok(jsn.build());
+		}
+		else {
+			return null;
+		}
+			
+    }
+	
 	
 	@PostMapping("/auth")
 	public ResponseEntity<JsonObject> getAuth(@RequestBody UsersEntity json) throws Exception {
@@ -104,9 +249,8 @@ public class UsersController {
 			                .add("exp", exp)
 			                .add("birthdate","27-07-1989")
 			                .add("zone", 1)
-			                .add("groups", "ADMINISTRATOR");
-				        
-				        
+			                .add("groups", usersList.get(i).getUser_type());
+				        			        
 				        
 				        JWSObject jwsObject = new JWSObject(new JWSHeader.Builder(JWSAlgorithm.RS256)
 				                .type(new JOSEObjectType("jwt"))

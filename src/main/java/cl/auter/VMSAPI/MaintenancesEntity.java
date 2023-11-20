@@ -1,15 +1,14 @@
 package cl.auter.VMSAPI;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
-@Entity
-@Table(name = "maintenances")
+@javax.persistence.Entity
+@javax.persistence.Table(name = "maintenances")
 public class MaintenancesEntity {
 	
 	@Id
@@ -25,6 +24,9 @@ public class MaintenancesEntity {
 	private String responsable;
 	private String status;
 	private String observation;
+	private String notified;
+	private String email;
+	private String notification_sended;
 	
 	@Override
 	public String toString() {
@@ -81,5 +83,24 @@ public class MaintenancesEntity {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getNotified() {
+		return notified;
+	}
+	public void setNotified(String notified) {
+		this.notified = notified;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getNotifiations_sended() {
+		return notification_sended;
+	}
+	public void setNotifiations_sended(String notifiations_sended) {
+		this.notification_sended = notifiations_sended;
+	}
+	
 	
 }
