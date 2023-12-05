@@ -116,9 +116,7 @@ public class NotificationsTimer {
     					ne.setClicked("no");
     					ne.setDescription("Mantención en "
     							+ finalDiff + " dias: "
-    							+ me.get(i).getDate()
-    							+ ", \"" + me.get(i).getObservation()
-    							+ "\". Responsable: " + me.get(i).getResponsable());
+    							+ me.get(i).getDate());
     					ne.setMaintenance_id(me.get(i).getId());
     					ne.setShowed("no");
     					ne.setUsername(me.get(i).getResponsable());
