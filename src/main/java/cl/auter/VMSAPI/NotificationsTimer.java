@@ -14,6 +14,10 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import cl.auter.VMSAPI.model.MaintenancesEntity;
+import cl.auter.VMSAPI.model.NotificationsEntity;
+import cl.auter.VMSAPI.repository.MaintenancesRepository;
+import cl.auter.VMSAPI.repository.NotificationsRepository;
 import cl.auter.util.DecodeJwt;
 
 @Component
