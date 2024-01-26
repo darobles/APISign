@@ -36,4 +36,11 @@ public class AuthenticationRequest {
 		this.password = password;
 	}
 
+	@Override
+	public String toString() {
+		return "AuthenticationRequest [username=" + username + ", password=" + password + "]";
+	}
+
+	
+	
 }

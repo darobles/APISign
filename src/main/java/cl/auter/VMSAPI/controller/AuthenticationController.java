@@ -54,7 +54,7 @@ public class AuthenticationController {
 			//String tkn = this.wcPost();
 			//System.out.println(tkn);
 			//TokenAWS token = new ObjectMapper().readValue(tkn, TokenAWS.class);
-			//System.out.println(token);
+			System.out.println(authenticationRequest);
 			//String[] chunks = token.getIdToken().split("\\.");
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 
