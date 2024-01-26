@@ -14,6 +14,7 @@ import cl.auter.VMSAPI.model.MantStatusEntity;
 import cl.auter.VMSAPI.repository.MantStatusRepository;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController

@@ -15,6 +15,7 @@ import cl.auter.VMSAPI.model.VmsCredentialsEntity;
 import cl.auter.VMSAPI.repository.VmsCredentialsRepository;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")

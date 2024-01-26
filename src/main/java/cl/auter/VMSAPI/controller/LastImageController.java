@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.auter.VMSAPI.model.LastImageEntity;
 import cl.auter.VMSAPI.repository.LastImgRepository;
 import cl.auter.util.Util;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController

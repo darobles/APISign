@@ -23,6 +23,7 @@ import cl.auter.VMSAPI.model.LogEntity;
 import cl.auter.VMSAPI.repository.LogRepository;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
