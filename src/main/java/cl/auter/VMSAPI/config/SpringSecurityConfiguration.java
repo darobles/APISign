@@ -32,7 +32,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/v2/api-docs","/Admin", "/swagger-resources", "/swagger-resources/**", "/configuration/ui",
 			"/configuration/security", "/swagger-ui.html", "/webjars/**",
 			// -- Swagger UI v3 (OpenAPI)
-			"/v3/api-docs/**", "/swagger-ui/**", "/authenticate", "/sma-ui.html", "/api-docs", "/sma/**",
+			"/v3/api-docs/**", "/swagger-ui/**", "/api/authenticate", "/vms-ui.html", "/api-docs", "/vms/**",
 			"/task_attention/**", "/websocket/**","/test/**"
 			// other public endpoints of your API may be appended to this array
 	};
