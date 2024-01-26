@@ -1,11 +1,13 @@
 package cl.auter.VMSAPI.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "canales")
 public class CanalModel {
+	@Id
 	int id_canal;
 	String nombre;
 

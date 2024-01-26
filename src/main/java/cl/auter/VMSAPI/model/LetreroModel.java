@@ -1,11 +1,13 @@
 package cl.auter.VMSAPI.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "letreros")
 public class LetreroModel {
+	@Id
 	int id_letrero;
 	String nombre;
 	String ubicacion;

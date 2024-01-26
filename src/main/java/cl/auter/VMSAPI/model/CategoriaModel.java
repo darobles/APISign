@@ -1,13 +1,17 @@
 package cl.auter.VMSAPI.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "categorias")
 public class CategoriaModel {
+	@Id
 	int id_categoria;
+	
 	String nombre;
+	
 	String descripcion;
 		
 	public CategoriaModel() {
