@@ -59,6 +59,7 @@ public class JwtUtil {
 				claims.put("isAdmin", false);
 			}			
 			claims.put("user_id", user.getId());
+			claims.put("role_id", user.getRole_id());
 		}
 
 		return doGenerateToken(claims, userDetails.getUsername());

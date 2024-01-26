@@ -31,7 +31,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
 		try {
 			String jwtToken = extractJwtFromRequest(request);
-
+			System.out.println("token " + jwtToken);
 			if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
 				UserDetails userDetails = new User(jwtTokenUtil.getUsernameFromToken(jwtToken), "",
 						jwtTokenUtil.getRolesFromToken(jwtToken));
@@ -44,9 +44,9 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 				//System.out.println("Cannot set the Security Context");
 			}
 		} catch (ExpiredJwtException ex) {
-			request.setAttribute("exception", ex);
+			request.setAttribute("exception1", ex);
 		} catch (BadCredentialsException ex) {
-			request.setAttribute("exception", ex);
+			request.setAttribute("exception2", ex);
 		}
 		chain.doFilter(request, response);
 	}
