@@ -17,7 +17,11 @@ public class UsersEntity {
 	private String password;
 	private String nombre;
 	private String user_type;
-	
+		
+	public UsersEntity() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 	public String getUser_type() {
 		return user_type;
 	}

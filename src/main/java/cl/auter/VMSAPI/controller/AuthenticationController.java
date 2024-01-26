@@ -81,6 +81,7 @@ public class AuthenticationController {
 			
 			//System.out.println("authenticationRequest.getPassword() " + authenticationRequest.getPassword());
 			if (user != null) {
+				System.out.println(user.toString());
 				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 						authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 			}
