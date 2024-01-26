@@ -17,6 +17,8 @@ import javax.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,10 +45,12 @@ import cl.auter.VMSAPI.service.UsersService;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
 import cl.auter.util.Util;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/users")
+@SecurityRequirement(name = "JWT")
 public class UsersController {
 	@Autowired
 	private  UsersService usrRepository;
@@ -56,8 +60,8 @@ public class UsersController {
 	
 	
 	@GetMapping("")
-	public List<UsersEntity> findAll(@RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+	public List<UsersEntity> findAll(@RequestHeader(name = "Authorization", required = false) String token) throws ParseException{
+		JWTResponse jwtResponse = decJwt.validateToken(token);
 		if ( jwtResponse.getGenMessage().equals("authorized") ) {
 			return usrRepository.findAll();
 		}
@@ -189,9 +193,11 @@ public class UsersController {
 				}
 				
 				if ( find == false ) {
+					PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					String encodedPassword = passwordEncoder.encode(json.getPassword());
 					newuser.setUsername( json.getUsername());
 					newuser.setNombre(   json.getNombre() );
-					newuser.setPassword( util.createMD5Hash(json.getPassword()) );
+					newuser.setPassword( encodedPassword );
 					newuser.setUser_type(json.getUser_type() );
 					usrRepository.save(newuser);
 					jsn.add("result", "success");

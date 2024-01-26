@@ -7,7 +7,7 @@ public class AuthenticationRequest {
 
 	@Schema(description = "Unique identifier of the Contact.", example = "admin", required = false)
 	private String username;
-	@Schema(description = "Password of the id.", example = "admin", required = false)
+	@Schema(description = "Password of the id.", example = "Autersa1735!", required = false)
 	private String password;
 
 	public AuthenticationRequest(String username, String password) {
