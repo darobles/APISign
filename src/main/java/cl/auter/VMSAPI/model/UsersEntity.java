@@ -17,6 +17,7 @@ public class UsersEntity {
 	private String password;
 	private String nombre;
 	private String user_type;
+	private int role_id;
 		
 	public UsersEntity() {
 		super();
@@ -52,12 +53,18 @@ public class UsersEntity {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+	public int getRole_id() {
+		return role_id;
+	}
+	public void setRole_id(int role_id) {
+		this.role_id = role_id;
+	}
+	
 	@Override
 	public String toString() {
 		return "UsersEntity [id=" + id + ", username=" + username + ", password=" + password + ", nombre=" + nombre
-				+ "]";
+				+ ", user_type=" + user_type + ", role_id=" + role_id + "]";
 	}
-	
 	
 
 }
