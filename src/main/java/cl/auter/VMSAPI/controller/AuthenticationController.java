@@ -46,7 +46,7 @@ public class AuthenticationController {
 	
 
 	@Schema(name = "login")
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@RequestMapping(value = "/api/authenticate", method = RequestMethod.POST)
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest)
 			throws Exception {
 		try {
@@ -95,7 +95,7 @@ public class AuthenticationController {
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
-
+		System.out.println(token);
 		return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
 	
