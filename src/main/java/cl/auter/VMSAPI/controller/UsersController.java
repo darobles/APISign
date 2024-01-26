@@ -39,6 +39,7 @@ import com.nimbusds.jose.JWSSigner;
 import cl.auter.VMSAPI.model.ChangePasswordEntity;
 import cl.auter.VMSAPI.model.UsersEntity;
 import cl.auter.VMSAPI.repository.UsersRepository;
+import cl.auter.VMSAPI.service.UsersService;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
 import cl.auter.util.Util;
@@ -47,15 +48,12 @@ import cl.auter.util.Util;
 @RestController
 @RequestMapping("/api/users")
 public class UsersController {
-	
-	private final UsersRepository usrRepository;
+	@Autowired
+	private  UsersService usrRepository;
 	private       DecodeJwt       decJwt = new DecodeJwt();
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	
-	@Autowired
-	public UsersController(UsersRepository usrRepository) {
-		this.usrRepository = usrRepository;
-	}
+	
 	
 	@GetMapping("")
 	public List<UsersEntity> findAll(@RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
