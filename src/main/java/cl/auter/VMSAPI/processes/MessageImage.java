@@ -1,4 +1,4 @@
-package cl.auter.VMSAPI.model;
+package cl.auter.VMSAPI.processes;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensaje_imagen")
-public class MensajeImagenModel {
+public class MessageImage {
 	@Id
 	int id_mensaje;
 	int ubicacion_hrz;
@@ -14,10 +14,28 @@ public class MensajeImagenModel {
 	int id_usuario;
 	String imagen_b64;
 	
-	public MensajeImagenModel() {
+	public MessageImage() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	public MessageImage(int messageId) {
+		super();
+        this.message  = dao.getMessage(messageId);
+        this.customText = null;
+        if (message != null) {
+            this.symbols      = dao.getSymbols(message.getGroupId(), message.getMessage());
+            this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
+            build();
+        } else {
+            this.symbols      = null;
+            this.segmentWidth = null;
+        }
+
+		// TODO Auto-generated constructor stub
+	}
+
+	
+	
 	public int getId_mensaje() {
 		return id_mensaje;
 	}
@@ -50,7 +68,7 @@ public class MensajeImagenModel {
 	}
 	@Override
 	public String toString() {
-		return "MensajeImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
+		return "MessageImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
 				+ ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64 + "]";
 	}
 	

@@ -12,7 +12,7 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cl.auter.VMSAPI.model.Message;
+import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.service.SymbolService;
@@ -22,7 +22,7 @@ public class MessageImage {
 	@Autowired
 	SymbolService symbolService;
 	
-    private final Message       message;
+    private final MessageModel       message;
     private final List<SymbolModel>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
@@ -32,7 +32,7 @@ public class MessageImage {
         this.message  = dao.getMessage(messageId);
         this.customText = null;
         if (message != null) {
-            this.symbols      = symbolService.getSymbolsByGroupIdCharacteres(message.getGroupId(), message.getMessage());
+            this.symbols      = symbolService.getSymbolsByCharacterList(message.getGroupId(), message.getMessage());
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             build();
         } else {

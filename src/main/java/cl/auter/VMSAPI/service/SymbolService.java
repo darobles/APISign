@@ -188,9 +188,9 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public List<SymbolModel> getSymbolsByGroupIdCharacteres(int group_id, String characters) {
+	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters) {
 		// TODO Auto-generated method stub
-		return symbolRepository.getSymbolsByGroupIdCharacteres(group_id, characters);
+		return symbolRepository.getSymbolsByCharacterList(group_id, characters);
 	}
 
 }

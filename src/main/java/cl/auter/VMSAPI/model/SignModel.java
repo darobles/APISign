@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "letreros")
-public class LetreroModel {
+public class SignModel {
 	@Id
 	int id_letrero;
 	String nombre;
@@ -16,7 +16,7 @@ public class LetreroModel {
 	String latitud;
 	String longitud;
 	
-	public LetreroModel() {
+	public SignModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

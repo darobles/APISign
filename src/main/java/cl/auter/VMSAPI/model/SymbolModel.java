@@ -12,10 +12,12 @@ public class SymbolModel {
 	int codigo;
 	String character;
 	String data;
+	
 	public SymbolModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public int getId_grupo() {
 		return id_grupo;
 	}
@@ -23,9 +25,11 @@ public class SymbolModel {
 	public void setId_grupo(int id_grupo) {
 		this.id_grupo = id_grupo;
 	}
+	
 	public int getCodigo() {
 		return codigo;
 	}
+	
 	public void setCodigo(int codigo) {
 		this.codigo = codigo;
 	}
@@ -33,6 +37,7 @@ public class SymbolModel {
 	public String getCharacter() {
 		return character;
 	}
+	
 	public void setCharacter(String character) {
 		this.character = character;
 	}
@@ -47,7 +52,7 @@ public class SymbolModel {
 
 	@Override
 	public String toString() {
-		return "SimboloModel [id_grupo=" + id_grupo + ", codigo=" + codigo + ", character=" + character + ", data="
+		return "SymbolModel [id_grupo=" + id_grupo + ", codigo=" + codigo + ", character=" + character + ", data="
 				+ data + "]";
 	}
 	
