@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensaje_imagen")
-public class MensajeImagenModel {
+public class MessageImageModel {
 	@Id
 	int id_mensaje;
 	int ubicacion_hrz;
@@ -14,10 +14,12 @@ public class MensajeImagenModel {
 	int id_usuario;
 	String imagen_b64;
 	
-	public MensajeImagenModel() {
+
+	public MessageImageModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public int getId_mensaje() {
 		return id_mensaje;
 	}
@@ -50,7 +52,7 @@ public class MensajeImagenModel {
 	}
 	@Override
 	public String toString() {
-		return "MensajeImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
+		return "MessageImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
 				+ ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64 + "]";
 	}
 	

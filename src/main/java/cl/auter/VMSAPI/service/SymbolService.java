@@ -10,35 +10,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.VMSViewModel;
-import cl.auter.VMSAPI.repository.VMSViewRepository;
+import cl.auter.VMSAPI.model.SymbolModel;
+import cl.auter.VMSAPI.repository.SymbolRepository;
 
 @Service
-public class VMSViewService implements VMSViewRepository{
-
+public class SymbolService implements SymbolRepository{
+	
 	@Autowired
-	VMSViewRepository vmsRepository;
+	SymbolRepository symbolRepository;
 	
 	@Override
-	public List<VMSViewModel> findAll() {
-		// TODO Auto-generated method stub
-		return vmsRepository.findAll();
-	}
-
-	@Override
-	public List<VMSViewModel> findAll(Sort sort) {
+	public List<SymbolModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<VMSViewModel> findAllById(Iterable<Integer> ids) {
+	public List<SymbolModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> List<S> saveAll(Iterable<S> entities) {
+	public List<SymbolModel> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends SymbolModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,19 +50,19 @@ public class VMSViewService implements VMSViewRepository{
 	}
 
 	@Override
-	public <S extends VMSViewModel> S saveAndFlush(S entity) {
+	public <S extends SymbolModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SymbolModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<VMSViewModel> entities) {
+	public void deleteAllInBatch(Iterable<SymbolModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,46 +80,45 @@ public class VMSViewService implements VMSViewRepository{
 	}
 
 	@Override
-	public VMSViewModel getOne(Integer id) {
+	public SymbolModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public VMSViewModel getById(Integer id) {
+	public SymbolModel getById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> List<S> findAll(Example<S> example) {
+	public <S extends SymbolModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SymbolModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<VMSViewModel> findAll(Pageable pageable) {
+	public Page<SymbolModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> S save(S entity) {
+	public <S extends SymbolModel> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Optional<VMSViewModel> findById(Integer id) {
+	public Optional<SymbolModel> findById(Integer id) {
 		// TODO Auto-generated method stub
-		
-		return vmsRepository.findById(id);
+		return Optional.empty();
 	}
 
 	@Override
@@ -141,7 +140,7 @@ public class VMSViewService implements VMSViewRepository{
 	}
 
 	@Override
-	public void delete(VMSViewModel entity) {
+	public void delete(SymbolModel entity) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -153,7 +152,7 @@ public class VMSViewService implements VMSViewRepository{
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends VMSViewModel> entities) {
+	public void deleteAll(Iterable<? extends SymbolModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -165,34 +164,33 @@ public class VMSViewService implements VMSViewRepository{
 	}
 
 	@Override
-	public <S extends VMSViewModel> Optional<S> findOne(Example<S> example) {
+	public <S extends SymbolModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends VMSViewModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SymbolModel> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends VMSViewModel> long count(Example<S> example) {
+	public <S extends SymbolModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends VMSViewModel> boolean exists(Example<S> example) {
+	public <S extends SymbolModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public VMSViewModel findVMSById(int id) {
+	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters) {
 		// TODO Auto-generated method stub
-		
-		return vmsRepository.findVMSById(id);
+		return symbolRepository.getSymbolsByCharacterList(group_id, characters);
 	}
 
 }

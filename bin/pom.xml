@@ -19,9 +19,9 @@
     </properties>
     <dependencies>
 		<dependency>
-		    <groupId>io.springfox</groupId>
-		    <artifactId>springfox-swagger2</artifactId>
-		    <version>3.0.0</version>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.5.12</version>
 		</dependency>
 		<dependency>
 		    <groupId>io.springfox</groupId>
@@ -115,22 +115,34 @@
 		    <scope>runtime</scope>
 		</dependency>
         <dependency>
-            <groupId>org.glassfish</groupId>
-            <artifactId>javax.json</artifactId>
-            <version>1.1.4</version>
-        </dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20180130</version>
+		</dependency>
         <!-- https://mvnrepository.com/artifact/org.bytedeco/ffmpeg -->
 		<dependency>
 	        <groupId>org.bytedeco</groupId>
 	        <artifactId>javacv</artifactId>
 	        <version>1.5.6</version> <!-- Verifica la última versión disponible -->
 	    </dependency>
+	    
+	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>9.11.1</version>
         </dependency>
+        
     </dependencies>
 
     <build>

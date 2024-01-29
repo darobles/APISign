@@ -6,4 +6,5 @@ import cl.auter.VMSAPI.model.VMSViewModel;
 
 public interface VMSViewRepository extends JpaRepository<VMSViewModel, Integer>{
 
+	public VMSViewModel findVMSById(int id);
 }
