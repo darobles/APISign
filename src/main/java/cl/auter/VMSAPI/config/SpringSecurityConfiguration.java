@@ -68,6 +68,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 				// auth
 				.antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/notifications").hasAnyRole("ADMIN","USER")
+				.antMatchers(HttpMethod.GET, "/api/maintenances").hasAnyRole("ADMIN","USER")
 				.antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN","USER").antMatchers(HttpMethod.PUT).hasAnyRole("ADMIN","USER")
 				.antMatchers(HttpMethod.GET).hasAnyRole("ADMIN","USER")
 				
@@ -92,6 +93,15 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/api/authenticate", configuration);
 		source.registerCorsConfiguration("/api/notifications", configuration);
+		source.registerCorsConfiguration("/api/maintenances", configuration);
+		source.registerCorsConfiguration("/api/maintenances/*", configuration);
+		source.registerCorsConfiguration("/api/log", configuration);
+		source.registerCorsConfiguration("/api/signType", configuration);
+		source.registerCorsConfiguration("/api/sign", configuration);
+		source.registerCorsConfiguration("/api/users", configuration);
+		source.registerCorsConfiguration("/api/users/*", configuration);
+		source.registerCorsConfiguration("/api/cameraType", configuration);
+		source.registerCorsConfiguration("/api/maintenances", configuration);
 		return source;
 	}
 

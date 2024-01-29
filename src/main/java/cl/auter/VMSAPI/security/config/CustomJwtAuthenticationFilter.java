@@ -31,7 +31,6 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 
 		try {
 			String jwtToken = extractJwtFromRequest(request);
-			System.out.println("token " + jwtToken);
 			if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
 				UserDetails userDetails = new User(jwtTokenUtil.getUsernameFromToken(jwtToken), "",
 						jwtTokenUtil.getRolesFromToken(jwtToken));
