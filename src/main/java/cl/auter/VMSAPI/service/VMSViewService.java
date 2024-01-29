@@ -188,4 +188,11 @@ public class VMSViewService implements VMSViewRepository{
 		return false;
 	}
 
+	@Override
+	public VMSViewModel findVMSById(int id) {
+		// TODO Auto-generated method stub
+		
+		return vmsRepository.findVMSById(id);
+	}
+
 }
