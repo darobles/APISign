@@ -1,4 +1,4 @@
-package cl.auter.util;
+package cl.auter.VMSAPI.model;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -12,15 +12,18 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cl.auter.VMSAPI.model.MessageModel;
-import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
+import cl.auter.VMSAPI.service.MessageImageService;
 import cl.auter.VMSAPI.service.SymbolService;
+import cl.auter.util.Constants;
+import cl.auter.util.Symbol;
 
 public class MessageImage {
 	
 	@Autowired
 	SymbolService symbolService;
+	@Autowired
+	MessageImageService messageImageService;
 	
     private final MessageModel       message;
     private final List<SymbolModel>  symbols;
@@ -137,8 +140,8 @@ public class MessageImage {
 
             // Side images
             if (! oldProtocol()) {
-                SideImage leftImage  = this.dao.getSideImage(message.getId(), 0);
-                SideImage rightImage = this.dao.getSideImage(message.getId(), 1);
+                SideImage leftImage  = messageImageService.getSideImage(message.getId(), 0);
+                SideImage rightImage = messageImageService.getSideImage(message.getId(), 1);
 
                 if (leftImage.getImage() != null) {
                     int imageWidth  = leftImage.getImage().getWidth();

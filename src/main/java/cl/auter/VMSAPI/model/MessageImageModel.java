@@ -1,4 +1,4 @@
-package cl.auter.VMSAPI.processes;
+package cl.auter.VMSAPI.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensaje_imagen")
-public class MessageImage {
+public class MessageImageModel {
 	@Id
 	int id_mensaje;
 	int ubicacion_hrz;
@@ -14,27 +14,11 @@ public class MessageImage {
 	int id_usuario;
 	String imagen_b64;
 	
-	public MessageImage() {
+
+	public MessageImageModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MessageImage(int messageId) {
-		super();
-        this.message  = dao.getMessage(messageId);
-        this.customText = null;
-        if (message != null) {
-            this.symbols      = dao.getSymbols(message.getGroupId(), message.getMessage());
-            this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
-            build();
-        } else {
-            this.symbols      = null;
-            this.segmentWidth = null;
-        }
-
-		// TODO Auto-generated constructor stub
-	}
-
-	
 	
 	public int getId_mensaje() {
 		return id_mensaje;
