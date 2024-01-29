@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensaje_imagen")
-public class MensajeImagenModel {
+public class MessageImageModel {
 	@Id
 	int id_mensaje;
 	int ubicacion_hrz;
@@ -14,7 +14,7 @@ public class MensajeImagenModel {
 	int id_usuario;
 	String imagen_b64;
 	
-	public MensajeImagenModel() {
+	public MessageImageModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}

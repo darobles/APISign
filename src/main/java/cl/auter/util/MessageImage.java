@@ -14,13 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import cl.auter.VMSAPI.model.Message;
 import cl.auter.VMSAPI.model.SymbolModel;
+import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.protocol.DIANMING;
+import cl.auter.VMSAPI.service.MessageImageService;
 import cl.auter.VMSAPI.service.SymbolService;
 
 public class MessageImage {
 	
 	@Autowired
 	SymbolService symbolService;
+	@Autowired
+	MessageImageService messageImageService;
 	
     private final Message       message;
     private final List<SymbolModel>  symbols;
@@ -137,8 +141,8 @@ public class MessageImage {
 
             // Side images
             if (! oldProtocol()) {
-                SideImage leftImage  = this.dao.getSideImage(message.getId(), 0);
-                SideImage rightImage = this.dao.getSideImage(message.getId(), 1);
+                SideImage leftImage  = messageImageService.getSideImage(message.getId(), 0);
+                SideImage rightImage = messageImageService.getSideImage(message.getId(), 1);
 
                 if (leftImage.getImage() != null) {
                     int imageWidth  = leftImage.getImage().getWidth();
