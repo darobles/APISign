@@ -9,12 +9,21 @@ import java.util.Base64;
 import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import cl.auter.VMSAPI.model.Message;
+import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
+import cl.auter.VMSAPI.service.SymbolService;
 
 public class MessageImage {
+	
+	@Autowired
+	SymbolService symbolService;
+	
     private final Message       message;
-    private final List<Symbol>  symbols;
+    private final List<SymbolModel>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
     private final Integer       segmentWidth;
@@ -23,7 +32,7 @@ public class MessageImage {
         this.message  = dao.getMessage(messageId);
         this.customText = null;
         if (message != null) {
-            this.symbols      = dao.getSymbols(message.getGroupId(), message.getMessage());
+            this.symbols      = symbolService.getSymbolsByGroupIdCharacteres(message.getGroupId(), message.getMessage());
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             build();
         } else {
@@ -81,13 +90,12 @@ public class MessageImage {
 
     
     private Symbol findSymbol(Character c) {
-        Iterator<Symbol> iterator = this.symbols.iterator();
-        
-        while (iterator.hasNext()) {
-            Symbol item = iterator.next();
-            if (item.getSymbol() == c) {
-                return item;
+        for(SymbolModel symbol: symbols)
+        {
+            if (symbol.getSymbol() == c) {
+                return symbol;
             }
+        	
         }            
         return null;
     }

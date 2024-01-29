@@ -6,13 +6,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "simbolos")
-public class SimboloModel {
+public class SymbolModel {
 	@Id
 	int id_grupo;
 	int codigo;
 	String character;
 	String data;
-	public SimboloModel() {
+	public SymbolModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
