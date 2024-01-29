@@ -66,11 +66,10 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.cors().configurationSource(corsConfigurationSource()).and().csrf().disable().authorizeRequests()
 				// auth
-				.antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()
+				.antMatchers(HttpMethod.POST, "/api/authenticate").permitAll()				
 				.antMatchers(HttpMethod.GET, "/api/notifications").hasAnyRole("ADMIN","USER")
 				.antMatchers(HttpMethod.DELETE).hasAnyRole("ADMIN","USER").antMatchers(HttpMethod.PUT).hasAnyRole("ADMIN","USER")
-				.antMatchers(HttpMethod.GET).hasAnyRole("ADMIN","USER")
-				
+				.antMatchers(HttpMethod.GET).hasAnyRole("ADMIN","USER")				
 				.antMatchers(AUTH_WHITELIST).permitAll().anyRequest().authenticated()
 				// if any exception occurs call this
 				.and().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and().

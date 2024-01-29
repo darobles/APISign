@@ -17,6 +17,8 @@ import javax.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -54,6 +56,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class UsersController {
 	@Autowired
 	private  UsersService usrRepository;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	private       DecodeJwt       decJwt = new DecodeJwt();
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	
@@ -91,12 +95,16 @@ public class UsersController {
 			Util              util = new Util();
 			try {
 				UsersEntity user = usrRepository.findByUsername(json.getUsername());
-				if ( util.createMD5Hash(json.getPassword()).equals(user.getPassword()) ) {
+				if ( user != null ) {
+					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+							user.getUsername(), user.getPassword()));
 					UsersEntity newuser = new UsersEntity();
 					newuser.setId(user.getId());
 					newuser.setUsername( user.getUsername());
 					newuser.setNombre(   user.getNombre() );
-					newuser.setPassword( util.createMD5Hash(json.getNewPassword()) );
+					PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					String encodedPassword = passwordEncoder.encode(json.getPassword());
+					newuser.setPassword(encodedPassword);
 					newuser.setUser_type(user.getUser_type() );
 					usrRepository.save(newuser);
 					jsn.add("result","success");
