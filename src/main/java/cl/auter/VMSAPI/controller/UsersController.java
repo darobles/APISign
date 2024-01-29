@@ -90,7 +90,7 @@ public class UsersController {
 	@PostMapping("/validate_password")
 	public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
@@ -106,6 +106,7 @@ public class UsersController {
 					String encodedPassword = passwordEncoder.encode(json.getPassword());
 					newuser.setPassword(encodedPassword);
 					newuser.setUser_type(user.getUser_type() );
+					newuser.setRole_id(user.getRole_id());
 					usrRepository.save(newuser);
 					jsn.add("result","success");
 				}
@@ -127,7 +128,7 @@ public class UsersController {
 	@PutMapping("/update")
 	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
@@ -157,7 +158,7 @@ public class UsersController {
 	@DeleteMapping("/{username}")
 	public ResponseEntity<JsonObject> deleteUser(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn     = Json.createObjectBuilder();
 	        UsersEntity       usuario = usrRepository.findByUsername(username);
 	        if (usuario != null) {
@@ -184,10 +185,8 @@ public class UsersController {
 	
 	@PostMapping("/insert")
 	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
-			JsonObjectBuilder jsn = Json.createObjectBuilder();
-			Util util = new Util();
+		
+			JsonObjectBuilder jsn = Json.createObjectBuilder();			
 			try {
 				UsersEntity newuser = new UsersEntity();
 				
@@ -207,6 +206,7 @@ public class UsersController {
 					newuser.setNombre(   json.getNombre() );
 					newuser.setPassword( encodedPassword );
 					newuser.setUser_type(json.getUser_type() );
+					newuser.setRole_id(json.getRole_id());
 					usrRepository.save(newuser);
 					jsn.add("result", "success");
 				}
@@ -221,10 +221,8 @@ public class UsersController {
 			}
 			
 			return ResponseEntity.ok(jsn.build());
-		}
-		else {
-			return null;
-		}
+		
+		
 			
     }
 	

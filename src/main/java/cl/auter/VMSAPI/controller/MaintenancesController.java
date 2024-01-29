@@ -76,7 +76,7 @@ public class MaintenancesController {
 	@PostMapping("")
 	public ResponseEntity<JsonObject> saveNewMaintenance(@RequestBody MaintenancesEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();
 			try {
 				recRepository.save(json);
@@ -99,7 +99,7 @@ public class MaintenancesController {
 	@PutMapping("")
 	public ResponseEntity<JsonObject> editMaintenance(@RequestBody MaintenancesEntity json,@RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();
 			try {
 				recRepository.save(json);
@@ -121,7 +121,7 @@ public class MaintenancesController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<JsonObject> deleteMaintenance(@PathVariable(value = "id") int id, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();
 			try {
 				recRepository.deleteById(id);

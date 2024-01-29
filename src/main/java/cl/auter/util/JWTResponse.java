@@ -2,7 +2,7 @@ package cl.auter.util;
 
 public class JWTResponse {
 	private String genMessage;
-	private String userType;
+	private String role;
 	
 	public String getGenMessage() {
 		return genMessage;
@@ -10,10 +10,17 @@ public class JWTResponse {
 	public void setGenMessage(String genMessage) {
 		this.genMessage = genMessage;
 	}
-	public String getUserType() {
-		return userType;
+	public String getRole() {
+		return role;
 	}
-	public void setUserType(String userType) {
-		this.userType = userType;
+	public void setRole(String role) {
+		this.role = role;
 	}
+	@Override
+	public String toString() {
+		return "JWTResponse [genMessage=" + genMessage + ", userType=" + role + "]";
+	}
+	
+	
+	
 }
