@@ -12,8 +12,11 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.service.MessageImageService;
+import cl.auter.VMSAPI.service.MessageService;
+import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.Constants;
 import cl.auter.util.Symbol;
@@ -24,15 +27,17 @@ public class MessageImage {
 	SymbolService symbolService;
 	@Autowired
 	MessageImageService messageImageService;
+	@Autowired
+	MessageViewService messageService;
 	
-    private final MessageModel       message;
+    private final MessageViewModel       message;
     private final List<SymbolModel>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
     private final Integer       segmentWidth;
     
     public MessageImage(Integer messageId) {
-        this.message  = dao.getMessage(messageId);
+        this.message  = messageService.getById(messageId);
         this.customText = null;
         if (message != null) {
             this.symbols      = symbolService.getSymbolsByCharacterList(message.getGroupId(), message.getMessage());
@@ -45,7 +50,7 @@ public class MessageImage {
     }
 
     public MessageImage(Integer messageId, String customText) {
-        this.message    = dao.getMessage(messageId);
+        this.message    = messageService.getById(messageId);
         this.customText = customText;
         if (message != null) {
             this.symbols      = dao.getSymbols(message.getGroupId(), this.customText);

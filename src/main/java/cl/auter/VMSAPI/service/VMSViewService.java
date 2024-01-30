@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.VMSViewModel;
+import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.repository.VMSViewRepository;
 
 @Service

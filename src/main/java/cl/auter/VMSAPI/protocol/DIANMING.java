@@ -2,7 +2,7 @@ package cl.auter.VMSAPI.protocol;
 
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.SignModel;
-import cl.auter.VMSAPI.model.VMSViewModel;
+import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.util.VMSUtils;
 
