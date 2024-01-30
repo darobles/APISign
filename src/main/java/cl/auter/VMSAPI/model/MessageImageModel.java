@@ -14,6 +14,7 @@ public class MessageImageModel {
 	int id_usuario;
 	String imagen_b64;
 	
+
 	public MessageImageModel() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -56,7 +57,7 @@ public class MessageImageModel {
 	}
 	@Override
 	public String toString() {
-		return "MensajeImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
+		return "MessageImagenModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
 				+ ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64 + "]";
 	}
 	

@@ -17,6 +17,8 @@ import javax.json.JsonObjectBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -54,6 +56,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 public class UsersController {
 	@Autowired
 	private  UsersService usrRepository;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	private       DecodeJwt       decJwt = new DecodeJwt();
 	private static final String OS = System.getProperty("os.name").toLowerCase();
 	
@@ -86,18 +90,23 @@ public class UsersController {
 	@PostMapping("/validate_password")
 	public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
 				UsersEntity user = usrRepository.findByUsername(json.getUsername());
-				if ( util.createMD5Hash(json.getPassword()).equals(user.getPassword()) ) {
+				if ( user != null ) {
+					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+							user.getUsername(), user.getPassword()));
 					UsersEntity newuser = new UsersEntity();
 					newuser.setId(user.getId());
 					newuser.setUsername( user.getUsername());
 					newuser.setNombre(   user.getNombre() );
-					newuser.setPassword( util.createMD5Hash(json.getNewPassword()) );
+					PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+					String encodedPassword = passwordEncoder.encode(json.getPassword());
+					newuser.setPassword(encodedPassword);
 					newuser.setUser_type(user.getUser_type() );
+					newuser.setRole_id(user.getRole_id());
 					usrRepository.save(newuser);
 					jsn.add("result","success");
 				}
@@ -119,7 +128,7 @@ public class UsersController {
 	@PutMapping("/update")
 	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
@@ -149,7 +158,7 @@ public class UsersController {
 	@DeleteMapping("/{username}")
 	public ResponseEntity<JsonObject> deleteUser(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
 			JsonObjectBuilder jsn     = Json.createObjectBuilder();
 	        UsersEntity       usuario = usrRepository.findByUsername(username);
 	        if (usuario != null) {
@@ -176,10 +185,8 @@ public class UsersController {
 	
 	@PostMapping("/insert")
 	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getUserType().equals("ADMINISTRATOR") ) {
-			JsonObjectBuilder jsn = Json.createObjectBuilder();
-			Util util = new Util();
+		
+			JsonObjectBuilder jsn = Json.createObjectBuilder();			
 			try {
 				UsersEntity newuser = new UsersEntity();
 				
@@ -199,6 +206,7 @@ public class UsersController {
 					newuser.setNombre(   json.getNombre() );
 					newuser.setPassword( encodedPassword );
 					newuser.setUser_type(json.getUser_type() );
+					newuser.setRole_id(json.getRole_id());
 					usrRepository.save(newuser);
 					jsn.add("result", "success");
 				}
@@ -213,10 +221,8 @@ public class UsersController {
 			}
 			
 			return ResponseEntity.ok(jsn.build());
-		}
-		else {
-			return null;
-		}
+		
+		
 			
     }
 	

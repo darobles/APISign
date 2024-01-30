@@ -10,35 +10,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.SymbolModel;
-import cl.auter.VMSAPI.repository.SymbolRepository;
+import cl.auter.VMSAPI.model.MessageEntity;
+import cl.auter.VMSAPI.repository.MessageRepository;
 
 @Service
-public class SymbolService implements SymbolRepository{
+public class MessageService implements MessageRepository{
 	
 	@Autowired
-	SymbolRepository symbolRepository;
+	private MessageRepository mRepository;
 	
 	@Override
-	public List<SymbolModel> findAll() {
+	public List<MessageEntity> findAll() {
+		// TODO Auto-generated method stub
+		return mRepository.findAll();
+	}
+
+	@Override
+	public List<MessageEntity> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SymbolModel> findAll(Sort sort) {
+	public List<MessageEntity> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SymbolModel> findAllById(Iterable<Integer> ids) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends SymbolModel> List<S> saveAll(Iterable<S> entities) {
+	public <S extends MessageEntity> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,19 +50,19 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public <S extends SymbolModel> S saveAndFlush(S entity) {
+	public <S extends MessageEntity> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends MessageEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SymbolModel> entities) {
+	public void deleteAllInBatch(Iterable<MessageEntity> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,51 +80,51 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public SymbolModel getOne(Integer id) {
+	public MessageEntity getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SymbolModel getById(Integer id) {
+	public MessageEntity getById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> findAll(Example<S> example) {
+	public <S extends MessageEntity> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends MessageEntity> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SymbolModel> findAll(Pageable pageable) {
+	public Page<MessageEntity> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> S save(S entity) {
+	public <S extends MessageEntity> S save(S entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return mRepository.save(entity);
 	}
 
 	@Override
-	public Optional<SymbolModel> findById(Integer id) {
+	public Optional<MessageEntity> findById(Integer id) {
 		// TODO Auto-generated method stub
-		return Optional.empty();
+		return mRepository.findById(id);
 	}
 
 	@Override
 	public boolean existsById(Integer id) {
 		// TODO Auto-generated method stub
-		return false;
+		return mRepository.existsById(id);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public void delete(SymbolModel entity) {
+	public void delete(MessageEntity entity) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -152,7 +152,7 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SymbolModel> entities) {
+	public void deleteAll(Iterable<? extends MessageEntity> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,33 +164,27 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public <S extends SymbolModel> Optional<S> findOne(Example<S> example) {
+	public <S extends MessageEntity> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends SymbolModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends MessageEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> long count(Example<S> example) {
+	public <S extends MessageEntity> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SymbolModel> boolean exists(Example<S> example) {
+	public <S extends MessageEntity> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters) {
-		// TODO Auto-generated method stub
-		return symbolRepository.getSymbolsByCharacterList(group_id, characters);
 	}
 
 }

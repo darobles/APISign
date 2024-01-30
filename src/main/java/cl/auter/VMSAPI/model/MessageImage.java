@@ -1,4 +1,4 @@
-package cl.auter.util;
+package cl.auter.VMSAPI.model;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
@@ -12,12 +12,11 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import cl.auter.VMSAPI.model.Message;
-import cl.auter.VMSAPI.model.SymbolModel;
-import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.service.MessageImageService;
 import cl.auter.VMSAPI.service.SymbolService;
+import cl.auter.util.Constants;
+import cl.auter.util.Symbol;
 
 public class MessageImage {
 	
@@ -26,7 +25,7 @@ public class MessageImage {
 	@Autowired
 	MessageImageService messageImageService;
 	
-    private final Message       message;
+    private final MessageModel       message;
     private final List<SymbolModel>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
@@ -36,7 +35,7 @@ public class MessageImage {
         this.message  = dao.getMessage(messageId);
         this.customText = null;
         if (message != null) {
-            this.symbols      = symbolService.getSymbolsByGroupIdCharacteres(message.getGroupId(), message.getMessage());
+            this.symbols      = symbolService.getSymbolsByCharacterList(message.getGroupId(), message.getMessage());
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             build();
         } else {

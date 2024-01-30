@@ -2,7 +2,7 @@ package cl.auter.VMSAPI.model;
 
 import cl.auter.util.Constants;
 
-public class Message {
+public class MessageModel {
     Integer id;
     String  name;
     String  message;
@@ -28,7 +28,7 @@ public class Message {
     Integer maxHeight;
     Integer groupWidth;
     
-    public Message() {
+    public MessageModel() {
         this.id              = null;
         this.name            = null;
         this.message         = null;
