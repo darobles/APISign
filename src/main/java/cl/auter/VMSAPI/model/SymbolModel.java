@@ -8,38 +8,39 @@ import javax.persistence.Table;
 @Table(name = "simbolos")
 public class SymbolModel {
 	@Id
-	int id_grupo;
-	int codigo;
-	String character;
-	String data;
+	Integer   id_grupo;
+	Integer   codigo;
+	Character caracter;
+	String    data;
+	Integer   ancho;
 	
 	public SymbolModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public int getId_grupo() {
+
+	public Integer getId_grupo() {
 		return id_grupo;
 	}
 
-	public void setId_grupo(int id_grupo) {
+	public void setId_grupo(Integer id_grupo) {
 		this.id_grupo = id_grupo;
 	}
-	
-	public int getCodigo() {
+
+	public Integer getCodigo() {
 		return codigo;
 	}
-	
-	public void setCodigo(int codigo) {
+
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 
-	public String getCharacter() {
-		return character;
+	public Character getCaracter() {
+		return caracter;
 	}
-	
-	public void setCharacter(String character) {
-		this.character = character;
+
+	public void setCaracter(Character caracter) {
+		this.caracter = caracter;
 	}
 
 	public String getData() {
@@ -50,11 +51,18 @@ public class SymbolModel {
 		this.data = data;
 	}
 
+	public Integer getAncho() {
+		return ancho;
+	}
+
+	public void setAncho(Integer ancho) {
+		this.ancho = ancho;
+	}
+
 	@Override
 	public String toString() {
-		return "SymbolModel [id_grupo=" + id_grupo + ", codigo=" + codigo + ", character=" + character + ", data="
-				+ data + "]";
+		return "SymbolModel [id_grupo=" + id_grupo + ", codigo=" + codigo + ", caracter=" + caracter + ", data=" + data
+				+ ", ancho=" + ancho + "]";
 	}
-	
 	
 }

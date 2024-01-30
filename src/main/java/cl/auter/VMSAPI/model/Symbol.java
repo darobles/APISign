@@ -1,4 +1,4 @@
-package cl.auter.util;
+package cl.auter.VMSAPI.model;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -24,6 +24,15 @@ public class Symbol {
         this.width   = width;
         this.symbol  = symbol;
         this.data    = data;
+    }
+
+    // JPérez 2024.01.30
+    public Symbol(SymbolModel symbol) {
+        this.setGroupId(symbol.getId_grupo());
+        this.setCode(symbol.getCodigo());
+        this.setWidth(symbol.getAncho());
+        this.setSymbol(symbol.getCaracter());
+        this.setData(symbol.getData());
     }
 
     public int getGroupId() {

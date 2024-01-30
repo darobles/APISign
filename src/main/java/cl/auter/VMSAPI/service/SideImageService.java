@@ -10,35 +10,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.SymbolModel;
-import cl.auter.VMSAPI.repository.SymbolRepository;
+import cl.auter.VMSAPI.model.SideImageModel;
+import cl.auter.VMSAPI.repository.SideImageRepository;
 
 @Service
-public class SymbolService implements SymbolRepository{
+public class SideImageService implements SideImageRepository{
 	
 	@Autowired
-	SymbolRepository symbolRepository;
-	
+	SideImageRepository sideImageRepository;
+
 	@Override
-	public List<SymbolModel> findAll() {
+	public List<SideImageModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SymbolModel> findAll(Sort sort) {
+	public List<SideImageModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SymbolModel> findAllById(Iterable<Integer> ids) {
+	public List<SideImageModel> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> saveAll(Iterable<S> entities) {
+	public <S extends SideImageModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,19 +50,19 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public <S extends SymbolModel> S saveAndFlush(S entity) {
+	public <S extends SideImageModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SideImageModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SymbolModel> entities) {
+	public void deleteAllInBatch(Iterable<SideImageModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,45 +80,45 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public SymbolModel getOne(Integer id) {
+	public SideImageModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SymbolModel getById(Integer id) {
+	public SideImageModel getById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> findAll(Example<S> example) {
+	public <S extends SideImageModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SideImageModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SymbolModel> findAll(Pageable pageable) {
+	public Page<SideImageModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> S save(S entity) {
+	public <S extends SideImageModel> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Optional<SymbolModel> findById(Integer id) {
+	public Optional<SideImageModel> findById(Integer id) {
 		// TODO Auto-generated method stub
-		return Optional.empty();
+		return null;
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public void delete(SymbolModel entity) {
+	public void delete(SideImageModel entity) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -152,7 +152,7 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SymbolModel> entities) {
+	public void deleteAll(Iterable<? extends SideImageModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,35 +164,33 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public <S extends SymbolModel> Optional<S> findOne(Example<S> example) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
-	public <S extends SymbolModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SideImageModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SymbolModel> long count(Example<S> example) {
+	public <S extends SideImageModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends SideImageModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SymbolModel> boolean exists(Example<S> example) {
+	public <S extends SideImageModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters) {
-		// TODO Auto-generated method stub
-		String charList = "";
-		
-		return symbolRepository.getSymbolsByCharacterList(group_id, charList);
+	public SideImageModel getSideImage(int message_id, int side) {
+		return sideImageRepository.getSideImage(message_id, side);
 	}
+	
 
 }

@@ -1,6 +1,9 @@
 package cl.auter.VMSAPI.protocol;
 
-import cl.auter.VMSAPI.model.MessageModel;
+import cl.auter.VMSAPI.model.MessageImage;
+import cl.auter.VMSAPI.model.view.MessageViewModel;
+import cl.auter.VMSAPI.model.SequenceMessageModel;
+import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
@@ -428,7 +431,7 @@ public class DIANMING {
         return (this.getResponse().get(7) == (byte) 0x31);
     }
 
-    public boolean sendMessage(SignModel sign, MessageModel message) {
+    public boolean sendMessage(SignModel sign, MessageViewModel message) {
         int     j, k;
         boolean sent = true;
         
@@ -439,7 +442,7 @@ public class DIANMING {
             List<String> items  = new ArrayList();
 
             items.clear();
-            MessageImage mi = new MessageImageModel(message.getId());
+            MessageImage mi = new MessageImage(message.getId());
                 
             List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
             images.addAll(bytes);
@@ -487,20 +490,20 @@ public class DIANMING {
         return sent;
     }
     
-    public boolean sendSequence(Sign sign, Sequence sequence) {
+    public boolean sendSequence(SignModel sign, SequenceModel sequence) {
         int     j, k;
         int     counter = 0, prevCounter = 0;
         boolean bEnviado = false;
         
         try {
-            VMSDAO dao = new VMSDAO();
-            List<SequenceMessage> sequenceMessages = dao.getSequenceMessages(sequence);
+            //VMSDAO dao = new VMSDAO();
+//            List<SequenceMessageModel> sequenceMessages = new List<SequenceMessageModel>(); // = dao.getSequenceMessages(sequence);
             List<byte[]>          images           = new ArrayList();
             List<String>          items            = new ArrayList();
 
             items.clear();
-            for (SequenceMessage sequenceMessage : sequenceMessages) {
-                MessageModel      message = dao.getMessage(sequenceMessage.getMessage().getId());
+            for (SequenceMessageModel sequenceMessage : sequenceMessages) {
+            	MessageViewModel      message; //= dao.getMessage(sequenceMessage.getMessage().getId());
                 MessageImage mi      = new MessageImage(message.getId());
                 
                 List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);

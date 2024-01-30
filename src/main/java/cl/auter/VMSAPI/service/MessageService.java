@@ -15,6 +15,7 @@ import cl.auter.VMSAPI.repository.MessageRepository;
 
 @Service
 public class MessageService implements MessageRepository{
+
 	
 	@Autowired
 	private MessageRepository mRepository;
