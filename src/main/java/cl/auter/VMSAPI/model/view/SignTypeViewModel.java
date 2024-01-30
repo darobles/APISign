@@ -1,4 +1,4 @@
-package cl.auter.VMSAPI.model;
+package cl.auter.VMSAPI.model.view;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;

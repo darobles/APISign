@@ -28,9 +28,10 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-
+		System.out.println(request);
 		try {
 			String jwtToken = extractJwtFromRequest(request);
+
 			if (StringUtils.hasText(jwtToken) && jwtTokenUtil.validateToken(jwtToken)) {
 				UserDetails userDetails = new User(jwtTokenUtil.getUsernameFromToken(jwtToken), "",
 						jwtTokenUtil.getRolesFromToken(jwtToken));

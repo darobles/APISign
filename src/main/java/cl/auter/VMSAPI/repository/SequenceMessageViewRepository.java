@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import cl.auter.VMSAPI.model.SequenceMessageEntity;
 
-public interface SequenceMessageRepository extends JpaRepository<SequenceMessageEntity, Integer>{
-	
+public interface SequenceMessageViewRepository extends JpaRepository<SequenceMessageEntity
+, Integer> {
+
 }

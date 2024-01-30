@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.auter.VMSAPI.model.SignTypeViewModel;
+import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.service.SignTypeViewService;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
