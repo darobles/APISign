@@ -18,6 +18,12 @@ public class MessageImageModel {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public MessageImageModel(int id_mensaje) {
+		super();
+		this.id_mensaje = id_mensaje;
+	}
+
 	public int getId_mensaje() {
 		return id_mensaje;
 	}

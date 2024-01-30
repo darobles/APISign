@@ -1,6 +1,7 @@
 package cl.auter.VMSAPI.protocol;
 
 import cl.auter.VMSAPI.model.VMSViewModel;
+import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.util.VMSUtils;
 
 import java.io.ByteArrayInputStream;
