@@ -118,19 +118,19 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	@Override
 	public Optional<SequenceMessageEntity> findById(Integer id) {
 		// TODO Auto-generated method stub
-		return Optional.empty();
+		return sRepository.findById(id);
 	}
 
 	@Override
 	public boolean existsById(Integer id) {
 		// TODO Auto-generated method stub
-		return false;
+		return sRepository.existsById(id);
 	}
 
 	@Override
 	public long count() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sRepository.count();
 	}
 
 	@Override
