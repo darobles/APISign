@@ -12,30 +12,39 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.service.MessageImageService;
+import cl.auter.VMSAPI.service.MessageService;
+import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.Constants;
-import cl.auter.util.Symbol;
+import cl.auter.util.VMSUtils;
 
 public class MessageImage {
 	
 	@Autowired
 	SymbolService symbolService;
 	@Autowired
-	MessageImageService messageImageService;
+	MessageService messageService;
+	@Autowired
+	SideImageService sideImageService;
 	
-    private final MessageModel       message;
-    private final List<SymbolModel>  symbols;
+    private final MessageModel  message;
+    private final List<Symbol>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
     private final Integer       segmentWidth;
     
     public MessageImage(Integer messageId) {
-        this.message  = dao.getMessage(messageId);
+        this.message  = messageService.getById(messageId);
         this.customText = null;
         if (message != null) {
-            this.symbols      = symbolService.getSymbolsByCharacterList(message.getGroupId(), message.getMessage());
+        	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message.getGroupId(), VMSUtils.CharsAsStringList(message.getMessage()));
+        	this.symbols = new ArrayList<Symbol>();
+        	for (SymbolModel symbolModel : symbolsModel) {
+        		this.symbols.add(new Symbol(symbolModel));
+        	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             build();
         } else {
@@ -45,10 +54,14 @@ public class MessageImage {
     }
 
     public MessageImage(Integer messageId, String customText) {
-        this.message    = dao.getMessage(messageId);
+        this.message    = messageService.getById(messageId);
         this.customText = customText;
         if (message != null) {
-            this.symbols      = dao.getSymbols(message.getGroupId(), this.customText);
+        	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message.getGroupId(), VMSUtils.CharsAsStringList(this.customText));
+        	this.symbols = new ArrayList<Symbol>();
+        	for (SymbolModel symbolModel : symbolsModel) {
+        		this.symbols.add(new Symbol(symbolModel));
+        	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             build();
         } else {
@@ -93,7 +106,7 @@ public class MessageImage {
 
     
     private Symbol findSymbol(Character c) {
-        for(SymbolModel symbol: symbols)
+        for(Symbol symbol: symbols)
         {
             if (symbol.getSymbol() == c) {
                 return symbol;
@@ -140,8 +153,8 @@ public class MessageImage {
 
             // Side images
             if (! oldProtocol()) {
-                SideImage leftImage  = messageImageService.getSideImage(message.getId(), 0);
-                SideImage rightImage = messageImageService.getSideImage(message.getId(), 1);
+                SideImage leftImage  = new SideImage(sideImageService.getSideImage(message.getId(), 0));
+                SideImage rightImage = new SideImage(sideImageService.getSideImage(message.getId(), 1));
 
                 if (leftImage.getImage() != null) {
                     int imageWidth  = leftImage.getImage().getWidth();

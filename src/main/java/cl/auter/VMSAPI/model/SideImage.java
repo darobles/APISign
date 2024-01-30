@@ -20,6 +20,11 @@ public class SideImage {
         verticalAlign = null;
     }
 
+    public SideImage(SideImageModel sideImage) {
+    	setImageB64(sideImage.getImagen_b64());
+    	setVerticalAlign(sideImage.getUbicacion_vrt());
+    }
+
     public BufferedImage getImage() {
         return image;
     }
