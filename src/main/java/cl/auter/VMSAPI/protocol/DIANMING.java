@@ -1,7 +1,7 @@
 package cl.auter.VMSAPI.protocol;
 
 import cl.auter.VMSAPI.model.MessageImage;
-import cl.auter.VMSAPI.model.MessageModel;
+import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -431,7 +431,7 @@ public class DIANMING {
         return (this.getResponse().get(7) == (byte) 0x31);
     }
 
-    public boolean sendMessage(SignModel sign, MessageModel message) {
+    public boolean sendMessage(SignModel sign, MessageViewModel message) {
         int     j, k;
         boolean sent = true;
         
@@ -503,7 +503,7 @@ public class DIANMING {
 
             items.clear();
             for (SequenceMessageModel sequenceMessage : sequenceMessages) {
-                MessageModel      message; //= dao.getMessage(sequenceMessage.getMessage().getId());
+            	MessageViewModel      message; //= dao.getMessage(sequenceMessage.getMessage().getId());
                 MessageImage mi      = new MessageImage(message.getId());
                 
                 List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);

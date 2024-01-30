@@ -12,19 +12,11 @@ import javax.imageio.ImageIO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-<<<<<<< HEAD
-import cl.auter.VMSAPI.model.SideImage;
-import cl.auter.VMSAPI.protocol.DIANMING;
-import cl.auter.VMSAPI.service.MessageImageService;
-import cl.auter.VMSAPI.service.MessageService;
-import cl.auter.VMSAPI.service.SideImageService;
-=======
 import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.service.MessageImageService;
-import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
->>>>>>> 33d0ae97a84180e004231b83d9129c98b79eea60
+import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.Constants;
 import cl.auter.util.VMSUtils;
@@ -37,9 +29,11 @@ public class MessageImage {
 	MessageImageService messageImageService;
 	@Autowired
 	MessageViewService messageService;
+	@Autowired
+	SideImageService sideImageService;
 	
     private final MessageViewModel       message;
-    private final List<SymbolModel>  symbols;
+    private final List<Symbol>  symbols;
     private       BufferedImage image = null;
     private       String        customText = null;
     private final Integer       segmentWidth;

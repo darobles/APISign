@@ -1,19 +1,21 @@
 package cl.auter.VMSAPI.model;
 
+import cl.auter.VMSAPI.model.view.MessageViewModel;
+
 public class SequenceMessageModel {
     Integer id;
     Integer index;
     Integer time;
-    MessageModel message;
+    MessageViewModel message;
 
     public SequenceMessageModel() {
         this.id      = null;
         this.index   = null;
         this.time    = null;
-        this.message = new MessageModel();
+        this.message = new MessageViewModel();
     }
 
-    public SequenceMessageModel(Integer idSequence, Integer index, Integer time, MessageModel message) {
+    public SequenceMessageModel(Integer idSequence, Integer index, Integer time, MessageViewModel message) {
         this.id      = idSequence;
         this.index   = index;
         this.time    = time;
@@ -44,11 +46,11 @@ public class SequenceMessageModel {
         this.time = time;
     }
 
-    public MessageModel getMessage() {
+    public MessageViewModel getMessage() {
         return message;
     }
 
-    public void setMessage(MessageModel message) {
+    public void setMessage(MessageViewModel message) {
         this.message = message;
     }
 
