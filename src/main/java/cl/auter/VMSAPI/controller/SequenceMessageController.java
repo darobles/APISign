@@ -5,6 +5,7 @@ import java.util.List;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,6 +39,35 @@ public class SequenceMessageController {
                 }
             }
         } catch (Exception ex) {            
+            outputJSON.put("error", ex.toString());
+        }
+        
+        return outputJSON.toJSONString();
+    }
+	
+	@PostMapping("/{id_sequence}/index/{index}")
+	public String postJson(@PathVariable("idSequence") String id_sequence, @PathVariable("index") String index, String content) {
+        JSONParser parser     = new JSONParser();
+        JSONObject inputJSON;
+        JSONObject outputJSON = new JSONObject();
+
+        try {
+            inputJSON = (JSONObject) parser.parse(content);
+
+            SequenceMessageEntity sequenceMessage = new SequenceMessageEntity();
+            sequenceMessage.setId(Integer.valueOf(id_sequence));
+            sequenceMessage.setIndex(Integer.valueOf(index));
+            sequenceMessage.setTime(((Long) inputJSON.get("time")).intValue());
+            
+            try {
+                VMSDAO dao = new VMSDAO();
+                
+                dao.editSequenceMessage(sequenceMessage);
+                outputJSON.put("changed", true);
+            } catch (Exception ex) {
+                outputJSON.put("error", ex.toString());
+            }
+        } catch (Exception ex) {
             outputJSON.put("error", ex.toString());
         }
         
