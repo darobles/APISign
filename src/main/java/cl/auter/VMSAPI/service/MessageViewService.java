@@ -34,7 +34,7 @@ public class MessageViewService implements MessageViewRepository {
 	@Override
 	public List<MessageViewModel> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
-		return null;
+		return messageViewRepository.findAllById(ids);
 	}
 
 	@Override
@@ -186,5 +186,5 @@ public class MessageViewService implements MessageViewRepository {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }

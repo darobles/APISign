@@ -2,6 +2,7 @@ package cl.auter.VMSAPI.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -10,12 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
+import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.VMSViewService;
 import cl.auter.util.VMSUtils;
 
@@ -24,7 +28,10 @@ import cl.auter.util.VMSUtils;
 @RequestMapping("/api/sign")
 public class VMSViewController {
 	@Autowired
-	private  VMSViewService vmsService;
+	VMSViewService vmsService;
+	
+	@Autowired
+	MessageViewService messageViewService;
 	
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -93,5 +100,79 @@ public class VMSViewController {
 	        return outputJSON;
 		
 	}
+	
+	@GetMapping("/{id}/message")
+	public JSONArray getJson(@PathVariable("id") int idSign) {
+	        JSONArray outputJSON = new JSONArray();
+	        try {
+	        	List<Integer> idsList = new ArrayList<Integer>();
+	        	idsList.add(idSign);
+	        	Iterable<Integer> ids = idsList;
+	            List<MessageViewModel> messages = messageViewService.findAllById(ids);
+	            System.out.println(messages.size());
+	            for (MessageViewModel message : messages) {
+	            	System.out.println("1 " + message.getId());
+	                JSONObject itemJSON = new JSONObject();
+	                itemJSON.put("id", message.getId());
+	                itemJSON.put("name", message.getName());	                
+	                outputJSON.put(itemJSON);
+	            }
+	        } catch (Exception ex) {
+	            JSONObject itemJSON = new JSONObject();
+	            itemJSON.put("error", ex.toString());
+	            outputJSON.put(itemJSON);
+	        }
+
+	        return outputJSON;
+	    }
+	 
+		@PutMapping("/{id}/message")
+	    public JSONArray putJson(@PathVariable("id") int idSign, String content) {
+	        /*JSONParser parser     = new JSONParser();
+	        JSONObject inputJSON;
+	        JSONObject outputJSON = new JSONObject();
+
+	        try {
+	            inputJSON = (JSONObject) parser.parse(content);
+
+	            Integer userId = null;
+	            try {
+	                userId = ((Long) inputJSON.get("userId")).intValue();
+	            } catch (Exception ex) {
+	                userId = null;
+	            }
+	            userId = 1;//VMSUtils.UserId(authorization, userId);
+
+	            MessageViewModel message = new MessageViewModel();
+	            message.setName((String) inputJSON.get("name"));
+	            message.setAlignmentId(((Long) inputJSON.get("alignmentId")).intValue());
+	            message.setGroupId(((Long) inputJSON.get("groupId")).intValue());
+	            message.setSpacing(((Long) inputJSON.get("spacing")).intValue());
+	            message.setColour(((Long) inputJSON.get("textColour")).intValue());
+	            message.setMessage((String) inputJSON.get("message"));
+	            
+	            try {
+	                Integer idSignType = dao.getSignTypeFromSign(idSign).getId();
+	                message.setSignTypeId(idSignType);
+	                
+	                int idMessage = dao.addMessage(Integer.valueOf(idSign), message);
+	                if (idMessage > 0) {
+	                    dao.addLog(idMessage, userId, message.getMessage(), true);
+	                    outputJSON.put("entered", true);
+	                } else {
+	                    outputJSON.put("entered", false);
+	                }
+	                outputJSON.put("messageId", idMessage);
+	            } catch (Exception ex) {
+	                outputJSON.put("error", ex.toString());
+	            }
+	        } catch (Exception ex) {
+	            outputJSON.put("error", ex.toString());
+	        }
+	        
+	        return outputJSON;*/
+			return null;
+	    }
+	    
 	
 }
