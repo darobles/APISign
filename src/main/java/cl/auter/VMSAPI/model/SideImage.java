@@ -21,8 +21,14 @@ public class SideImage {
     }
 
     public SideImage(SideImageModel sideImage) {
-    	setImageB64(sideImage.getImagen_b64());
-    	setVerticalAlign(sideImage.getUbicacion_vrt());
+    	if (sideImage != null) {
+	    	setImageB64(sideImage.getImagen_b64());
+	    	setVerticalAlign(sideImage.getUbicacion_vrt());
+    	} else {
+            image         = null;
+            imageB64      = null;
+            verticalAlign = null;
+    	}
     }
 
     public BufferedImage getImage() {
