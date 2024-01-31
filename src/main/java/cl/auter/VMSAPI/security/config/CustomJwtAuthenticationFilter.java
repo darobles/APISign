@@ -28,7 +28,6 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
 			throws ServletException, IOException {
-		System.out.println(request);
 		try {
 			String jwtToken = extractJwtFromRequest(request);
 
@@ -40,9 +39,7 @@ public class CustomJwtAuthenticationFilter extends OncePerRequestFilter {
 						userDetails, null, userDetails.getAuthorities());
 
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-			} else {
-				//System.out.println("Cannot set the Security Context");
-			}
+			} 
 		} catch (ExpiredJwtException ex) {
 			request.setAttribute("exception1", ex);
 		} catch (BadCredentialsException ex) {

@@ -1,5 +1,7 @@
 package cl.auter.VMSAPI.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensajes")
-public class MessageEntity {
+public class MessageModel implements Serializable {
 	@Id
 	@Column(name = "id_mensaje")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,22 +30,11 @@ public class MessageEntity {
     private Integer group_id;
 	@Column(name = "color_letra")
     private Integer font_color;
-	public MessageEntity() {
+	public MessageModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public MessageEntity(Integer id, Integer type_sign_id, String name, String message, Integer alignment_id,
-			Integer spacing, Integer group_id, Integer font_color) {
-		super();
-		this.id = id;
-		this.type_sign_id = type_sign_id;
-		this.name = name;
-		this.message = message;
-		this.alignment_id = alignment_id;
-		this.spacing = spacing;
-		this.group_id = group_id;
-		this.font_color = font_color;
-	}
+
 	public Integer getId() {
 		return id;
 	}

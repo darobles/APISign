@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.auter.VMSAPI.model.Cabinet;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
+import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
+import cl.auter.VMSAPI.security.config.SignMessageViewService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.VMSViewService;
 import cl.auter.util.VMSUtils;
@@ -29,6 +32,8 @@ import cl.auter.util.VMSUtils;
 public class VMSViewController {
 	@Autowired
 	VMSViewService vmsService;
+	@Autowired
+	SignMessageViewService signMessageViewService;
 	
 	@Autowired
 	MessageViewService messageViewService;
@@ -42,12 +47,12 @@ public class VMSViewController {
 	}
 	
 	@GetMapping("/{id}")
-	public JSONObject findById(@PathVariable("id") Integer vms_id){
-		JSONObject outputJSON = new JSONObject();
-	        try {
-	        	VMSViewModel sign = vmsService.findVMSById(vms_id);
+	public VMSViewModel findById(@PathVariable("id") Integer vms_id){
+		VMSViewModel sign = vmsService.findVMSById(vms_id);
+		   try {
+	        	
 	            
-	            outputJSON.put("id", sign.getId_letrero());
+	            /*outputJSON.put("id", sign.getId_letrero());
 	            outputJSON.put("name", sign.getNombre()); 
 	            outputJSON.put("latitude", sign.getLatitud()); 
 	            outputJSON.put("longitude", sign.getLongitud()); 
@@ -66,64 +71,47 @@ public class VMSViewController {
 	            outputJSON.put("address", sign.getDireccion()); 
 	            outputJSON.put("port", sign.getPort()); 
 	            outputJSON.put("camera", sign.getCamara()); 
-	            outputJSON.put("cameraType", sign.getCamera_type()); 
+	            outputJSON.put("cameraType", sign.getCamera_type()); */
 	            
 	            if (sign.getCodificacion() == 1) { //Diangming
-	                JSONArray objArray = new JSONArray();
 	                DIANMING  dianming = new DIANMING(sign);
 	                dianming.setAddresses(sign.getDireccion());
-	                List<DIANMINGInfo> cabinets = dianming.getDetailedStatus();
+	                List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
 	                //socket.close();
+	                List<Cabinet> cabinets = new ArrayList();
 	                int idGabinete = 0;
-	                for (DIANMINGInfo cabinet : cabinets) {
+	                for (DIANMINGInfo cabinet : cabinetsInfo) {
+	                	Cabinet cabinetAux = new Cabinet();
 	                    idGabinete ++;
-	                    JSONObject outputJSONGabinete = new JSONObject();
-	                    outputJSONGabinete.put("cabinetId", idGabinete);
-	                    outputJSONGabinete.put("cabinetName", "Cabinet" + VMSUtils.ZeroPad(idGabinete, 2));
-	                    outputJSONGabinete.put("temperature", cabinet.getTemperature());
-	                    outputJSONGabinete.put("voltage1", cabinet.getVoltage1());
-	                    outputJSONGabinete.put("voltage2", cabinet.getVoltage2());
-	                    outputJSONGabinete.put("doorSwitch1", cabinet.getDoorSwitch1() ? "Open" : "Close");
-	                    outputJSONGabinete.put("doorSwitch2", cabinet.getDoorSwitch2() ? "Open" : "Close");
-	                    outputJSONGabinete.put("brightness", cabinet.getBrightness());
-	                    outputJSONGabinete.put("photosensitive1", cabinet.getPhotosensitive1());
-	                    outputJSONGabinete.put("photosensitive2", cabinet.getPhotosensitive2());
+	                    cabinetAux.setCabinetId(idGabinete);
+	                    cabinetAux.setCabinetName("Cabinet" + VMSUtils.ZeroPad(idGabinete, 2));
+	                    cabinetAux.setTemperature(cabinet.getTemperature());
+	                    cabinetAux.setVoltage1(cabinet.getVoltage1());
+	                    cabinetAux.setVoltage2(cabinet.getVoltage2());
+	                    cabinetAux.setDoorSwitch1(cabinet.getDoorSwitch1());
+	                    cabinetAux.setDoorSwitch2(cabinet.getDoorSwitch2());
+	                    cabinetAux.setBrightness(cabinet.getBrightness());
+	                    cabinetAux.setPhotosensitive1(cabinet.getPhotosensitive1());
+	                    cabinetAux.setPhotosensitive2(cabinet.getPhotosensitive2());
 	                    
-	                    objArray.put(outputJSONGabinete);
+	                    cabinets.add(cabinetAux);
 	                }
-	                outputJSON.put("cabinets", objArray);
+	                sign.setCabinets(cabinets);
 	            }
 	        } catch (Exception ex) {
 	            //outputJSON.clear();
-	            outputJSON.put("error", ex.toString());
 	        }
-	        return outputJSON;
+	        
+	        return sign;
 		
 	}
 	
 	@GetMapping("/{id}/message")
-	public JSONArray getJson(@PathVariable("id") int idSign) {
-	        JSONArray outputJSON = new JSONArray();
-	        try {
-	        	List<Integer> idsList = new ArrayList<Integer>();
-	        	idsList.add(idSign);
-	        	Iterable<Integer> ids = idsList;
-	            List<MessageViewModel> messages = messageViewService.findAllById(ids);
-	            System.out.println(messages.size());
-	            for (MessageViewModel message : messages) {
-	            	System.out.println("1 " + message.getId());
-	                JSONObject itemJSON = new JSONObject();
-	                itemJSON.put("id", message.getId());
-	                itemJSON.put("name", message.getName());	                
-	                outputJSON.put(itemJSON);
-	            }
-	        } catch (Exception ex) {
-	            JSONObject itemJSON = new JSONObject();
-	            itemJSON.put("error", ex.toString());
-	            outputJSON.put(itemJSON);
-	        }
+	public List<SignMessageViewModel> getJson(@PathVariable("id") int idSign) {
 
-	        return outputJSON;
+            List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
+            System.out.println(messages.size());
+	        return messages;
 	    }
 	 
 		@PutMapping("/{id}/message")

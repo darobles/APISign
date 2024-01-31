@@ -32,7 +32,6 @@ public class DecodeJwt {
 		long currentTime = System.currentTimeMillis() / 1000;
 		JWT  token       = JWTParser.parse(jwt.replace("Bearer ", ""));
 		JWTResponse jwtr = new JWTResponse();
-		System.out.println(token.getJWTClaimsSet().getStringClaim("role"));
 		String sub    = token.getJWTClaimsSet().getStringClaim("sub");
 		String groups = token.getJWTClaimsSet().getStringClaim("role");
 		Date exp = (Date) token.getJWTClaimsSet().getExpirationTime(); 

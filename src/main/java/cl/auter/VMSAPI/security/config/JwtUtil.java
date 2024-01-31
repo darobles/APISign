@@ -92,11 +92,9 @@ public class JwtUtil {
 
 	public List<SimpleGrantedAuthority> getRolesFromToken(String token) {
 		Claims claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-		//System.out.println("SimpleGranted ");
 		List<SimpleGrantedAuthority> roles = null;
 
 		Integer role_id = claims.get("role_id", Integer.class);
-		//System.out.println("role_id " + role_id);
 		if (role_id == 1) {
 
 			roles = Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));

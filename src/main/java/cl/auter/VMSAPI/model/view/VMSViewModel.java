@@ -1,10 +1,15 @@
 package cl.auter.VMSAPI.model.view;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import cl.auter.VMSAPI.model.Cabinet;
 
 @Entity
 @Table(name = "vms_view")
@@ -48,6 +53,8 @@ public class VMSViewModel {
 	String camara;
 	@JsonProperty("cameraType")
 	String camera_type;
+	@Transient
+	List<Cabinet> cabinets;
 	
 	public VMSViewModel() {
 		super();
@@ -172,6 +179,16 @@ public class VMSViewModel {
 
 	public void setCamera_type(String camera_type) {
 		this.camera_type = camera_type;
+	}
+	
+	
+
+	public List<Cabinet> getCabinets() {
+		return cabinets;
+	}
+
+	public void setCabinets(List<Cabinet> cabinets) {
+		this.cabinets = cabinets;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package cl.auter.VMSAPI.service;
+package cl.auter.VMSAPI.security.config;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,36 +10,36 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.MessageModel;
-import cl.auter.VMSAPI.repository.MessageRepository;
+import cl.auter.VMSAPI.model.view.SignMessageViewModel;
+import cl.auter.VMSAPI.repository.SignMessageViewRepository;
 
 @Service
-public class MessageService implements MessageRepository{
+public class SignMessageViewService implements SignMessageViewRepository{
 
-	
 	@Autowired
-	private MessageRepository mRepository;
+	SignMessageViewRepository signMessageViewRepository;
 	
 	@Override
-	public List<MessageModel> findAll() {
-		// TODO Auto-generated method stub
-		return mRepository.findAll();
-	}
-
-	@Override
-	public List<MessageModel> findAll(Sort sort) {
+	public List<SignMessageViewModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<MessageModel> findAllById(Iterable<Integer> ids) {
+	public List<SignMessageViewModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends MessageModel> List<S> saveAll(Iterable<S> entities) {
+	public List<SignMessageViewModel> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		System.out.println(ids);
+		return signMessageViewRepository.findAllById(ids);
+	}
+
+	@Override
+	public <S extends SignMessageViewModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -51,19 +51,19 @@ public class MessageService implements MessageRepository{
 	}
 
 	@Override
-	public <S extends MessageModel> S saveAndFlush(S entity) {
+	public <S extends SignMessageViewModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends MessageModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SignMessageViewModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<MessageModel> entities) {
+	public void deleteAllInBatch(Iterable<SignMessageViewModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -81,51 +81,51 @@ public class MessageService implements MessageRepository{
 	}
 
 	@Override
-	public MessageModel getOne(Integer id) {
+	public SignMessageViewModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public MessageModel getById(Integer id) {
+	public SignMessageViewModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return mRepository.getById(id);
+		return signMessageViewRepository.getById(id);
 	}
 
 	@Override
-	public <S extends MessageModel> List<S> findAll(Example<S> example) {
+	public <S extends SignMessageViewModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends MessageModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SignMessageViewModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<MessageModel> findAll(Pageable pageable) {
+	public Page<SignMessageViewModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends MessageModel> S save(S entity) {
+	public <S extends SignMessageViewModel> S save(S entity) {
 		// TODO Auto-generated method stub
-		return mRepository.save(entity);
+		return null;
 	}
 
 	@Override
-	public Optional<MessageModel> findById(Integer id) {
+	public Optional<SignMessageViewModel> findById(Integer id) {
 		// TODO Auto-generated method stub
-		return mRepository.findById(id);
+		return Optional.empty();
 	}
 
 	@Override
 	public boolean existsById(Integer id) {
 		// TODO Auto-generated method stub
-		return mRepository.existsById(id);
+		return false;
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class MessageService implements MessageRepository{
 	}
 
 	@Override
-	public void delete(MessageModel entity) {
+	public void delete(SignMessageViewModel entity) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -153,7 +153,7 @@ public class MessageService implements MessageRepository{
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends MessageModel> entities) {
+	public void deleteAll(Iterable<? extends SignMessageViewModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -165,28 +165,33 @@ public class MessageService implements MessageRepository{
 	}
 
 	@Override
-	public <S extends MessageModel> Optional<S> findOne(Example<S> example) {
+	public <S extends SignMessageViewModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends MessageModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SignMessageViewModel> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends MessageModel> long count(Example<S> example) {
+	public <S extends SignMessageViewModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends MessageModel> boolean exists(Example<S> example) {
+	public <S extends SignMessageViewModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 	
+	@Override
+	public List<SignMessageViewModel> findAllBySignId(Integer id) {
+		// TODO Auto-generated method stub
+		return signMessageViewRepository.findAllBySignId(id);
+	}
 
 }

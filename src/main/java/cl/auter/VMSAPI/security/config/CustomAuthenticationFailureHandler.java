@@ -16,7 +16,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			org.springframework.security.core.AuthenticationException exception) throws IOException, ServletException {
-		System.out.println("errorasdasd");
 		ObjectMapper mapper = new ObjectMapper();
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType("application/json");

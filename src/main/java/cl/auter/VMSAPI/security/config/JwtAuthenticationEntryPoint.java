@@ -27,7 +27,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 		Exception exception = (Exception) request.getAttribute("exception");
 
 		String message;
-		System.out.println("Entrada passsword " + exception);
 		if (exception != null) {
 
 			if (exception.getCause() != null) {
