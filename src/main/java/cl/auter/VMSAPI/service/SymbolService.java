@@ -192,7 +192,7 @@ public class SymbolService implements SymbolRepository{
 		// TODO Auto-generated method stub
 		String charList = "";
 		
-		return symbolRepository.getSymbolsByCharacterList(group_id, charList);
+		return symbolRepository.getSymbolsByCharacterList(group_id, characters);
 	}
 
 }

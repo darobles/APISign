@@ -30,7 +30,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 @RequestMapping("/api/sequence")
 @SecurityRequirement(name = "JWT")
 public class SequenceMessageController {
-	
+	/*
 	@Autowired
 	private SequenceMessageViewService smService;
 	
@@ -229,6 +229,6 @@ public class SequenceMessageController {
         }
         
         return outputJSON.toJSONString();
-    }
+    }*/
 	
 }

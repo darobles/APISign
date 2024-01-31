@@ -88,7 +88,7 @@ public class MessageViewService implements MessageViewRepository {
 	@Override
 	public MessageViewModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return messageViewRepository.getById(id);
+		return messageViewRepository.findById(id).get();
 	}
 
 	@Override

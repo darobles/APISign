@@ -1,6 +1,5 @@
 package cl.auter.VMSAPI.model;
 
-import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "mensajes")
-public class MessageModel implements Serializable {
+public class MessageModel{
 	@Id
 	@Column(name = "id_mensaje")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

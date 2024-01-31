@@ -442,7 +442,7 @@ public class DIANMING {
             List<String> items  = new ArrayList();
 
             items.clear();
-            MessageImage mi = new MessageImage(message.getId());
+            MessageImage mi = new MessageImage(message);
                 
             List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
             images.addAll(bytes);

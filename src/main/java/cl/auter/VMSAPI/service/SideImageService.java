@@ -189,6 +189,7 @@ public class SideImageService implements SideImageRepository{
 
 	@Override
 	public SideImageModel getSideImage(int message_id, int side) {
+		System.out.println("busca sude " + message_id + " " + side);
 		return sideImageRepository.getSideImage(message_id, side);
 	}
 	

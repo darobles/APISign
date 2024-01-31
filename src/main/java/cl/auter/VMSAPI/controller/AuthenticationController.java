@@ -81,7 +81,6 @@ public class AuthenticationController {
 			
 			//System.out.println("authenticationRequest.getPassword() " + authenticationRequest.getPassword());
 			if (user != null) {
-				System.out.println(user.toString());
 				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 						authenticationRequest.getUsername(), authenticationRequest.getPassword()));
 			}
@@ -95,7 +94,6 @@ public class AuthenticationController {
 		final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		System.out.println(token);
 		return ResponseEntity.ok(new AuthenticationResponse(token));
 	}
 	

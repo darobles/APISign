@@ -1,12 +1,17 @@
 package cl.auter.VMSAPI.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "simbolos")
-public class SymbolModel {
+public class SymbolModel{
+	/**
+	 * 
+	 */
 	@Id
 	Integer   id_grupo;
 	Integer   codigo;

@@ -10,53 +10,38 @@ import java.util.Iterator;
 import java.util.List;
 import javax.imageio.ImageIO;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
-import cl.auter.VMSAPI.service.MessageImageService;
-import cl.auter.VMSAPI.service.MessageViewService;
-import cl.auter.VMSAPI.service.SideImageService;
-import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.Constants;
-import cl.auter.util.VMSUtils;
 
 public class MessageImage {
-	
-	@Autowired
-	SymbolService symbolService;
-	@Autowired
-	MessageImageService messageImageService;
-	@Autowired
-	MessageViewService messageService;
-	@Autowired
-	SideImageService sideImageService;
-	
-    private final MessageViewModel       message;
-    private final List<Symbol>  symbols;
+		
+    private MessageViewModel       message;
+    private List<Symbol>  symbols = new ArrayList<Symbol>();;
     private       BufferedImage image = null;
     private       String        customText = null;
-    private final Integer       segmentWidth;
+    private Integer       segmentWidth;
     
-    public MessageImage(Integer messageId) {
-        this.message  = messageService.getById(messageId);
-        this.customText = null;
-        if (message != null) {
-        	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message.getGroupId(), VMSUtils.CharsAsStringList(message.getMessage()));
-        	this.symbols = new ArrayList<Symbol>();
+    public MessageImage(MessageViewModel messageId) {    	
+        this.message = messageId;
+    }
+    
+    public void setSymbols(List<SymbolModel> symbolsModel,SideImage leftImage,SideImage rightImage ) {
+        if (message != null) {        	
         	for (SymbolModel symbolModel : symbolsModel) {
-        		this.symbols.add(new Symbol(symbolModel));
+        		Symbol symb = new Symbol(symbolModel.getId_grupo(),symbolModel.getCodigo(),symbolModel.getAncho(), symbolModel.getCaracter(),symbolModel.getData());
+        		this.symbols.add(symb);
         	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
-            build();
-        } else {
-            this.symbols      = null;
-            this.segmentWidth = null;
-        }
+            System.out.println("test1");
+            build(leftImage,rightImage);
+            System.out.println("test2");
+        } 
     }
-
+    
     public MessageImage(Integer messageId, String customText) {
-        this.message    = messageService.getById(messageId);
+    	System.out.println("Correccion MessageImage");
+       /* this.message    = messageService.getById(messageId);
         this.customText = customText;
         if (message != null) {
         	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message.getGroupId(), VMSUtils.CharsAsStringList(this.customText));
@@ -69,7 +54,7 @@ public class MessageImage {
         } else {
             this.symbols      = null;
             this.segmentWidth = null;
-        }
+        } */
     }
 
     
@@ -108,6 +93,8 @@ public class MessageImage {
 
     
     private Symbol findSymbol(Character c) {
+    	System.out.println(c + " " + symbols);
+    	
         for(Symbol symbol: symbols)
         {
             if (symbol.getSymbol() == c) {
@@ -132,7 +119,8 @@ public class MessageImage {
     }
 
     
-    private void build() {
+    private void build(SideImage leftImage,SideImage rightImage) {
+    	System.out.println("12");
         if (this.message != null) {
             int totalWidth  = this.message.getSignTypeWidth();
             int totalHeight = this.message.getSignTypeHeight();
@@ -152,12 +140,10 @@ public class MessageImage {
                     this.image.setRGB(i, j, 0x000000);
                 }
             }
-
+            System.out.println("12366");
             // Side images
             if (! oldProtocol()) {
-                SideImage leftImage  = new SideImage(sideImageService.getSideImage(message.getId(), 0));
-                SideImage rightImage = new SideImage(sideImageService.getSideImage(message.getId(), 1));
-
+            	System.out.println("left");
                 if (leftImage.getImage() != null) {
                     int imageWidth  = leftImage.getImage().getWidth();
                     int imageHeight = leftImage.getImage().getHeight();
@@ -181,6 +167,7 @@ public class MessageImage {
                 }
 
                 if (rightImage.getImage() != null) {
+                	System.out.println("right");
                     int imageWidth  = rightImage.getImage().getWidth();
                     int imageHeight = rightImage.getImage().getHeight();
                     int offsetImgX  = totalWidth - imageWidth;
@@ -202,13 +189,13 @@ public class MessageImage {
             }
 
             // Text
-            String   text  = (this.customText == null) ? this.message.getMessage() : this.customText;
+            System.out.println("text");
+            String text  = (this.customText == null) ? this.message.getMessage() : this.customText;
             String[] lines = text.split(System.lineSeparator());
-            int      rgb   = getRGB();
-
+            int rgb = getRGB();
             for (String line : lines) {
                 int lineWidth = getLineWidth(line, this.message.getSpacing());
-                int x         = 0;
+                int x = 0;
 
                 // Alignment
                 if (this.message.getAlignmentId() == 2) {
@@ -216,10 +203,8 @@ public class MessageImage {
                 } else if (this.message.getAlignmentId() == 3) {
                     x = applyGrain((width - lineWidth) / 2);
                 }
-
                 for (int i = 0; i < line.length(); i ++) {
                     Symbol c = findSymbol(line.charAt(i));
-
                     if (c != null) {
                         Iterator<Integer> iterator = c.getData().iterator();
                         while (iterator.hasNext()) {
@@ -230,6 +215,7 @@ public class MessageImage {
                                     this.image.setRGB(offsetX + x + pX, offsetY + pY, rgb);
                                 }
                             } catch (Exception ex) {
+                            	System.out.println(ex);
                             }
                         }
                         x += c.getWidth() + this.message.getSpacing();
@@ -238,13 +224,14 @@ public class MessageImage {
 
                 offsetY += this.message.getMaxSymbolHeight() + this.message.getLineSpacing();
             }
+            System.out.println("Ends ");
         }
     }
 
     public String getBase64() {
         String b64;
         try {
-            b64 = Base64.getEncoder().encodeToString(MessageImage.this.getImageBytes());
+            b64 = Base64.getEncoder().encodeToString(this.getImageBytes());
         } catch (IOException ex) {
             b64 = "";
         }
@@ -252,6 +239,7 @@ public class MessageImage {
     }
     
     public byte[] getImageBytes() throws IOException {
+    	System.out.println("getImageBytes");
         RenderedImage         ri  = this.image;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -306,4 +294,5 @@ public class MessageImage {
         }
         return pixel;
     }
+
 }

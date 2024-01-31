@@ -89,7 +89,7 @@ public class MessageService implements MessageRepository{
 	@Override
 	public MessageModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return mRepository.getById(id);
+		return mRepository.findById(id).get();
 	}
 
 	@Override

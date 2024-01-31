@@ -34,7 +34,6 @@ public class SignMessageViewService implements SignMessageViewRepository{
 	@Override
 	public List<SignMessageViewModel> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
-		System.out.println(ids);
 		return signMessageViewRepository.findAllById(ids);
 	}
 

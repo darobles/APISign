@@ -18,16 +18,7 @@ public class SideImageModel {
 		super();
 	}
 	
-	public SideImageModel(Integer id_mensaje, Integer ubicacion_hrz, Integer ubicacion_vrt, Integer id_usuario,
-			String imagen_b64) {
-		super();
-		this.id_mensaje = id_mensaje;
-		this.ubicacion_hrz = ubicacion_hrz;
-		this.ubicacion_vrt = ubicacion_vrt;
-		this.id_usuario = id_usuario;
-		this.imagen_b64 = imagen_b64;
-	}
-	
+
 	public Integer getId_mensaje() {
 		return id_mensaje;
 	}

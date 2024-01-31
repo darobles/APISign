@@ -1,40 +1,24 @@
 package cl.auter.VMSAPI.model;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class Symbol {
     Integer       groupId;
     Integer       code;
     Integer       width;
     Character     symbol;
+    String        data_str;
     List<Integer> data;
+    
 
-    public Symbol() {
-        this.groupId = null;
-        this.code    = null;
-        this.width   = null;
-        this.symbol  = null;
-        this.data    = new ArrayList<Integer>();
-    }
 
-    public Symbol(Integer groupId, Integer code, Integer width, Character symbol, List<Integer> data) {
+    public Symbol(Integer groupId, Integer code, Integer width, Character symbol, String data) {
         this.groupId = groupId;
         this.code    = code;
         this.width   = width;
         this.symbol  = symbol;
-        this.data    = data;
-    }
-
-    // JPérez 2024.01.30
-    public Symbol(SymbolModel symbol) {
-        this.setGroupId(symbol.getId_grupo());
-        this.setCode(symbol.getCodigo());
-        this.setWidth(symbol.getAncho());
-        this.setSymbol(symbol.getCaracter());
-        this.setData(symbol.getData());
-    }
-
+        this.data_str    = data;
+    }
     public int getGroupId() {
         return groupId;
     }
@@ -68,24 +52,18 @@ public class Symbol {
     }
 
     public List<Integer> getData() {
-        return data;
-    }
-
-    public void setData(List<Integer> data) {
-        this.data = data;
-    }
-    
-    public void setData(String dataRaw) {
         this.data.clear();
-        if (! dataRaw.trim().isEmpty()) {
-            dataRaw = dataRaw.trim().replaceAll("\\)\\(", ",");
-            dataRaw = dataRaw.substring(1, dataRaw.length() - 1);
-            String [] values = dataRaw.split(",");
+        if (! data_str.trim().isEmpty()) {
+        	data_str = data_str.trim().replaceAll("\\)\\(", ",");
+        	data_str = data_str.substring(1, data_str.length() - 1);
+            String [] values = data_str.split(",");
             for (String value : values) {
                 this.data.add(Integer.valueOf(value));
             }
         }
+        return data;
     }
+
 
     @Override
     public String toString() {
