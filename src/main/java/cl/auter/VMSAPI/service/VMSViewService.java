@@ -88,7 +88,7 @@ public class VMSViewService implements VMSViewRepository{
 	@Override
 	public VMSViewModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return vmsRepository.findById(id).orElse(new VMSViewModel());
 	}
 
 	@Override
@@ -188,11 +188,10 @@ public class VMSViewService implements VMSViewRepository{
 		return false;
 	}
 
-	@Override
 	public VMSViewModel findVMSById(int id) {
 		// TODO Auto-generated method stub
 		
-		return vmsRepository.findVMSById(id);
+		return vmsRepository.findById(id).orElse(new VMSViewModel());
 	}
 
 }

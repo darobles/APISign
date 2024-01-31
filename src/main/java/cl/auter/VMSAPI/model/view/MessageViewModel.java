@@ -43,7 +43,7 @@ public class MessageViewModel {
     Integer widthTypeId;
     @Column(name = "nombre_tipo_ancho")
     String  widthTypeName;
-    @Column(name = "espacio_tipo_letrero")
+    @Column(name = "espaciado_tipo_letrero")
     Integer signTypeSpacing;
     @Column(name = "grano")
     Integer grain;

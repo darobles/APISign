@@ -502,7 +502,7 @@ public class DIANMING {
             List<String>          items            = new ArrayList();
 
             items.clear();
-            for (SequenceMessageModel sequenceMessage : sequenceMessages) {
+         /*   for (SequenceMessageModel sequenceMessage : sequenceMessages) {
             	MessageViewModel      message; //= dao.getMessage(sequenceMessage.getMessage().getId());
                 MessageImage mi      = new MessageImage(message.getId());
                 
@@ -516,7 +516,7 @@ public class DIANMING {
                     sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
                 }
                 items.add(sItem);
-            }
+            }*/
             
             sendAll(items, images);
         } catch (Exception ex) {
