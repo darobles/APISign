@@ -11,34 +11,34 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import cl.auter.VMSAPI.model.SequenceMessageEntity;
+import cl.auter.VMSAPI.model.view.SequenceMessageView;
 import cl.auter.VMSAPI.repository.SequenceMessageViewRepository;
 
 @Service
 public class SequenceMessageViewService implements SequenceMessageViewRepository{
 	@Autowired
 	private SequenceMessageViewRepository sRepository;
-	
-	
+
 	@Override
-	public List<SequenceMessageEntity> findAll() {
+	public List<SequenceMessageView> findAll() {
 		// TODO Auto-generated method stub
 		return sRepository.findAll();
 	}
 
 	@Override
-	public List<SequenceMessageEntity> findAll(Sort sort) {
+	public List<SequenceMessageView> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SequenceMessageEntity> findAllById(Iterable<Integer> ids) {
+	public List<SequenceMessageView> findAllById(Iterable<Integer> ids) {
 		// TODO Auto-generated method stub
-		return null;
+		return sRepository.findAllById(ids);
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> List<S> saveAll(Iterable<S> entities) {
+	public <S extends SequenceMessageView> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,19 +50,19 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> S saveAndFlush(S entity) {
+	public <S extends SequenceMessageView> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SequenceMessageView> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SequenceMessageEntity> entities) {
+	public void deleteAllInBatch(Iterable<SequenceMessageView> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,43 +80,43 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	}
 
 	@Override
-	public SequenceMessageEntity getOne(Integer id) {
+	public SequenceMessageView getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SequenceMessageEntity getById(Integer id) {
+	public SequenceMessageView getById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> List<S> findAll(Example<S> example) {
+	public <S extends SequenceMessageView> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SequenceMessageView> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SequenceMessageEntity> findAll(Pageable pageable) {
+	public Page<SequenceMessageView> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> S save(S entity) {
+	public <S extends SequenceMessageView> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Optional<SequenceMessageEntity> findById(Integer id) {
+	public Optional<SequenceMessageView> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
@@ -140,7 +140,7 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	}
 
 	@Override
-	public void delete(SequenceMessageEntity entity) {
+	public void delete(SequenceMessageView entity) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -152,7 +152,7 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SequenceMessageEntity> entities) {
+	public void deleteAll(Iterable<? extends SequenceMessageView> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -164,27 +164,30 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> Optional<S> findOne(Example<S> example) {
+	public <S extends SequenceMessageView> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SequenceMessageView> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> long count(Example<S> example) {
+	public <S extends SequenceMessageView> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SequenceMessageEntity> boolean exists(Example<S> example) {
+	public <S extends SequenceMessageView> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	
+	
 
 }
