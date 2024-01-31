@@ -55,7 +55,7 @@ public class MessageController {
         	MessageViewModel messageViewModel = messageViewService.getById(id);
         	MessageImage mi  = new MessageImage(messageViewModel);
         	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageViewModel.getGroupId(), VMSUtils.CharsAsStringList(messageViewModel.getMessage()));
-            SideImage leftImage  = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), 0));
+        	SideImage leftImage  = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), 0));
             SideImage rightImage = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), 1));
             System.out.println(leftImage.toString());
         	mi.setSymbols(symbolsModel,leftImage,rightImage);
