@@ -188,10 +188,8 @@ public class SymbolService implements SymbolRepository{
 	}
 
 	@Override
-	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters) {
+	public List<SymbolModel> getSymbolsByCharacterList(int group_id, List<Character> characters) {
 		// TODO Auto-generated method stub
-		String charList = "";
-		
 		return symbolRepository.getSymbolsByCharacterList(group_id, characters);
 	}
 

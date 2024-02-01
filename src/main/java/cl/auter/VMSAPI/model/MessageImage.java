@@ -26,12 +26,14 @@ public class MessageImage {
         this.message = messageId;
     }
     
-    public void setSymbols(List<SymbolModel> symbolsModel,SideImage leftImage,SideImage rightImage ) {
+	public void setSymbols(List<SymbolModel> symbolsModel, SideImage leftImage, SideImage rightImage) {
         if (message != null) {        	
         	for (SymbolModel symbolModel : symbolsModel) {
-        		Symbol symb = new Symbol(symbolModel.getId_grupo(),symbolModel.getCodigo(),symbolModel.getAncho(), symbolModel.getCaracter(),symbolModel.getData());
+        		Symbol symb = new Symbol(symbolModel);
+System.out.println(">>> " + symb);
         		this.symbols.add(symb);
         	}
+System.out.println(">>> " + symbols.size() + " simbolos.");
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             System.out.println("test1");
             build(leftImage,rightImage);
@@ -93,11 +95,11 @@ public class MessageImage {
 
     
     private Symbol findSymbol(Character c) {
-    	System.out.println(c + " " + symbols);
-    	
+System.out.println(">>> findSymbol " + c);
         for(Symbol symbol: symbols)
         {
             if (symbol.getSymbol() == c) {
+System.out.println(">>> !!! " + c + " " + symbol);
                 return symbol;
             }
         	
@@ -191,6 +193,7 @@ public class MessageImage {
             // Text
             System.out.println("text");
             String text  = (this.customText == null) ? this.message.getMessage() : this.customText;
+            System.out.println("text -> " + text);
             String[] lines = text.split(System.lineSeparator());
             int rgb = getRGB();
             for (String line : lines) {

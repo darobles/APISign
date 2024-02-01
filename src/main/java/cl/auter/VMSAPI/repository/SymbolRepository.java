@@ -12,6 +12,6 @@ import cl.auter.VMSAPI.model.SymbolModel;
 @Repository
 public interface SymbolRepository extends JpaRepository<SymbolModel, Integer>{
 	
-	@Query(value = "SELECT * FROM simbolos WHERE id_grupo =  ?1 AND caracter IN ( ?2 )", nativeQuery = true)
-	public List<SymbolModel> getSymbolsByCharacterList(int group_id, String characters);
+	@Query(value = "SELECT * FROM simbolos WHERE id_grupo = ?1 AND caracter IN ?2", nativeQuery = true)
+	public List<SymbolModel> getSymbolsByCharacterList(int group_id, List<Character> characters);
 }

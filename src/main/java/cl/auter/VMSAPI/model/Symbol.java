@@ -1,5 +1,6 @@
 package cl.auter.VMSAPI.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Symbol {
@@ -9,16 +10,26 @@ public class Symbol {
     Character     symbol;
     String        data_str;
     List<Integer> data;
-    
-
 
     public Symbol(Integer groupId, Integer code, Integer width, Character symbol, String data) {
         this.groupId = groupId;
         this.code    = code;
         this.width   = width;
         this.symbol  = symbol;
-        this.data_str    = data;
+        this.data_str = data;
+        this.data = new ArrayList<Integer>();
+        setData();
     }
+    public Symbol(SymbolModel symbolModel) {
+        this.setGroupId(symbolModel.getId_grupo());
+        this.setCode(symbolModel.getCodigo());
+        this.setWidth(symbolModel.getAncho());
+        this.setSymbol(symbolModel.getCaracter());
+        this.data_str = symbolModel.getData();
+        this.data = new ArrayList<Integer>();
+        setData();
+    }
+
     public int getGroupId() {
         return groupId;
     }
@@ -52,20 +63,21 @@ public class Symbol {
     }
 
     public List<Integer> getData() {
-        this.data.clear();
-        if (! data_str.trim().isEmpty()) {
-        	data_str = data_str.trim().replaceAll("\\)\\(", ",");
-        	data_str = data_str.substring(1, data_str.length() - 1);
-            String [] values = data_str.split(",");
+        return data;
+    }
+
+	public void setData() {
+        if ((this.data_str != null) && (! data_str.trim().isEmpty())) {
+        	this.data_str = this.data_str.trim().replaceAll("\\)\\(", ",");
+        	this.data_str = this.data_str.substring(1, data_str.length() - 1);
+            String [] values = this.data_str.split(",");
             for (String value : values) {
                 this.data.add(Integer.valueOf(value));
             }
         }
-        return data;
-    }
+	}
 
-
-    @Override
+	@Override
     public String toString() {
         return "Symbol{" + "groupId=" + groupId + ", code=" + code + ", width=" + width + ", symbol=" + symbol + ", data=" + data + '}';
     }

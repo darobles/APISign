@@ -57,8 +57,7 @@ public class MessageController {
         	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageViewModel.getGroupId(), VMSUtils.CharsAsStringList(messageViewModel.getMessage()));
         	SideImage leftImage  = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), 0));
             SideImage rightImage = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), 1));
-            System.out.println(leftImage.toString());
-        	mi.setSymbols(symbolsModel,leftImage,rightImage);
+        	mi.setSymbols(symbolsModel, leftImage, rightImage);
         	String b64 = mi.getBase64();
             outputJSON.put("mime", "image/bmp");
             outputJSON.put("data", b64); 

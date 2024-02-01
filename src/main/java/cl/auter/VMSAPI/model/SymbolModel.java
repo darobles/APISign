@@ -12,8 +12,8 @@ public class SymbolModel{
 	/**
 	 * 
 	 */
-	@Id
 	Integer   id_grupo;
+	@Id
 	Integer   codigo;
 	Character caracter;
 	String    data;

@@ -40,17 +40,21 @@ public class VMSUtils {
     }
 
 
-    public static String CharsAsStringList(String text) {
+    public static List<Character> CharsAsStringList(String text) {
         List<Character> charArray = new ArrayList<Character>();
         
         for (int i = 0; i < text.length(); i ++) {
-            if (! charArray.contains(text.charAt(i))) {
-                charArray.add(text.charAt(i));
+            Character c = text.charAt(i);
+            if ((c != '\n') && (c != '\r') && (! charArray.contains(c))) {
+                charArray.add(c);
             }
         }
         Collections.sort(charArray);
+
+System.out.println(">>> " + charArray);        
+        return charArray;
         
-        String characters = "";
+        /*String characters = "";
         for (int i = 0; i < charArray.size(); i ++) {
             Character c = charArray.get(i);
             if ((c != '\n') && (c != '\r')) {
@@ -61,7 +65,7 @@ public class VMSUtils {
             characters = characters.substring(0, characters.length() - 2);
         }
         
-        return characters;
+        return characters;*/
     }
 
     public static String LeftPad(String text, int length, Character character) {
