@@ -1,13 +1,13 @@
 package cl.auter.VMSAPI.controller;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.Cabinet;
-import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
@@ -51,28 +50,6 @@ public class VMSViewController {
 		VMSViewModel sign = vmsService.findVMSById(vms_id);
 		   try {
 	        	
-	            
-	            /*outputJSON.put("id", sign.getId_letrero());
-	            outputJSON.put("name", sign.getNombre()); 
-	            outputJSON.put("latitude", sign.getLatitud()); 
-	            outputJSON.put("longitude", sign.getLongitud()); 
-	            outputJSON.put("location", sign.getUbicacion()); 
-	            outputJSON.put("status", 1); 
-	            outputJSON.put("signTypeId", sign.getId_tipo_letrero()); 
-	            outputJSON.put("signTypeName", sign.getNombre_tipo_letrero()); 
-	            outputJSON.put("protocolId", sign.getCodificacion()); 
-	            outputJSON.put("protocolName", "Nombre"); 
-	            outputJSON.put("obs", sign.getObs()); 
-	            outputJSON.put("connectionId", sign.getId_conexion()); 
-	            outputJSON.put("connectionName", sign.getNombre_conexion()); 
-	            outputJSON.put("phoneOrIP", sign.getFono()); 
-	            outputJSON.put("key", sign.getClave());
-	            outputJSON.put("portCOM", sign.getCanal()); 
-	            outputJSON.put("address", sign.getDireccion()); 
-	            outputJSON.put("port", sign.getPort()); 
-	            outputJSON.put("camera", sign.getCamara()); 
-	            outputJSON.put("cameraType", sign.getCamera_type()); */
-	            
 	            if (sign.getCodificacion() == 1) { //Diangming
 	                DIANMING  dianming = new DIANMING(sign);
 	                dianming.setAddresses(sign.getDireccion());
@@ -110,7 +87,6 @@ public class VMSViewController {
 	public List<SignMessageViewModel> getJson(@PathVariable("id") int idSign) {
 
             List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
-            System.out.println(messages.size());
 	        return messages;
 	    }
 	 
@@ -161,6 +137,24 @@ public class VMSViewController {
 	        return outputJSON;*/
 			return null;
 	    }
-	    
+		
+		@PutMapping("/{id}/brightness/{value}")
+		public ResponseEntity<String> setBrightness(@PathVariable("id") Integer id, @PathVariable("value") Integer brightness){
+			
+			Thread thread = new Thread(new Runnable() {
+			    @Override
+			    public void run() {
+			    	VMSViewModel vms = vmsService.findVMSById(id);					
+			    	DIANMING dianming = new DIANMING(vms);
+			    	dianming.setBrightness(brightness);
+			    	System.out.println("Done");
+			    }
+			});
+			thread.start();
+			return ResponseEntity.ok()
+			        .body("done");
+			
+			
+		}
 	
 }

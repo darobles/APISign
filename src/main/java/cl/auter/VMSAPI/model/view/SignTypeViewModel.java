@@ -1,5 +1,6 @@
 package cl.auter.VMSAPI.model.view;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -9,94 +10,107 @@ import javax.persistence.Table;
 public class SignTypeViewModel {
 	
 	@Id
-	int id_tipo_letrero;
-	String nombre;
-	int ancho;
-	int alto;
-	int espacio_lineas;
-	int alto_max_simbolo;
-	int id_tipo_ancho;
-	int espaciado;
-	int grano;
-	int codificacion;
-	String nombre_tipo_ancho;
+	@Column(name = "id_tipo_letrero")
+	int id;
+	@Column(name = "nombre")
+	String name;
+	@Column(name = "ancho")
+	int width;
+	@Column(name = "alto")
+	int height;
+	@Column(name = "espacio_lineas")
+	int lineSpacing;
+	@Column(name = "alto_max_simbolo")
+	int symbolMaxHeight;
+	@Column(name = "id_tipo_ancho")
+	int widthTypeId;
+	@Column(name = "espaciado")
+	int spacing;
+	@Column(name = "grano")
+	int grain;
+	@Column(name = "codificacion")
+	int protocolId;
+	@Column(name = "nombre_tipo_ancho")
+	String widthTypeName;
 	public SignTypeViewModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public int getId_tipo_letrero() {
-		return id_tipo_letrero;
+	public int getId() {
+		return id;
 	}
-	public void setId_tipo_letrero(int id_tipo_letrero) {
-		this.id_tipo_letrero = id_tipo_letrero;
+	public void setId(int id) {
+		this.id = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public int getAncho() {
-		return ancho;
+	public int getWidth() {
+		return width;
 	}
-	public void setAncho(int ancho) {
-		this.ancho = ancho;
+	public void setWidth(int width) {
+		this.width = width;
 	}
-	public int getAlto() {
-		return alto;
+	public int getHeight() {
+		return height;
 	}
-	public void setAlto(int alto) {
-		this.alto = alto;
+	public void setHeight(int height) {
+		this.height = height;
 	}
-	public int getEspacio_lineas() {
-		return espacio_lineas;
+	public int getLineSpacing() {
+		return lineSpacing;
 	}
-	public void setEspacio_lineas(int espacio_lineas) {
-		this.espacio_lineas = espacio_lineas;
+	public void setLineSpacing(int lineSpacing) {
+		this.lineSpacing = lineSpacing;
 	}
-	public int getAlto_max_simbolo() {
-		return alto_max_simbolo;
+	public int getSymbolMaxHeight() {
+		return symbolMaxHeight;
 	}
-	public void setAlto_max_simbolo(int alto_max_simbolo) {
-		this.alto_max_simbolo = alto_max_simbolo;
+	public void setSymbolMaxHeight(int symbolMaxHeight) {
+		this.symbolMaxHeight = symbolMaxHeight;
 	}
-	public int getId_tipo_ancho() {
-		return id_tipo_ancho;
+	public int getWidthTypeId() {
+		return widthTypeId;
 	}
-	public void setId_tipo_ancho(int id_tipo_ancho) {
-		this.id_tipo_ancho = id_tipo_ancho;
+	public void setWidthTypeId(int widthTypeId) {
+		this.widthTypeId = widthTypeId;
 	}
-	public int getEspaciado() {
-		return espaciado;
+	public int getSpacing() {
+		return spacing;
 	}
-	public void setEspaciado(int espaciado) {
-		this.espaciado = espaciado;
+	public void setSpacing(int spacing) {
+		this.spacing = spacing;
 	}
-	public int getGrano() {
-		return grano;
+	public int getGrain() {
+		return grain;
 	}
-	public void setGrano(int grano) {
-		this.grano = grano;
+	public void setGrain(int grain) {
+		this.grain = grain;
 	}
-	public int getCodificacion() {
-		return codificacion;
+	public int getProtocolId() {
+		return protocolId;
 	}
-	public void setCodificacion(int codificacion) {
-		this.codificacion = codificacion;
+	public void setProtocolId(int protocolId) {
+		this.protocolId = protocolId;
 	}
-	public String getNombre_tipo_ancho() {
-		return nombre_tipo_ancho;
+	public String getWidthTypeName() {
+		return widthTypeName;
 	}
-	public void setNombre_tipo_ancho(String nombre_tipo_ancho) {
-		this.nombre_tipo_ancho = nombre_tipo_ancho;
+	public void setWidthTypeName(String widthTypeName) {
+		this.widthTypeName = widthTypeName;
 	}
 	@Override
 	public String toString() {
-		return "SignTypeViewModel [id_tipo_letrero=" + id_tipo_letrero + ", nombre=" + nombre + ", ancho=" + ancho
-				+ ", alto=" + alto + ", espacio_lineas=" + espacio_lineas + ", alto_max_simbolo=" + alto_max_simbolo
-				+ ", id_tipo_ancho=" + id_tipo_ancho + ", espaciado=" + espaciado + ", grano=" + grano
-				+ ", codificacion=" + codificacion + ", nombre_tipo_ancho=" + nombre_tipo_ancho + "]";
+		return "SignTypeViewModel [id=" + id + ", name=" + name + ", width=" + width + ", height=" + height
+				+ ", lineSpacing=" + lineSpacing + ", symbolMaxHeight=" + symbolMaxHeight + ", widthTypeId="
+				+ widthTypeId + ", spacing=" + spacing + ", grain=" + grain + ", protocolId=" + protocolId
+				+ ", widthTypeName=" + widthTypeName + "]";
 	}
+	
+	
 	
 	
 	
