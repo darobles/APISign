@@ -50,8 +50,6 @@ public class VMSUtils {
             }
         }
         Collections.sort(charArray);
-
-System.out.println(">>> " + charArray);        
         return charArray;
         
         /*String characters = "";
