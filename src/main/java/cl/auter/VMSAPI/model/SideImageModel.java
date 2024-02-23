@@ -12,7 +12,7 @@ public class SideImageModel {
 	Integer ubicacion_hrz;
 	Integer ubicacion_vrt;
 	Integer id_usuario;
-	String imagen_b64;
+	String  imagen_b64;
 
 	public SideImageModel() {
 		super();
