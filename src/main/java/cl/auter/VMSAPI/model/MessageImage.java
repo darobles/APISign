@@ -32,7 +32,6 @@ public class MessageImage {
         this.message.setGrain(signTypeViewModel.getGrain());
         this.message.setMaxSymbolHeight(signTypeViewModel.getSymbolMaxHeight());
         this.message.setLineSpacing(signTypeViewModel.getLineSpacing());
-        //---
         this.message.setAlignmentId(alignmentId);
         this.message.setColour(colour);
         this.message.setMessage(message);
