@@ -29,7 +29,7 @@ public class VMSViewModel {
 	int id_tipo_letrero;
 	@JsonProperty("signTypeName")
 	String nombre_tipo_letrero;
-	@JsonProperty("protocol_name")
+	@JsonProperty("protocolName")
 	String protocol_name;
 	@JsonProperty("protocolId")
 	int codificacion;

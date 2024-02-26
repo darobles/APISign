@@ -1,7 +1,6 @@
 package cl.auter.VMSAPI.controller;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -16,12 +15,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.Cabinet;
+import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.security.config.SignMessageViewService;
 import cl.auter.VMSAPI.service.MessageViewService;
+import cl.auter.VMSAPI.service.SequenceViewService;
 import cl.auter.VMSAPI.service.VMSViewService;
 import cl.auter.util.VMSUtils;
 
@@ -36,6 +37,9 @@ public class VMSViewController {
 	
 	@Autowired
 	MessageViewService messageViewService;
+	
+	@Autowired
+	SequenceViewService sequenceViewService;
 	
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -77,10 +81,8 @@ public class VMSViewController {
 	            }
 	        } catch (Exception ex) {
 	            //outputJSON.clear();
-	        }
-	        
-	        return sign;
-		
+	        }	        
+	        return sign;	
 	}
 	
 	@GetMapping("/{id}/message")
@@ -157,4 +159,45 @@ public class VMSViewController {
 			
 		}
 	
+		@GetMapping("/{idSign}/sequence")
+	    public List<SequenceViewModel> getSequence(@PathVariable("idSign") int idSign) {
+			List<SequenceViewModel> sequences = sequenceViewService.findByIdVMS(idSign);	        
+	        return sequences;
+	    }
+
+	    /**
+	     * PUT method for updating or creating an instance of VMSRestSignSequenceList
+	     * @param idSign resource URI parameter
+	     * @param content representation for the resource
+	     */
+	    @PutMapping("/{idSign}/sequence")
+	    public String putJson(@PathVariable("idSign") String idSign, String content) {
+	       /* JSONParser parser     = new JSONParser();
+	        JSONObject inputJSON;
+	        JSONObject outputJSON = new JSONObject();
+
+	        try {
+	            inputJSON = (JSONObject) parser.parse(content);
+
+	            Sequence sequence = new Sequence();
+	            sequence.setName((String) inputJSON.get("name"));
+	            
+	            try {	                
+	                Integer idSequence = dao.addSignSequence(Integer.valueOf(idSign), sequence);
+	                if (idSequence > 0) {
+	                    outputJSON.put("sequenceId", idSequence);
+	                } else {
+	                    outputJSON.put("error", "Sequence could not be created");
+	                }
+	            } catch (Exception ex) {
+	                outputJSON.put("error", ex.toString());
+	            }
+	        } catch (Exception ex) {
+	            outputJSON.put("error", ex.toString());
+	        }
+	        
+	        return outputJSON.toJSONString();*/
+	    	return "";
+	    }
+	    
 }

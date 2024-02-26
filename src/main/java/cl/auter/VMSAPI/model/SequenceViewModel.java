@@ -5,29 +5,25 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-@Table(name = "secuencias")
-public class SequenceEntity {
+@Table(name = "sequence_view")
+public class SequenceViewModel {
 	@Id
 	@Column(name = "id_secuencia")
-	private Integer id;
-	
+	private Integer id;	
 	@Column(name = "id_tipo_letrero")
+	@JsonProperty("signTypeId")
 	private Integer type_sign_id;
-	
 	@Column(name = "nombre")
 	private String name;
-
-	public SequenceEntity() {
+	@Column(name="nombre_tipo_letrero")
+	@JsonProperty("signTypeName")
+	private String sign_type_name;
+	
+	public SequenceViewModel() {
 		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public SequenceEntity(Integer id, Integer type_sign_id, String name) {
-		super();
-		this.id = id;
-		this.type_sign_id = type_sign_id;
-		this.name = name;
 	}
 
 	public Integer getId() {
@@ -54,9 +50,18 @@ public class SequenceEntity {
 		this.name = name;
 	}
 
+	public String getSign_type_name() {
+		return sign_type_name;
+	}
+
+	public void setSign_type_name(String sign_type_name) {
+		this.sign_type_name = sign_type_name;
+	}
+
 	@Override
 	public String toString() {
-		return "SequenceEntity [id=" + id + ", type_sign_id=" + type_sign_id + ", name=" + name + "]";
+		return "SequenceViewModel [id=" + id + ", type_sign_id=" + type_sign_id + ", name=" + name + ", sign_type_name="
+				+ sign_type_name + "]";
 	}
 	
 	
