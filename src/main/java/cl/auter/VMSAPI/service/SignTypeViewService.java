@@ -187,4 +187,12 @@ public class SignTypeViewService implements SignTypeViewRepository{
 		return false;
 	}
 
+	// JPérez 2024.02.22
+	@Override
+	public List<SignTypeViewModel> findAllBySignTypeId(Integer id) {
+		// TODO Auto-generated method stub
+		return signTypeViewRepository.findAllBySignTypeId(id);
+	}
+	
+
 }

@@ -11,17 +11,34 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import cl.auter.VMSAPI.model.view.MessageViewModel;
+import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.util.Constants;
 
 public class MessageImage {
 		
-    private MessageViewModel       message;
-    private List<Symbol>  symbols = new ArrayList<Symbol>();;
-    private       BufferedImage image = null;
-    private       String        customText = null;
-    private Integer       segmentWidth;
+    private MessageViewModel message;
+    private List<Symbol>     symbols = new ArrayList<Symbol>();
+    private BufferedImage    image = null;
+    private String           customText = null;
+    private Integer          segmentWidth;
     
+    // JPérez 2024.02.21 :: Constructor for previewing unattached messages   
+    public MessageImage(SignTypeViewModel signTypeViewModel, Integer alignmentId, Integer colour, Integer spacing, String message) {
+        this.message = new MessageViewModel();
+        this.message.setProtocol(signTypeViewModel.getProtocolId());
+        this.message.setSignTypeHeight(signTypeViewModel.getHeight());
+        this.message.setSignTypeWidth(signTypeViewModel.getWidth());
+        this.message.setGrain(signTypeViewModel.getGrain());
+        this.message.setMaxSymbolHeight(signTypeViewModel.getSymbolMaxHeight());
+        this.message.setLineSpacing(signTypeViewModel.getLineSpacing());
+        //---
+        this.message.setAlignmentId(alignmentId);
+        this.message.setColour(colour);
+        this.message.setMessage(message);
+        this.message.setSpacing(spacing);
+    }
+
     public MessageImage(MessageViewModel messageId) {    	
         this.message = messageId;
     }
@@ -34,7 +51,7 @@ public class MessageImage {
         	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
             System.out.println("test1");
-            build(leftImage,rightImage);
+            build(leftImage, rightImage);
             System.out.println("test2");
         } 
     }
@@ -117,7 +134,7 @@ public class MessageImage {
     }
 
     
-    private void build(SideImage leftImage,SideImage rightImage) {
+    private void build(SideImage leftImage, SideImage rightImage) {
     	System.out.println("12");
         if (this.message != null) {
             int totalWidth  = this.message.getSignTypeWidth();
@@ -187,7 +204,9 @@ public class MessageImage {
             }
 
             // Text
+            System.out.println("text");
             String text  = (this.customText == null) ? this.message.getMessage() : this.customText;
+            System.out.println("text -> " + text);
             String[] lines = text.split(System.lineSeparator());
             int rgb = getRGB();
             for (String line : lines) {
