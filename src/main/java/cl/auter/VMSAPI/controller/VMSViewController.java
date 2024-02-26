@@ -139,7 +139,7 @@ public class VMSViewController {
 			}
 			
 			MessageImage mi = new MessageImage(st.get(0), json.getAlignmentId(), json.getColour(), json.getSpacing(), json.getMessage());
-        	mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simLeft));
+			mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
         	String b64 = mi.getBase64();
             outputJSON.put("mime", "image/bmp");
             outputJSON.put("data", b64); 
