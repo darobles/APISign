@@ -189,4 +189,10 @@ public class MessageService implements MessageRepository{
 	}
 	
 
+	@Override
+	public void deleteByType(Integer type) {
+		// TODO Auto-generated method stub
+		mRepository.deleteByType(type);
+	}
+
 }

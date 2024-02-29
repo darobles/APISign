@@ -187,6 +187,11 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 		return false;
 	}
 	
+	@Override
+	public List<SequenceMessageView> getMessagesSequenceById(int id) {
+		// TODO Auto-generated method stub
+		return sRepository.getMessagesSequenceById(id);
+	}
 	
 	
 

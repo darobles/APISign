@@ -1,14 +1,12 @@
 package cl.auter.VMSAPI.controller;
 
 import java.util.Base64;
-import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.LastImageEntity;
 import cl.auter.VMSAPI.repository.LastImgRepository;
-import cl.auter.util.Util;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController

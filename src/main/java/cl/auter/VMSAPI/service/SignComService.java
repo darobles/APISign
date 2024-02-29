@@ -10,34 +10,34 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.SequenceModel;
-import cl.auter.VMSAPI.repository.SequenceRepository;
+import cl.auter.VMSAPI.model.LetreroComModel;
+import cl.auter.VMSAPI.repository.SignComRepository;
 
 @Service
-public class SequenceService implements SequenceRepository {
+public class SignComService implements SignComRepository{
 	@Autowired
-	SequenceRepository sequenceRepository;
-
+	SignComRepository signComRepository;
+	
 	@Override
-	public List<SequenceModel> findAll() {
-		// TODO Auto-generated method stub
-		return sequenceRepository.findAll();
-	}
-
-	@Override
-	public List<SequenceModel> findAll(Sort sort) {
+	public List<LetreroComModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SequenceModel> findAllById(Iterable<Integer> ids) {
+	public List<LetreroComModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> saveAll(Iterable<S> entities) {
+	public List<LetreroComModel> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends LetreroComModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -49,19 +49,19 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public <S extends SequenceModel> S saveAndFlush(S entity) {
+	public <S extends LetreroComModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends LetreroComModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SequenceModel> entities) {
+	public void deleteAllInBatch(Iterable<LetreroComModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -79,43 +79,43 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public SequenceModel getOne(Integer id) {
+	public LetreroComModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SequenceModel getById(Integer id) {
-		// TODO Auto-generated method stub
-		return sequenceRepository.findById(id).orElse(new SequenceModel());
-	}
-
-	@Override
-	public <S extends SequenceModel> List<S> findAll(Example<S> example) {
+	public LetreroComModel getById(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends LetreroComModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SequenceModel> findAll(Pageable pageable) {
+	public <S extends LetreroComModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> S save(S entity) {
+	public Page<LetreroComModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
-		return sequenceRepository.save(entity);
+		return null;
 	}
 
 	@Override
-	public Optional<SequenceModel> findById(Integer id) {
+	public <S extends LetreroComModel> S save(S entity) {
+		// TODO Auto-generated method stub
+		return signComRepository.save(entity);
+	}
+
+	@Override
+	public Optional<LetreroComModel> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
@@ -139,9 +139,9 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public void delete(SequenceModel entity) {
+	public void delete(LetreroComModel entity) {
 		// TODO Auto-generated method stub
-		sequenceRepository.delete(entity);
+		
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SequenceModel> entities) {
+	public void deleteAll(Iterable<? extends LetreroComModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -163,25 +163,25 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public <S extends SequenceModel> Optional<S> findOne(Example<S> example) {
+	public <S extends LetreroComModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends SequenceModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends LetreroComModel> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> long count(Example<S> example) {
+	public <S extends LetreroComModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SequenceModel> boolean exists(Example<S> example) {
+	public <S extends LetreroComModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}

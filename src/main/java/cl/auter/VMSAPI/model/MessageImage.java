@@ -204,9 +204,7 @@ public class MessageImage {
             }
 
             // Text
-            System.out.println("text");
             String text  = (this.customText == null) ? this.message.getMessage() : this.customText;
-            System.out.println("text -> " + text);
             String[] lines = text.split(System.lineSeparator());
             int rgb = getRGB();
             for (String line : lines) {

@@ -5,15 +5,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "sequence_message_view")
 public class SequenceMessageView {
-	@Id
+	
 	@Column(name = "id_secuencia")
 	private Integer sequence_id;
+	@Id
 	@Column(name = "id_mensaje")
 	private Integer message_id;
 	@Column(name = "nombre_mensaje")
+	@JsonProperty("messageName")
 	private String message_name;
 	@Column(name = "indice")
 	private Integer index;
@@ -49,7 +53,7 @@ public class SequenceMessageView {
 	private Integer type_width_id;
 	@Column(name = "nombre_tipo_ancho")
 	private String type_width_name;
-	@Column(name = "espaciado_tipo_letreto")
+	@Column(name = "espaciado_tipo_letrero")
 	private Integer type_sign_spacing;
 	@Column(name = "grano")
 	private Integer grain;

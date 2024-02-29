@@ -3,11 +3,11 @@ package cl.auter.VMSAPI.controller;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.Cabinet;
+import cl.auter.VMSAPI.model.GrupoModel;
+import cl.auter.VMSAPI.model.LetreroComModel;
 import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
+import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
@@ -29,58 +32,89 @@ import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.security.config.SignMessageViewService;
+import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SequenceViewService;
+import cl.auter.VMSAPI.service.SignComService;
+import cl.auter.VMSAPI.service.SignService;
 import cl.auter.VMSAPI.service.SignTypeViewService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.VMSAPI.service.VMSViewService;
 import cl.auter.util.VMSUtils;
+import cl.auter.VMSAPI.model.VMSResponseEntity;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("/api/sign")
 public class VMSViewController {
 	@Autowired
-	VMSViewService vmsService;
-	
+	VMSViewService vmsService;	
 	@Autowired
 	SignTypeViewService signTypeViewService;
-
 	@Autowired
-	SignMessageViewService signMessageViewService;
-	
+	SignMessageViewService signMessageViewService;	
 	@Autowired
-	MessageViewService messageViewService;
-	
+	MessageViewService messageViewService;	
 	@Autowired
-	SequenceViewService sequenceViewService;
-	
+	MessageService messageService;	
 	@Autowired
-	SymbolService symbolService;
+	SequenceViewService sequenceViewService;	
+	@Autowired
+	SymbolService symbolService;	
+	@Autowired
+	SignService signService;	
+	@Autowired
+	SignComService signComService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
 		List<VMSViewModel> vmsList = vmsService.findAll();
+		for(VMSViewModel sign: vmsList)
+		{
+            if (sign.getCodificacion() == 1) { //Diangming
+                DIANMING  dianming = new DIANMING(sign);
+                dianming.setAddresses(sign.getDireccion());
+                List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
+                //socket.close();
+                List<Cabinet> cabinets = new ArrayList<Cabinet>();
+                int idGabinete = 0;
+                for (DIANMINGInfo cabinet : cabinetsInfo) {
+                	Cabinet cabinetAux = new Cabinet();
+                    idGabinete ++;
+                    cabinetAux.setCabinetId(idGabinete);
+                    cabinetAux.setCabinetName("Cabinet" + VMSUtils.ZeroPad(idGabinete, 2));
+                    cabinetAux.setTemperature(cabinet.getTemperature());
+                    cabinetAux.setVoltage1(cabinet.getVoltage1());
+                    cabinetAux.setVoltage2(cabinet.getVoltage2());
+                    cabinetAux.setDoorSwitch1(cabinet.getDoorSwitch1());
+                    cabinetAux.setDoorSwitch2(cabinet.getDoorSwitch2());
+                    cabinetAux.setBrightness(cabinet.getBrightness());
+                    cabinetAux.setPhotosensitive1(cabinet.getPhotosensitive1());
+                    cabinetAux.setPhotosensitive2(cabinet.getPhotosensitive2());
+                    
+                    cabinets.add(cabinetAux);
+                }
+                sign.setCabinets(cabinets);
+            }
+			
+		}
 		return vmsList;
-		
-		
 	}
 	
 	@GetMapping("/{id}")
 	public VMSViewModel findById(@PathVariable("id") Integer vms_id){
 		VMSViewModel sign = vmsService.findVMSById(vms_id);
-		   try {
-	        	
+		   try {	        	
 	            if (sign.getCodificacion() == 1) { //Diangming
 	                DIANMING  dianming = new DIANMING(sign);
 	                dianming.setAddresses(sign.getDireccion());
 	                List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
 	                //socket.close();
-	                List<Cabinet> cabinets = new ArrayList();
-	                int idGabinete = 0;
+	                List<Cabinet> cabinets = new ArrayList<Cabinet>();
+	                int idGabinete = 1;
 	                for (DIANMINGInfo cabinet : cabinetsInfo) {
 	                	Cabinet cabinetAux = new Cabinet();
-	                    idGabinete ++;
+	                    
 	                    cabinetAux.setCabinetId(idGabinete);
 	                    cabinetAux.setCabinetName("Cabinet" + VMSUtils.ZeroPad(idGabinete, 2));
 	                    cabinetAux.setTemperature(cabinet.getTemperature());
@@ -90,15 +124,15 @@ public class VMSViewController {
 	                    cabinetAux.setDoorSwitch2(cabinet.getDoorSwitch2());
 	                    cabinetAux.setBrightness(cabinet.getBrightness());
 	                    cabinetAux.setPhotosensitive1(cabinet.getPhotosensitive1());
-	                    cabinetAux.setPhotosensitive2(cabinet.getPhotosensitive2());
-	                    
+	                    cabinetAux.setPhotosensitive2(cabinet.getPhotosensitive2());	                    
 	                    cabinets.add(cabinetAux);
+	                    idGabinete ++;
 	                }
 	                sign.setCabinets(cabinets);
 	            }
 	        } catch (Exception ex) {
 	            //outputJSON.clear();
-	        }	        
+	        }	      
 	        return sign;	
 	}
 	
@@ -107,6 +141,13 @@ public class VMSViewController {
 
         List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
         return messages;
+    }
+	
+	@GetMapping("/{id}/groups")
+	public List<GrupoModel> getGroups(@PathVariable("id") int idSign) {
+
+        List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
+        return null;
     }
 	 
 	@PostMapping("/{id}/message")
@@ -189,6 +230,43 @@ public class VMSViewController {
 	        
 	        return outputJSON.toJSONString();*/
 	    	return "";
+	    }
+	    
+	    @PutMapping("/{idSign}")
+	    public ResponseEntity<VMSResponseEntity> editSign(@PathVariable("idSign") Integer id, @RequestBody VMSViewModel vms) {
+	    	VMSResponseEntity response = new VMSResponseEntity();
+	    	System.out.println(vms.toString());
+	    	LetreroComModel letreroCom = new LetreroComModel();
+	    	letreroCom.setId_letrero(vms.getId_letrero());
+	    	letreroCom.setId_conexion(vms.getId_conexion());	    	
+	    	letreroCom.setFono(vms.getFono());
+	    	letreroCom.setClave(vms.getClave());
+	    	letreroCom.setCanal(vms.getCanal());
+	    	letreroCom.setDireccion(vms.getDireccion());
+	    	letreroCom.setPort(vms.getPort());
+	    	letreroCom.setCamara(vms.getCamara());
+	    	System.out.println(letreroCom.toString());
+	    	signComService.save(letreroCom);
+	    	return ResponseEntity.ok(response);
+	    }
+	    
+	    
+	    @DeleteMapping("/{idSign}")
+	    public ResponseEntity<VMSResponseEntity> deleteSign(@PathVariable("idSign") Integer idSign) {
+	    	SignModel sign = signService.getById(idSign);
+	    	VMSResponseEntity response = new VMSResponseEntity();
+	    	if(sign != null) {
+		    	signService.deleteById(sign.getId_letrero());
+		    	messageService.deleteByType(sign.getId_tipo_letrero());
+		    	response.setStatus(200);
+		    	response.setMessage("ok");
+	    	}
+	    	else {
+		    	response.setStatus(501);
+		    	response.setMessage("Id no existe");
+	    	}
+
+	    	return ResponseEntity.ok(response);
 	    }
 	    
 }

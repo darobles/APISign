@@ -1,12 +1,15 @@
 package cl.auter.VMSAPI.model;
 
 
+import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "mensajes")
@@ -16,7 +19,8 @@ public class MessageModel{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@Column(name = "id_tipo_letrero")
-	private Integer type_sign_id;
+	@JsonProperty("type_sign_id")
+	private Integer type;
 	@Column(name = "nombre")
 	private String name;
 	@Column(name = "mensaje")
@@ -40,12 +44,16 @@ public class MessageModel{
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getType_sign_id() {
-		return type_sign_id;
+
+	
+	public Integer getType() {
+		return type;
 	}
-	public void setType_sign_id(Integer type_sign_id) {
-		this.type_sign_id = type_sign_id;
+
+	public void setType(Integer type) {
+		this.type = type;
 	}
+
 	public String getName() {
 		return name;
 	}
@@ -82,13 +90,7 @@ public class MessageModel{
 	public void setFont_color(Integer font_color) {
 		this.font_color = font_color;
 	}
-	@Override
-	public String toString() {
-		return "MessageEntity [id=" + id + ", type_sign_id=" + type_sign_id + ", name=" + name + ", message=" + message
-				+ ", alignment_id=" + alignment_id + ", spacing=" + spacing + ", group_id=" + group_id + ", font_color="
-				+ font_color + "]";
-	}
-	
+
 	
     
 }

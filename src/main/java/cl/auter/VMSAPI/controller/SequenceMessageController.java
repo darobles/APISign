@@ -25,12 +25,12 @@ import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceMessageViewService;
 import cl.auter.util.Constants;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-
+/*
 @RestController
 @RequestMapping("/api/sequence")
 @SecurityRequirement(name = "JWT")
 public class SequenceMessageController {
-	/*
+	
 	@Autowired
 	private SequenceMessageViewService smService;
 	
@@ -229,6 +229,7 @@ public class SequenceMessageController {
         }
         
         return outputJSON.toJSONString();
-    }*/
+    
 	
 }
+}*/

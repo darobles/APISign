@@ -53,8 +53,10 @@ public class VMSViewModel {
 	String camara;
 	@JsonProperty("cameraType")
 	String camera_type;
-	@Transient
+	@Transient	
 	List<Cabinet> cabinets;
+	@JsonProperty("status")
+	int status;
 	
 	public VMSViewModel() {
 		super();
@@ -180,8 +182,6 @@ public class VMSViewModel {
 	public void setCamera_type(String camera_type) {
 		this.camera_type = camera_type;
 	}
-	
-	
 
 	public List<Cabinet> getCabinets() {
 		return cabinets;
@@ -189,6 +189,14 @@ public class VMSViewModel {
 
 	public void setCabinets(List<Cabinet> cabinets) {
 		this.cabinets = cabinets;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override

@@ -10,34 +10,34 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.SequenceModel;
-import cl.auter.VMSAPI.repository.SequenceRepository;
+import cl.auter.VMSAPI.model.SignModel;
+import cl.auter.VMSAPI.repository.SignRepository;
 
 @Service
-public class SequenceService implements SequenceRepository {
+public class SignService implements SignRepository{
 	@Autowired
-	SequenceRepository sequenceRepository;
+	SignRepository signRepository;
 
 	@Override
-	public List<SequenceModel> findAll() {
-		// TODO Auto-generated method stub
-		return sequenceRepository.findAll();
-	}
-
-	@Override
-	public List<SequenceModel> findAll(Sort sort) {
+	public List<SignModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SequenceModel> findAllById(Iterable<Integer> ids) {
+	public List<SignModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> saveAll(Iterable<S> entities) {
+	public List<SignModel> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends SignModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -49,19 +49,19 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public <S extends SequenceModel> S saveAndFlush(S entity) {
+	public <S extends SignModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SignModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SequenceModel> entities) {
+	public void deleteAllInBatch(Iterable<SignModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -79,43 +79,43 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public SequenceModel getOne(Integer id) {
+	public SignModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SequenceModel getById(Integer id) {
+	public SignModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return sequenceRepository.findById(id).orElse(new SequenceModel());
+		return signRepository.getById(id);
 	}
 
 	@Override
-	public <S extends SequenceModel> List<S> findAll(Example<S> example) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public <S extends SequenceModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SignModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SequenceModel> findAll(Pageable pageable) {
+	public <S extends SignModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> S save(S entity) {
+	public Page<SignModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
-		return sequenceRepository.save(entity);
+		return null;
 	}
 
 	@Override
-	public Optional<SequenceModel> findById(Integer id) {
+	public <S extends SignModel> S save(S entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Optional<SignModel> findById(Integer id) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
@@ -135,13 +135,13 @@ public class SequenceService implements SequenceRepository {
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		
+		signRepository.deleteById(id);
 	}
 
 	@Override
-	public void delete(SequenceModel entity) {
+	public void delete(SignModel entity) {
 		// TODO Auto-generated method stub
-		sequenceRepository.delete(entity);
+		
 	}
 
 	@Override
@@ -151,7 +151,7 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SequenceModel> entities) {
+	public void deleteAll(Iterable<? extends SignModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -163,25 +163,25 @@ public class SequenceService implements SequenceRepository {
 	}
 
 	@Override
-	public <S extends SequenceModel> Optional<S> findOne(Example<S> example) {
+	public <S extends SignModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return Optional.empty();
 	}
 
 	@Override
-	public <S extends SequenceModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SignModel> Page<S> findAll(Example<S> example, Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SequenceModel> long count(Example<S> example) {
+	public <S extends SignModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SequenceModel> boolean exists(Example<S> example) {
+	public <S extends SignModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
