@@ -215,7 +215,6 @@ public class VMSViewController {
 	public String getMessageImage(@PathVariable("id") int idSign, @RequestBody MessagePreviewModel json) {
 		JSONObject outputJSON = new JSONObject();
 		try {
-			MessagePreviewModel     mp       = new MessagePreviewModel();
 			SideImageModel          simLeft  = null;
 			SideImageModel          simRight = null;
 			String                  message  = json.getMessage();
