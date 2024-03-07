@@ -10,10 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "sequence_message_view")
 public class SequenceMessageView {
-	
-	@Column(name = "id_secuencia")
-	private Integer sequence_id;
 	@Id
+	@Column(name = "id")
+	private Integer id;
+	@Column(name = "id_secuencia")
+	private Integer sequence_id;	
 	@Column(name = "id_mensaje")
 	private Integer message_id;
 	@Column(name = "nombre_mensaje")
@@ -73,41 +74,12 @@ public class SequenceMessageView {
 		// TODO Auto-generated constructor stub
 	}
 
-	public SequenceMessageView(Integer sequence_id, Integer message_id, String message_name, Integer index,
-			Integer time, Integer coding, String message, Integer alignment_id, String name_alignment, Integer spacing,
-			Integer font_color, Integer type_sign_id, String type_sign_name, Integer type_sign_height,
-			Integer type_sign_whidth, Integer lines_spacing, Integer maximum_symbol_height,
-			Integer maximum_symbol_whidth, Integer type_width_id, String type_width_name, Integer type_sign_spacing,
-			Integer grain, Integer group_id, String group_name, String description, Integer maximum_height,
-			Integer group_whidth) {
-		super();
-		this.sequence_id = sequence_id;
-		this.message_id = message_id;
-		this.message_name = message_name;
-		this.index = index;
-		this.time = time;
-		this.coding = coding;
-		this.message = message;
-		this.alignment_id = alignment_id;
-		this.name_alignment = name_alignment;
-		this.spacing = spacing;
-		this.font_color = font_color;
-		this.type_sign_id = type_sign_id;
-		this.type_sign_name = type_sign_name;
-		this.type_sign_height = type_sign_height;
-		this.type_sign_whidth = type_sign_whidth;
-		this.lines_spacing = lines_spacing;
-		this.maximum_symbol_height = maximum_symbol_height;
-		this.maximum_symbol_whidth = maximum_symbol_whidth;
-		this.type_width_id = type_width_id;
-		this.type_width_name = type_width_name;
-		this.type_sign_spacing = type_sign_spacing;
-		this.grain = grain;
-		this.group_id = group_id;
-		this.group_name = group_name;
-		this.description = description;
-		this.maximum_height = maximum_height;
-		this.group_whidth = group_whidth;
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Integer getSequence_id() {
@@ -328,17 +300,20 @@ public class SequenceMessageView {
 
 	@Override
 	public String toString() {
-		return "SequenceMessageView [sequence_id=" + sequence_id + ", message_id=" + message_id + ", message_name="
-				+ message_name + ", index=" + index + ", time=" + time + ", coding=" + coding + ", message=" + message
-				+ ", alignment_id=" + alignment_id + ", name_alignment=" + name_alignment + ", spacing=" + spacing
-				+ ", font_color=" + font_color + ", type_sign_id=" + type_sign_id + ", type_sign_name=" + type_sign_name
-				+ ", type_sign_height=" + type_sign_height + ", type_sign_whidth=" + type_sign_whidth
-				+ ", lines_spacing=" + lines_spacing + ", maximum_symbol_height=" + maximum_symbol_height
-				+ ", maximum_symbol_whidth=" + maximum_symbol_whidth + ", type_width_id=" + type_width_id
-				+ ", type_width_name=" + type_width_name + ", type_sign_spacing=" + type_sign_spacing + ", grain="
-				+ grain + ", group_id=" + group_id + ", group_name=" + group_name + ", description=" + description
-				+ ", maximum_height=" + maximum_height + ", group_whidth=" + group_whidth + "]";
+		return "SequenceMessageView [id=" + id + ", sequence_id=" + sequence_id + ", message_id=" + message_id
+				+ ", message_name=" + message_name + ", index=" + index + ", time=" + time + ", coding=" + coding
+				+ ", message=" + message + ", alignment_id=" + alignment_id + ", name_alignment=" + name_alignment
+				+ ", spacing=" + spacing + ", font_color=" + font_color + ", type_sign_id=" + type_sign_id
+				+ ", type_sign_name=" + type_sign_name + ", type_sign_height=" + type_sign_height
+				+ ", type_sign_whidth=" + type_sign_whidth + ", lines_spacing=" + lines_spacing
+				+ ", maximum_symbol_height=" + maximum_symbol_height + ", maximum_symbol_whidth="
+				+ maximum_symbol_whidth + ", type_width_id=" + type_width_id + ", type_width_name=" + type_width_name
+				+ ", type_sign_spacing=" + type_sign_spacing + ", grain=" + grain + ", group_id=" + group_id
+				+ ", group_name=" + group_name + ", description=" + description + ", maximum_height=" + maximum_height
+				+ ", group_whidth=" + group_whidth + "]";
 	}
+
+
 	
 	
 	

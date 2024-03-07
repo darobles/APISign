@@ -1,6 +1,8 @@
 package cl.auter.VMSAPI.model;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -8,6 +10,8 @@ import javax.persistence.Table;
 @Table(name = "mensaje_imagen")
 public class SideImageModel {
 	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	Integer id;
 	Integer id_mensaje;
 	Integer ubicacion_hrz;
 	Integer ubicacion_vrt;
@@ -17,6 +21,16 @@ public class SideImageModel {
 	public SideImageModel() {
 		super();
 	}
+	
+	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 
 	public Integer getId_mensaje() {
 		return id_mensaje;
@@ -58,10 +72,12 @@ public class SideImageModel {
 		this.imagen_b64 = imagen_b64;
 	}
 
+
 	@Override
 	public String toString() {
-		return "SideImageModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz + ", ubicacion_vrt="
-				+ ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64 + "]";
+		return "SideImageModel [id=" + id + ", id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz
+				+ ", ubicacion_vrt=" + ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64
+				+ "]";
 	}
-
+	
 }

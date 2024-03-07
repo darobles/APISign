@@ -49,8 +49,10 @@ public class VMSViewModel {
 	int direccion;
 	@JsonProperty("port")
 	int port;
-	@JsonProperty("camera")
+	@JsonProperty("cameraName")
 	String camara;
+	@JsonProperty("cameraId")
+	int id_camara;
 	@JsonProperty("cameraType")
 	String camera_type;
 	@Transient	
@@ -168,11 +170,13 @@ public class VMSViewModel {
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public String getCamara() {
-		return camara;
+	
+	public int getId_camara() {
+		return id_camara;
 	}
-	public void setCamara(String camara) {
-		this.camara = camara;
+
+	public void setId_camara(int id_camara) {
+		this.id_camara = id_camara;
 	}
 
 	public String getCamera_type() {
@@ -181,6 +185,13 @@ public class VMSViewModel {
 
 	public void setCamera_type(String camera_type) {
 		this.camera_type = camera_type;
+	}
+	public String getCamara() {
+		return camara;
+	}
+
+	public void setCamara(String camara) {
+		this.camara = camara;
 	}
 
 	public List<Cabinet> getCabinets() {
@@ -203,11 +214,13 @@ public class VMSViewModel {
 	public String toString() {
 		return "VMSViewModel [id_letrero=" + id_letrero + ", nombre=" + nombre + ", ubicacion=" + ubicacion
 				+ ", latitud=" + latitud + ", longitud=" + longitud + ", id_tipo_letrero=" + id_tipo_letrero
-				+ ", nombre_tipo_letrero=" + nombre_tipo_letrero + ", codificacion=" + codificacion + ", obs=" + obs
-				+ ", id_conexion=" + id_conexion + ", nombre_conexion=" + nombre_conexion + ", fono=" + fono
-				+ ", clave=" + clave + ", canal=" + canal + ", direccion=" + direccion + ", port=" + port + ", camara="
-				+ camara + ", camara_type=" + camera_type + "]";
+				+ ", nombre_tipo_letrero=" + nombre_tipo_letrero + ", protocol_name=" + protocol_name
+				+ ", codificacion=" + codificacion + ", obs=" + obs + ", id_conexion=" + id_conexion
+				+ ", nombre_conexion=" + nombre_conexion + ", fono=" + fono + ", clave=" + clave + ", canal=" + canal
+				+ ", direccion=" + direccion + ", port=" + port + ", id_camara=" + id_camara + ", camara=" + camara
+				+ ", camera_type=" + camera_type + ", cabinets=" + cabinets + ", status=" + status + "]";
 	}
+
 	
 	
 }

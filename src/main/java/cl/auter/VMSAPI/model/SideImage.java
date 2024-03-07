@@ -49,6 +49,9 @@ public class SideImage {
     }
 
     public String getImageB64() {
+    	if(imageB64 == null) {
+        	return "";
+        }
         return imageB64;
     }
 

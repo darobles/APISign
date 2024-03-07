@@ -102,13 +102,18 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/api/sign/*", configuration);
 		source.registerCorsConfiguration("/api/sign/*/message", configuration);
 		source.registerCorsConfiguration("/api/sign/*/sequence", configuration);
+		source.registerCorsConfiguration("/api/sign/*/group", configuration);
+		source.registerCorsConfiguration("/api/sign/*/brightness", configuration);
+		source.registerCorsConfiguration("/api/sign/*/brightness/*", configuration);
 		source.registerCorsConfiguration("/api/users", configuration);
 		source.registerCorsConfiguration("/api/users/*", configuration);
 		source.registerCorsConfiguration("/api/cameraType", configuration);
 		source.registerCorsConfiguration("/api/message/*", configuration);
 		source.registerCorsConfiguration("/api/message/*/image", configuration);
+		source.registerCorsConfiguration("/api/message/*/image/*", configuration);
 		source.registerCorsConfiguration("/api/last-images/*", configuration);
 		source.registerCorsConfiguration("/api/maintenances", configuration); //http://localhost:8080/api/sign/21/message
+		
 		
 		//api/sign/23/sequence
 		return source;

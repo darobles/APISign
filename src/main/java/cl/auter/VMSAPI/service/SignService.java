@@ -111,7 +111,7 @@ public class SignService implements SignRepository{
 	@Override
 	public <S extends SignModel> S save(S entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return signRepository.save(entity);
 	}
 
 	@Override

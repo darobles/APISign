@@ -1,6 +1,9 @@
 package cl.auter.VMSAPI.controller;
 
 import java.util.List;
+
+import javax.json.JsonObject;
+
 import java.util.ArrayList;
 
 import org.json.JSONObject;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.auter.VMSAPI.model.BrightnessEntity;
 import cl.auter.VMSAPI.model.Cabinet;
 import cl.auter.VMSAPI.model.GrupoModel;
 import cl.auter.VMSAPI.model.LetreroComModel;
@@ -31,15 +35,17 @@ import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
-import cl.auter.VMSAPI.security.config.SignMessageViewService;
+import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SequenceViewService;
 import cl.auter.VMSAPI.service.SignComService;
+import cl.auter.VMSAPI.service.SignMessageViewService;
 import cl.auter.VMSAPI.service.SignService;
 import cl.auter.VMSAPI.service.SignTypeViewService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.VMSAPI.service.VMSViewService;
+import cl.auter.util.Constants;
 import cl.auter.util.VMSUtils;
 import cl.auter.VMSAPI.model.VMSResponseEntity;
 
@@ -65,6 +71,8 @@ public class VMSViewController {
 	SignService signService;	
 	@Autowired
 	SignComService signComService;
+	@Autowired
+	GroupService groupService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -146,8 +154,61 @@ public class VMSViewController {
 	@GetMapping("/{id}/groups")
 	public List<GrupoModel> getGroups(@PathVariable("id") int idSign) {
 
-        List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
-        return null;
+        //List<GrupoModel> messages = groupService.findAllById(idSign);
+        return new ArrayList();
+    }
+	
+	@GetMapping("/{id}/brightness")
+	public BrightnessEntity getBrightness(@PathVariable("id") int idSign) {
+
+        //List<GrupoModel> messages = groupService.findAllById(idSign);
+		BrightnessEntity demo = new BrightnessEntity();
+		demo.setAutomatic(false);
+		demo.setValue(45);
+        return demo;
+    }
+	
+	@PutMapping("/{id}/brightness/{value}")
+	public VMSResponseEntity updateBrightness(@PathVariable("id") int idSign,@PathVariable("id") String brightnessValue) {
+
+		VMSResponseEntity response  = new VMSResponseEntity();
+		response.setStatus(500);
+        try {
+            if ((brightnessValue.compareToIgnoreCase("FF") == 0) || (brightnessValue.compareToIgnoreCase("AUTO") == 0)) {
+                brightnessValue = "255";
+            }
+            VMSViewModel sign = vmsService.getById(idSign);
+            
+            if (sign.getCodificacion() == Constants.ID_DIANMING) {
+                Integer brightness = Integer.valueOf(brightnessValue);
+                if (((brightness < 0) || (brightness >= 32)) && (brightness != 255)) {
+                	response.setMessage("Brightness value out of range");
+                }
+            
+                if (response.getMessage().equals("")) {
+                	Thread t1 = new Thread(new Runnable() {
+                	    @Override
+                	    public void run() {
+                            DIANMING dianming = new DIANMING(sign);
+                            dianming.setBrightness(brightness);
+                	    }
+                	});  
+                	t1.start();
+
+                }
+            } else {
+            	response.setMessage("VMS is not DIANMING (protocol: " + sign.getProtocol_name() + ")");
+            }           
+            
+        } catch (Exception ex) {
+        	response.setMessage(ex.toString());
+        }
+        
+        if (response.getMessage().equals("")) {
+        	response.setMessage("success");
+        	response.setStatus(200);
+        }
+        return response;
     }
 	 
 	@PostMapping("/{id}/message")
@@ -244,9 +305,17 @@ public class VMSViewController {
 	    	letreroCom.setCanal(vms.getCanal());
 	    	letreroCom.setDireccion(vms.getDireccion());
 	    	letreroCom.setPort(vms.getPort());
-	    	letreroCom.setCamara(vms.getCamara());
-	    	System.out.println(letreroCom.toString());
+	    	letreroCom.setId_camara(vms.getId_camara());
 	    	signComService.save(letreroCom);
+	    	SignModel sign = new SignModel();
+	    	sign.setId_letrero(vms.getId_letrero());
+	    	sign.setId_tipo_letrero(vms.getId_tipo_letrero());
+	    	sign.setUbicacion(vms.getUbicacion());
+	    	sign.setLatitud(vms.getLatitud());
+	    	sign.setLongitud(vms.getLongitud());
+	    	sign.setNombre(vms.getNombre());
+	    	sign.setObs(vms.getObs());
+	    	signService.save(sign);
 	    	return ResponseEntity.ok(response);
 	    }
 	    

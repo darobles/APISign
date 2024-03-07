@@ -72,6 +72,12 @@ public class MessageViewModel {
 
 
 
+	public Integer side() {
+		return id;
+	}
+
+
+
 	public void setId(Integer id) {
 		this.id = id;
 	}

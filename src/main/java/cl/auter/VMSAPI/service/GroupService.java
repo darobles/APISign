@@ -186,5 +186,10 @@ public class GroupService implements GroupRepository{
 		// TODO Auto-generated method stub
 		return false;
 	}
+	
+	/*@Override
+	public List<GrupoModel> findAllById(int id){
+		return groupRepository.findById(null)
+	}*/
 
 }

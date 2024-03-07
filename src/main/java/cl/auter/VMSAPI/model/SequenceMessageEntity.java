@@ -11,11 +11,13 @@ import javax.persistence.Table;
 @Table(name = "mensaje_secuencia")
 public class SequenceMessageEntity {
 	@Id
-	@Column(name = "id_secuencia")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "id")
 	private Integer id;
+	@Column(name = "id_secuencia")
+	private Integer sequence_id;
 	@Column(name = "indice")
-    private Integer index;
+    private Integer order;
 	@Column(name = "tiempo")
     private Integer time;
 	@Column(name = "id_mensaje")
@@ -29,7 +31,7 @@ public class SequenceMessageEntity {
 	public SequenceMessageEntity(Integer id, Integer index, Integer time, Integer message_id) {
 		super();
 		this.id = id;
-		this.index = index;
+		this.order = index;
 		this.time = time;
 		this.message_id = message_id;
 	
@@ -38,22 +40,35 @@ public class SequenceMessageEntity {
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public Integer getIndex() {
-		return index;
+
+	public Integer getSequence_id() {
+		return sequence_id;
 	}
-	public void setIndex(Integer index) {
-		this.index = index;
+
+	public void setSequence_id(Integer sequence_id) {
+		this.sequence_id = sequence_id;
 	}
+
+	public Integer getOrder() {
+		return order;
+	}
+
+	public void setOrder(Integer order) {
+		this.order = order;
+	}
+
 	public Integer getTime() {
 		return time;
 	}
+
 	public void setTime(Integer time) {
 		this.time = time;
-	}		
-	
+	}
+
 	public Integer getMessage_id() {
 		return message_id;
 	}
@@ -64,9 +79,8 @@ public class SequenceMessageEntity {
 
 	@Override
 	public String toString() {
-		return "SequenceMessageEntity [id=" + id + ", index=" + index + ", time=" + time + ", message_id=" + message_id
-				+ "]";
-	}	
-    
-    
+		return "SequenceMessageEntity [id=" + id + ", sequence_id=" + sequence_id + ", order=" + order + ", time="
+				+ time + ", message_id=" + message_id + "]";
+	}
+
 }

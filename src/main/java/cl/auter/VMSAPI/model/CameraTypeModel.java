@@ -1,7 +1,10 @@
 package cl.auter.VMSAPI.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class CameraTypeModel {
-	int id;
+	int id;	
+	@JsonProperty("name")
 	String nombre;
 	
 	public CameraTypeModel() {

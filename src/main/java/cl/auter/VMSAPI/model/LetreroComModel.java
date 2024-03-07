@@ -15,7 +15,7 @@ public class LetreroComModel {
 	String canal;
 	int direccion;
 	int port;
-	String camara;
+	int id_camara;
 	
 	
 	
@@ -65,18 +65,19 @@ public class LetreroComModel {
 	public void setPort(int port) {
 		this.port = port;
 	}
-	public String getCamara() {
-		return camara;
+	public int getId_camara() {
+		return id_camara;
 	}
-	public void setCamara(String camara) {
-		this.camara = camara;
+	public void setId_camara(int id_camara) {
+		this.id_camara = id_camara;
 	}
 	@Override
 	public String toString() {
 		return "LetreroComModel [id_letrero=" + id_letrero + ", id_conexion=" + id_conexion + ", fono=" + fono
-				+ ", clave=" + clave + ", canal=" + canal + ", direccion=" + direccion + ", port=" + port + ", camara="
-				+ camara + "]";
+				+ ", clave=" + clave + ", canal=" + canal + ", direccion=" + direccion + ", port=" + port
+				+ ", id_camara=" + id_camara + "]";
 	}
+	
 	
 	
 	

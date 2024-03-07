@@ -137,7 +137,7 @@ public class MessageService implements MessageRepository{
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		
+		mRepository.deleteById(id);
 	}
 
 	@Override

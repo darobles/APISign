@@ -1,4 +1,4 @@
-package cl.auter.VMSAPI.security.config;
+package cl.auter.VMSAPI.service;
 
 import java.util.List;
 import java.util.Optional;

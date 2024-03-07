@@ -13,7 +13,7 @@ public class SequenceModel {
 	@Id
 	@Column(name = "id_secuencia")
 	private Integer id;	
-	@Column(name = "id_tipo_letrero")
+	@Column(name = "id_letrero")
 	private Integer type_sign_id;
 	@Column(name = "nombre")
 	private String name;

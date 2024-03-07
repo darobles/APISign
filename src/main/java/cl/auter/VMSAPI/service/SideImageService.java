@@ -112,7 +112,7 @@ public class SideImageService implements SideImageRepository{
 	@Override
 	public <S extends SideImageModel> S save(S entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return sideImageRepository.save(entity);
 	}
 
 	@Override
@@ -190,6 +190,12 @@ public class SideImageService implements SideImageRepository{
 	@Override
 	public SideImageModel getSideImage(int message_id, int side) {
 		return sideImageRepository.getSideImage(message_id, side);
+	}
+
+	@Override
+	public void updateImage(String image, Integer ubicacion_vrt, Integer id_mensaje, Integer ubicacion_hrz) {
+		// TODO Auto-generated method stub
+		sideImageRepository.updateImage(image,ubicacion_vrt,id_mensaje,ubicacion_hrz);
 	}
 	
 
