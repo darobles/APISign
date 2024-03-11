@@ -210,46 +210,7 @@ public class VMSViewController {
         }
         return response;
     }
-	 
-	@PostMapping("/{id}/message")
-	public String getMessageImage(@PathVariable("id") int idSign, @RequestBody MessagePreviewModel json) {
-		JSONObject outputJSON = new JSONObject();
-		try {
-			SideImageModel          simLeft  = null;
-			SideImageModel          simRight = null;
-			String                  message  = json.getMessage();
-			VMSViewModel            vms      = vmsService.getById(idSign);
-			List<SignTypeViewModel> st       = signTypeViewService.findAllBySignTypeId(vms.getId_tipo_letrero());
-			
-			if ((st == null) || st.isEmpty()) {
-				throw new Exception("No sign type defined for the given VMS");
-			}
-			
-			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(json.getGroupId(), VMSUtils.CharsAsStringList(message));
-			if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
-				simLeft = new SideImageModel();
-				simLeft.setUbicacion_hrz(0);
-				simLeft.setUbicacion_vrt(json.getVerticalAlign_left());
-				simLeft.setImagen_b64(json.getImageB64_left());
-			}
-			if ((json.getImageB64_right() != null) && (json.getVerticalAlign_right() != null)) {
-				simRight = new SideImageModel();
-				simRight.setUbicacion_hrz(1);
-				simRight.setUbicacion_vrt(json.getVerticalAlign_right());
-				simRight.setImagen_b64(json.getImageB64_right());
-			}
-			
-			MessageImage mi = new MessageImage(st.get(0), json.getAlignmentId(), json.getColour(), json.getSpacing(), json.getMessage());
-			mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
-        	String b64 = mi.getBase64();
-            outputJSON.put("mime", "image/bmp");
-            outputJSON.put("data", b64); 
-        } catch (Exception ex) {
-            outputJSON.put("error", ex.toString());
-        }
-        return outputJSON.toString();
-	}
-	
+	 	
 	
 		@GetMapping("/{idSign}/sequence")
 	    public List<SequenceViewModel> getSequence(@PathVariable("idSign") int idSign) {

@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.MessageModel;
+import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -21,12 +23,13 @@ import cl.auter.VMSAPI.model.SideImageMessageEntity;
 import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
+import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SideImageService;
+import cl.auter.VMSAPI.service.SignTypeViewService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.VMSUtils;
-import cl.auter.VMSAPI.model.ImageEntity;
 import cl.auter.VMSAPI.model.MessageImage;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -41,6 +44,8 @@ public class MessageController {
 	SymbolService symbolService;
 	@Autowired
 	SideImageService sideImageService;
+	@Autowired
+	SignTypeViewService signTypeViewService;
 
 	@GetMapping("")
 	public List<MessageModel> findAll(){
@@ -76,15 +81,68 @@ public class MessageController {
 
 	}
 	
+	@PostMapping("/{id}/image")
+	public String getMessageImage(@PathVariable("id") int id_message, @RequestBody MessagePreviewModel json) {
+		JSONObject outputJSON = new JSONObject();
+		try {
+			SideImageModel          simLeft  = null;
+			SideImageModel          simRight = null;
+			String                  message  = json.getMessage();
+			MessageModel            messageModel      = messageService.getById(id_message);
+			List<SignTypeViewModel> st       = signTypeViewService.findAllBySignTypeId(messageModel.getType());
+			
+			if ((st == null) || st.isEmpty()) {
+				throw new Exception("No sign type defined for the given VMS");
+			}
+			
+			if(json.getGroupId() != null)
+				messageModel.setGroup_id(json.getGroupId());
+			if(json.getColour() != null)
+				messageModel.setFont_color(json.getColour());
+			if(json.getSpacing() != null)
+				messageModel.setSpacing(json.getSpacing());
+			if(json.getMessage() != null)
+			{
+				messageModel.setMessage(json.getMessage());
+			}
+			
+			
+			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
+			if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
+				simLeft = new SideImageModel();
+				simLeft.setUbicacion_hrz(0);
+				simLeft.setUbicacion_vrt(json.getVerticalAlign_left());
+				simLeft.setImagen_b64(json.getImageB64_left());
+			}
+			if ((json.getImageB64_right() != null) && (json.getVerticalAlign_right() != null)) {
+				simRight = new SideImageModel();
+				simRight.setUbicacion_hrz(1);
+				simRight.setUbicacion_vrt(json.getVerticalAlign_right());
+				simRight.setImagen_b64(json.getImageB64_right());
+			}
+			
+			MessageImage mi = new MessageImage(st.get(0), messageModel.getAlignment_id(), messageModel.getFont_color(), messageModel.getSpacing(), messageModel.getMessage());
+			mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+        	String b64 = mi.getBase64();
+            outputJSON.put("mime", "image/bmp");
+            outputJSON.put("data", b64); 
+        } catch (Exception ex) {
+            outputJSON.put("error", ex.toString());
+        }
+        return outputJSON.toString();
+	}
+	
 	@GetMapping("/{message_id}/image/{side}")
 	public String  findImageLeft(@PathVariable int message_id,@PathVariable int side){
 		JSONObject outputJSON = new JSONObject();
         try {
         	MessageViewModel messageViewModel = messageViewService.getById(message_id);
-        	SideImage image  = new SideImage(sideImageService.getSideImage(messageViewModel.getId(), side));
+        	SideImageModel imageModel = sideImageService.getSideImage(messageViewModel.getId(),side);
+        	SideImage image  = new SideImage(imageModel);
         	String b64 = image.getImageB64();
             outputJSON.put("mime", "image/bmp");
             outputJSON.put("data", b64);
+            outputJSON.put("id", imageModel.getId());
         } catch (Exception ex) {
             outputJSON.put("error", ex.toString());
         }
@@ -94,18 +152,31 @@ public class MessageController {
 	@PutMapping("/{message_id}/image/{side}")
 	public VMSResponseEntity  deleteImageMessage(@PathVariable int message_id,@PathVariable int side,@RequestBody SideImageMessageEntity json){
 		VMSResponseEntity response = new VMSResponseEntity();
+		if(json.getData() == null || json.getData().equals(""))
+		{
+			sideImageService.deleteById(json.getId());
+			response.setStatus(200);
+			response.setMessage("ok");
+			return response;
+		}
 		SideImageModel image  = sideImageService.getSideImage(message_id, side);
 		if(image == null)
 		{
 			image = new SideImageModel();
+			
 		}
+		System.out.println(json);
 		image.setId_mensaje(message_id);
 		image.setId_usuario(json.getUserId());
 		image.setUbicacion_hrz(side);
 		image.setImagen_b64(json.getData());
 		image.setUbicacion_vrt(json.getLocation());
 		image.setId(json.getId());
+		System.out.println(image.toString());
 		sideImageService.save(image);
+		
+		
+
 		//sideImageService.updateImage(image.getImagen_b64(),image.getUbicacion_vrt(),image.getId_mensaje(),image.getUbicacion_hrz());
 		response.setStatus(200);
 		response.setMessage("ok");

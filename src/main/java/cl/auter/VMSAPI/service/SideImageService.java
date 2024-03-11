@@ -136,7 +136,7 @@ public class SideImageService implements SideImageRepository{
 	@Override
 	public void deleteById(Integer id) {
 		// TODO Auto-generated method stub
-		
+		sideImageRepository.deleteById(id);
 	}
 
 	@Override

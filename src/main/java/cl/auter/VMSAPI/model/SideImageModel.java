@@ -79,5 +79,5 @@ public class SideImageModel {
 				+ ", ubicacion_vrt=" + ubicacion_vrt + ", id_usuario=" + id_usuario + ", imagen_b64=" + imagen_b64
 				+ "]";
 	}
-	
+
 }

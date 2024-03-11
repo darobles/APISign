@@ -134,7 +134,6 @@ public class MessageImage {
 
     
     private void build(SideImage leftImage, SideImage rightImage) {
-    	System.out.println("12");
         if (this.message != null) {
             int totalWidth  = this.message.getSignTypeWidth();
             int totalHeight = this.message.getSignTypeHeight();
@@ -154,34 +153,32 @@ public class MessageImage {
                     this.image.setRGB(i, j, 0x000000);
                 }
             }
-            System.out.println("12366");
             // Side images
             if (! oldProtocol()) {
-            	System.out.println("left");
                 if (leftImage.getImage() != null) {
                     int imageWidth  = leftImage.getImage().getWidth();
                     int imageHeight = leftImage.getImage().getHeight();
                     int offsetImgX  = 0;
                     int offsetImgY  = 0;
-
                     width -= imageWidth;
                     if (leftImage.getVerticalAlign() == 1) {
                         offsetImgY = (totalHeight - imageHeight) / 2;
                     } else if (leftImage.getVerticalAlign() == 2) {
                         offsetImgY = totalHeight - imageHeight;
                     }
-
-                    for (int i = 0; i < imageWidth; i ++) {
-                        for (int j = 0; j < imageHeight; j ++) {
-                            this.image.setRGB(offsetImgX + i, offsetImgY + j, leftImage.getImage().getRGB(i, j));
+                    System.out.println(" imageWidth: " + imageWidth + " imageHeight: " + imageHeight + " offsetImgX: " + offsetImgX + " offsetImgY " + offsetImgY);
+                    for (int i = 0; i < leftImage.getImage().getWidth(); i ++) {
+                        for (int j = 0; j < leftImage.getImage().getHeight(); j ++) {
+                        	if ((offsetImgX + i < this.image.getWidth()) && (offsetImgY + j < this.image.getHeight())) {
+                        		this.image.setRGB(offsetImgX + i, offsetImgY + j, leftImage.getImage().getRGB(i, j));
+                        	}
+                            
                         }
                     }
-
                     offsetX = leftImage.getImage().getWidth();  // Message space begins to the right side of this image
                 }
 
                 if (rightImage.getImage() != null) {
-                	System.out.println("right");
                     int imageWidth  = rightImage.getImage().getWidth();
                     int imageHeight = rightImage.getImage().getHeight();
                     int offsetImgX  = totalWidth - imageWidth;
@@ -196,7 +193,9 @@ public class MessageImage {
 
                     for (int i = 0; i < imageWidth; i ++) {
                         for (int j = 0; j < imageHeight; j ++) {
-                            this.image.setRGB(offsetImgX + i, offsetImgY + j, rightImage.getImage().getRGB(i, j));
+                        	if ((offsetImgX + i < this.image.getWidth()) && (offsetImgY + j < this.image.getHeight())) {
+                        		this.image.setRGB(offsetImgX + i, offsetImgY + j, rightImage.getImage().getRGB(i, j));
+                        	}
                         }
                     }
                 }
