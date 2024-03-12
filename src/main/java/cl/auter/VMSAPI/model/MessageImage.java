@@ -169,7 +169,7 @@ public class MessageImage {
                     System.out.println(" imageWidth: " + imageWidth + " imageHeight: " + imageHeight + " offsetImgX: " + offsetImgX + " offsetImgY " + offsetImgY);
                     for (int i = 0; i < leftImage.getImage().getWidth(); i ++) {
                         for (int j = 0; j < leftImage.getImage().getHeight(); j ++) {
-                        	if ((offsetImgX + i < this.image.getWidth()) && (offsetImgY + j < this.image.getHeight())) {
+                        	if ((offsetImgX + i >= 0) && (offsetImgX + i < this.image.getWidth()) && (offsetImgY + j >= 0) && (offsetImgY + j < this.image.getHeight())) {
                         		this.image.setRGB(offsetImgX + i, offsetImgY + j, leftImage.getImage().getRGB(i, j));
                         	}
                             
@@ -193,7 +193,7 @@ public class MessageImage {
 
                     for (int i = 0; i < imageWidth; i ++) {
                         for (int j = 0; j < imageHeight; j ++) {
-                        	if ((offsetImgX + i < this.image.getWidth()) && (offsetImgY + j < this.image.getHeight())) {
+                        	if ((offsetImgX + i >= 0) && (offsetImgX + i < this.image.getWidth()) && (offsetImgY + j >= 0) && (offsetImgY + j < this.image.getHeight())) {
                         		this.image.setRGB(offsetImgX + i, offsetImgY + j, rightImage.getImage().getRGB(i, j));
                         	}
                         }
