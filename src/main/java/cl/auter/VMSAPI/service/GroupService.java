@@ -22,7 +22,7 @@ public class GroupService implements GroupRepository{
 	@Override
 	public List<GrupoModel> findAll() {
 		// TODO Auto-generated method stub
-		return null;
+		return groupRepository.findAll();
 	}
 
 	@Override
@@ -187,9 +187,5 @@ public class GroupService implements GroupRepository{
 		return false;
 	}
 	
-	/*@Override
-	public List<GrupoModel> findAllById(int id){
-		return groupRepository.findById(null)
-	}*/
 
 }

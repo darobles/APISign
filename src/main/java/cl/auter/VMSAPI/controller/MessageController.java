@@ -24,12 +24,15 @@ import cl.auter.VMSAPI.model.SymbolModel;
 import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
+import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SignTypeViewService;
 import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.util.VMSUtils;
+import cl.auter.VMSAPI.model.GrupoModel;
+import cl.auter.VMSAPI.model.MensajeModel;
 import cl.auter.VMSAPI.model.MessageImage;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -46,6 +49,8 @@ public class MessageController {
 	SideImageService sideImageService;
 	@Autowired
 	SignTypeViewService signTypeViewService;
+	@Autowired
+	GroupService groupService;
 
 	@GetMapping("")
 	public List<MessageModel> findAll(){
@@ -58,6 +63,21 @@ public class MessageController {
 	public MessageModel findById(@PathVariable int id){
 		MessageModel message = messageService.getById(id);
 		return message;		
+		
+	}
+	
+	@GetMapping("/{id}/group")
+	public GrupoModel findGroupByMessageId(@PathVariable int id){
+		GrupoModel group = groupService.getById(id);
+		return group;		
+		
+	}
+	
+	@PostMapping("")
+	public VMSResponseEntity createMessage(@RequestBody MensajeModel message ) {
+		
+		System.out.println(message.toString());
+		return null;
 		
 	}
 	
@@ -165,7 +185,6 @@ public class MessageController {
 			image = new SideImageModel();
 			
 		}
-		System.out.println(json);
 		image.setId_mensaje(message_id);
 		image.setId_usuario(json.getUserId());
 		image.setUbicacion_hrz(side);
@@ -193,5 +212,7 @@ public class MessageController {
 		return response;	
 	
 	}
+	
+	
 
 }

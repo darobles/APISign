@@ -2,7 +2,6 @@ package cl.auter.VMSAPI.controller;
 
 import java.util.List;
 
-import javax.json.JsonObject;
 
 import java.util.ArrayList;
 
@@ -151,10 +150,10 @@ public class VMSViewController {
         return messages;
     }
 	
-	@GetMapping("/{id}/groups")
+	@GetMapping("/{id}/group")
 	public List<GrupoModel> getGroups(@PathVariable("id") int idSign) {
-
-        //List<GrupoModel> messages = groupService.findAllById(idSign);
+		//VMSViewModel vms = signMessageViewService.getById(idSign);
+       // List<GrupoModel> messages = groupService.getById(idSign);
         return new ArrayList();
     }
 	
@@ -296,6 +295,37 @@ public class VMSViewController {
 	    	}
 
 	    	return ResponseEntity.ok(response);
+	    }
+	    
+	    @PostMapping("{sign_id}/message/{message_id}/send")
+		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody String message) {
+	    	VMSResponseEntity response = new VMSResponseEntity();
+	    	VMSViewModel sign = vmsService.getById(sign_id);
+	        try {	           
+	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
+
+                	Thread t1 = new Thread(new Runnable() {
+                	    @Override
+                	    public void run() {
+        	                DIANMING dianming = new DIANMING(sign);	                
+        	                dianming.setAddresses(sign.getDireccion());
+        	                dianming.sendMessage(sign, new MessageImage(message_id, message));
+                	    }
+                	});  
+                	t1.start();
+	                
+	                response.setStatus(200);
+	                response.setMessage("success");
+	            } else {
+	            	response.setStatus(301);
+	            	response.setMessage("Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+	            }
+	        } catch (Exception ex) {
+	        	response.setStatus(500);
+	        	response.setMessage("error: " + ex.toString());
+	        }
+	        
+	        return response;
 	    }
 	    
 }

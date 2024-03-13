@@ -4,17 +4,27 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "mensajes")
 public class MensajeModel {
 	@Id
+	@JsonProperty("message_id")
 	int id_mensaje;
+	@JsonProperty("sign_type_id")
 	int id_tipo_letrero;
+	@JsonProperty("name")
 	String nombre;
+	@JsonProperty("message")
 	String mensaje;
+	@JsonProperty("alignmentId")
 	int id_alineacion;
+	@JsonProperty("spacing")
 	int espaciado;
+	@JsonProperty("groupId")
 	int id_grupo;
+	@JsonProperty("text_color")
 	int color_letra;
 	public MensajeModel() {
 		super();

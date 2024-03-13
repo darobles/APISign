@@ -88,7 +88,7 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	@Override
 	public SignTypeViewModel getById(Integer id) {
 		// TODO Auto-generated method stub
-		return null;
+		return signTypeViewRepository.getById(id);
 	}
 
 	@Override

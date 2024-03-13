@@ -4,18 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "grupos")
 public class GrupoModel {
 	@Id
+	@JsonProperty("id")
 	int id_grupo;
+	@JsonProperty("name")
 	String nombre;
+	@JsonProperty("description")
 	String descripcion;
+	@JsonProperty("maxHeight")
 	int alto_maximo;
+	@JsonProperty("widthTypeId")
 	int id_tipo_ancho;
+	@JsonProperty("width")
 	int ancho;
-	
-	
 	
 	public GrupoModel() {
 		super();
