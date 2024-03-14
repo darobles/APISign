@@ -30,6 +30,7 @@ import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.SymbolModel;
+import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
@@ -302,6 +303,7 @@ public class VMSViewController {
 		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody String message) {
 	    	VMSResponseEntity response = new VMSResponseEntity();
 	    	VMSViewModel sign = vmsService.getById(sign_id);
+	    	System.out.println(sign.toString());
 	        try {	           
 	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
 
@@ -310,7 +312,10 @@ public class VMSViewController {
                 	    public void run() {
         	                DIANMING dianming = new DIANMING(sign);	                
         	                dianming.setAddresses(sign.getDireccion());
-        	                dianming.sendMessage(sign, new MessageImage(message_id, message));
+        	                System.out.println(sign_id + " "+ message);
+        	                MessageViewModel message = messageViewService.getById(message_id);
+        	                System.out.println(message.toString());
+        	                System.out.println(dianming.sendMessage(sign, new MessageImage(message)));
                 	    }
                 	});  
                 	t1.start();

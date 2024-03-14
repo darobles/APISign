@@ -66,6 +66,13 @@ public class MessageController {
 		
 	}
 	
+	@PostMapping("/{id}")
+	public MessageModel updateMessage(@PathVariable int id, @RequestBody MessagePreviewModel json){
+		MessageModel message = messageService.getById(id);
+		return message;		
+		
+	}
+	
 	@GetMapping("/{id}/group")
 	public GrupoModel findGroupByMessageId(@PathVariable int id){
 		GrupoModel group = groupService.getById(id);
@@ -117,6 +124,8 @@ public class MessageController {
 			
 			if(json.getGroupId() != null)
 				messageModel.setGroup_id(json.getGroupId());
+			if(json.getAlignmentId() != null)
+				messageModel.setAlignment_id(json.getAlignmentId());
 			if(json.getColour() != null)
 				messageModel.setFont_color(json.getColour());
 			if(json.getSpacing() != null)
