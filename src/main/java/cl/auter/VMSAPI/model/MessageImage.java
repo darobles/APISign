@@ -49,15 +49,13 @@ public class MessageImage {
         		this.symbols.add(symb);
         	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
-            System.out.println("test1");
             build(leftImage, rightImage);
-            System.out.println("test2");
         } 
     }
     
     public MessageImage(Integer messageId, String customText) {
     	System.out.println("Correccion MessageImage");
-       /* this.message    = messageService.getById(messageId);
+        /*this.message    = messageService.getById(messageId);
         this.customText = customText;
         if (message != null) {
         	List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message.getGroupId(), VMSUtils.CharsAsStringList(this.customText));

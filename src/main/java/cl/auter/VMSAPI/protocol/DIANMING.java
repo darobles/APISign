@@ -472,19 +472,21 @@ public class DIANMING {
 			List<String> items = new ArrayList();
 
 			items.clear();
-
 			List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
-			images.addAll(bytes);
-
 			String sItem = "1,0,0,0,0,";
-			for (k = 0, j = 0; k < bytes.size(); k++, j += DM_SEGMENT_WIDTH) {
-				sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
+			if(bytes != null)
+			{
+				images.addAll(bytes);
+				for (k = 0, j = 0; k < bytes.size(); k++, j += DM_SEGMENT_WIDTH) {
+					sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
+				}
 			}
 			items.add(sItem);
 
 			sent = sendAll(items, images);
 			this.socket.close();
 		} catch (Exception ex) {
+			System.out.println(ex);
 			sent = false;
 		}
 
