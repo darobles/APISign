@@ -359,6 +359,9 @@ public class VMSViewController {
 				if (json.getMessage() != null) {
 					messageModel.setMessage(json.getMessage());
 				}
+				if (json.getAlignmentId() != null) {
+					messageModel.setAlignment_id(json.getAlignmentId());
+				}
 				
 				List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
 				if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
@@ -389,7 +392,7 @@ public class VMSViewController {
                 	    public void run() {
         	                DIANMING dianming = new DIANMING(signModel);	                
         	                dianming.setAddresses(sign.getDireccion());
-        	                dianming.sendMessage(sign, mi);
+        	                boolean resultado = dianming.sendMessage(sign, mi);
                 	    }
                 	});  
                 	t1.start();
