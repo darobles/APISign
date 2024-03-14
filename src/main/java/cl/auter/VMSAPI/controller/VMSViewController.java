@@ -24,6 +24,7 @@ import cl.auter.VMSAPI.model.GrupoModel;
 import cl.auter.VMSAPI.model.LetreroComModel;
 import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
+import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
@@ -330,9 +331,75 @@ public class VMSViewController {
 	    
 		@PostMapping("{sign_id}/send")
 		public VMSResponseEntity sendTempMessage(@PathVariable("sign_id") int sign_id, @RequestBody MessagePreviewModel json) {
-			VMSResponseEntity response = new VMSResponseEntity();
-			response.setStatus(200);
-            response.setMessage("success");
+	    	VMSResponseEntity response = new VMSResponseEntity();
+	    	
+	    	try {
+	    		// Recupera info para generar imagen
+	    		VMSViewModel      sign         = vmsService.getById(sign_id);
+		    	SignTypeViewModel signType     = signTypeViewService.getById(sign.getId_tipo_letrero());
+				SideImageModel    simLeft      = null;
+				SideImageModel    simRight     = null;
+				String            message      = json.getMessage();
+				MessageModel      messageModel = new MessageModel();
+				
+				if (json.getGroupId() != null) {
+					messageModel.setGroup_id(json.getGroupId());
+				}
+				if (json.getColour() != null) {
+					messageModel.setFont_color(json.getColour());
+				}
+				if (json.getSpacing() != null) {
+					messageModel.setSpacing(json.getSpacing());
+				}
+				if (json.getMessage() != null) {
+					messageModel.setMessage(json.getMessage());
+				}
+				
+				List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
+				if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
+					simLeft = new SideImageModel();
+					simLeft.setUbicacion_hrz(0);
+					simLeft.setUbicacion_vrt(json.getVerticalAlign_left());
+					simLeft.setImagen_b64(json.getImageB64_left());
+				}
+				if ((json.getImageB64_right() != null) && (json.getVerticalAlign_right() != null)) {
+					simRight = new SideImageModel();
+					simRight.setUbicacion_hrz(1);
+					simRight.setUbicacion_vrt(json.getVerticalAlign_right());
+					simRight.setImagen_b64(json.getImageB64_right());
+				}
+				
+				// Genera imagen
+				MessageImage mi = new MessageImage(signType, messageModel.getAlignment_id(), messageModel.getFont_color(), messageModel.getSpacing(), messageModel.getMessage());
+				mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+	    	
+    	    	// Envío a VMS
+				VMSViewModel signModel = new VMSViewModel();
+    	    	signModel.setFono(sign.getFono());
+    	    	signModel.setPort(sign.getPort());
+
+    	    	if (signType.getProtocolId() == Constants.ID_DIANMING) {
+                	Thread t1 = new Thread(new Runnable() {
+                	    @Override
+                	    public void run() {
+        	                DIANMING dianming = new DIANMING(signModel);	                
+        	                dianming.setAddresses(sign.getDireccion());
+        	                dianming.sendMessage(sign, mi);
+                	    }
+                	});  
+                	t1.start();
+	                
+	                response.setStatus(200);
+	                response.setMessage("success");
+	            } else {
+	            	response.setStatus(301);
+	            	response.setMessage("Sending messages to VMS with " + signModel.getDireccion() + " protocol is still not supported.");
+	            }
+	        } catch (Exception ex) {
+	        	response.setStatus(500);
+	        	response.setMessage("error: " + ex.toString());
+	        }
+
 			return response;
 		}
 	    

@@ -463,13 +463,15 @@ public class DIANMING {
 		return sent;
 	}
 
-	public boolean sendMessage(VMSViewModel sign, MessageImage mi) {
-		int j, k;
-		boolean sent;
+
+	// JPérez 2024.03.14 :: Sobrecarga de sendMessage pasando MessageImage ya armado
+	public boolean sendMessage(SignModel sign, MessageImage mi) {
+		int     j, k;
+		boolean sent = true;
 
 		try {
 			List<byte[]> images = new ArrayList();
-			List<String> items = new ArrayList();
+			List<String> items  = new ArrayList();
 
 			items.clear();
 
@@ -478,6 +480,35 @@ public class DIANMING {
 
 			String sItem = "1,0,0,0,0,";
 			for (k = 0, j = 0; k < bytes.size(); k++, j += DM_SEGMENT_WIDTH) {
+				sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
+			}
+			items.add(sItem);
+
+			sent &= sendAll(items, images);
+			this.socket.close();
+		} catch (Exception ex) {
+			sent = false;
+		}
+
+		return sent;
+	}
+
+	
+	public boolean sendMessage(VMSViewModel sign, MessageImage mi) {
+		int j, k;
+		boolean sent;
+
+		try {
+			List<byte[]> images = new ArrayList();
+			List<String> items  = new ArrayList();
+
+			items.clear();
+
+			List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
+			images.addAll(bytes);
+
+			String sItem = "1,0,0,0,0,";
+			for (k = 0, j = 0; k < bytes.size(); k ++, j += DM_SEGMENT_WIDTH) {
 				sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
 			}
 			items.add(sItem);
