@@ -152,6 +152,7 @@ public class MessageController {
         return outputJSON.toString();
 	}
 	
+	
 	@GetMapping("/{message_id}/image/{side}")
 	public String  findImageLeft(@PathVariable int message_id,@PathVariable int side){
 		JSONObject outputJSON = new JSONObject();

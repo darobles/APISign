@@ -328,4 +328,12 @@ public class VMSViewController {
 	        return response;
 	    }
 	    
+		@PostMapping("{sign_id}/send")
+		public VMSResponseEntity sendTempMessage(@PathVariable("sign_id") int sign_id, @RequestBody MessagePreviewModel json) {
+			VMSResponseEntity response = new VMSResponseEntity();
+			response.setStatus(200);
+            response.setMessage("success");
+			return response;
+		}
+	    
 }
