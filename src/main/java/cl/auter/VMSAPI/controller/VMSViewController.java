@@ -40,6 +40,7 @@ import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SequenceViewService;
+import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SignComService;
 import cl.auter.VMSAPI.service.SignMessageViewService;
 import cl.auter.VMSAPI.service.SignService;
@@ -74,6 +75,8 @@ public class VMSViewController {
 	SignComService signComService;
 	@Autowired
 	GroupService groupService;
+	@Autowired
+	SideImageService sideImageService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -300,22 +303,30 @@ public class VMSViewController {
 	    }
 	    
 	    @PostMapping("{sign_id}/message/{message_id}/send")
-		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody String message) {
+		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody MessageViewModel message) {
 	    	VMSResponseEntity response = new VMSResponseEntity();
 	    	VMSViewModel sign = vmsService.getById(sign_id);
-	    	System.out.println(sign.toString());
+	    	MessageViewModel message0 = messageViewService.getById(message_id);
+	    	
 	        try {	           
 	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
 
-                	Thread t1 = new Thread(new Runnable() {
+	            	if ((message != null) && (message.getMessage() != null)) {
+						message0.setMessage(message.getMessage());
+					}
+					SideImageModel simLeft = sideImageService.getSideImage(message_id, 0);
+					SideImageModel simRight = sideImageService.getSideImage(message_id, 1);
+					List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message0.getGroupId(), VMSUtils.CharsAsStringList(message0.getMessage()));
+					MessageImage mi = new MessageImage(message0);
+					mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+	            	
+	            	Thread t1 = new Thread(new Runnable() {
                 	    @Override
                 	    public void run() {
         	                DIANMING dianming = new DIANMING(sign);	                
         	                dianming.setAddresses(sign.getDireccion());
-        	                System.out.println(sign_id + " "+ message);
-        	                MessageViewModel message = messageViewService.getById(message_id);
-        	                System.out.println(message.toString());
-        	                System.out.println(dianming.sendMessage(sign, new MessageImage(message)));
+        	                dianming.sendMessage(sign, mi);
+        	                //MessageViewModel message0 = messageViewService.getById(message_id);
                 	    }
                 	});  
                 	t1.start();
@@ -392,7 +403,7 @@ public class VMSViewController {
                 	    public void run() {
         	                DIANMING dianming = new DIANMING(signModel);	                
         	                dianming.setAddresses(sign.getDireccion());
-        	                boolean resultado = dianming.sendMessage(sign, mi);
+        	                dianming.sendMessage(sign, mi);
                 	    }
                 	});  
                 	t1.start();

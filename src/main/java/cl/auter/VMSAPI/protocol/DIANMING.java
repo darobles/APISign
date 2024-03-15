@@ -135,9 +135,9 @@ public class DIANMING {
 				this.socket.setTcpNoDelay(true);
 
 				// Send bytes to socket
-				DataOutputStream outStream = new DataOutputStream(this.socket.getOutputStream());
 				List<Byte> bytesList = this.command.getFrameBytes();
 				Byte[] bytes = new Byte[bytesList.size()];
+				DataOutputStream outStream = new DataOutputStream(this.socket.getOutputStream());
 				bytesList.toArray(bytes);
 				outStream.write(ArrayUtils.toPrimitive(bytes), 0, bytesList.size());
 				outStream.flush();
