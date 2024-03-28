@@ -339,11 +339,10 @@ public class VMSViewController {
 	    	}
 	    
 	    @PostMapping("{sign_id}/message/{message_id}/send")
-		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody MessageViewModel message) {
-	    	VMSResponseEntity response = new VMSResponseEntity();
+		public ResponseEntity<JsonObject> sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody MessageViewModel message) {
+	    	JsonObjectBuilder job = Json.createObjectBuilder(); 
 	    	VMSViewModel sign = vmsService.getById(sign_id);
 	    	MessageViewModel message0 = messageViewService.getById(message_id);
-	    	System.out.println(message0.toString());
 	        try {	           
 	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
 
@@ -355,32 +354,28 @@ public class VMSViewController {
 					List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message0.getGroupId(), VMSUtils.CharsAsStringList(message0.getMessage()));
 					MessageImage mi = new MessageImage(message0);
 					mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
-	            	
 	            	Thread t1 = new Thread(new Runnable() {
                 	    @Override
                 	    public void run() {
         	                DIANMING dianming = new DIANMING(sign);	    
-        	                System.out.println(sign.toString());
         	                dianming.setAddresses(sign.getDireccion());
-        	                System.out.println(mi.toString());
         	                dianming.sendMessage(sign, mi);
         	                //MessageViewModel message0 = messageViewService.getById(message_id);
                 	    }
                 	});  
                 	t1.start();
-	                
-	                response.setStatus(200);
-	                response.setMessage("success");
+                	job.add("result","success");
+                	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);	
 	            } else {
-	            	response.setStatus(301);
-	            	response.setMessage("Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+	            	job.add("result","Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+	            	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);	
 	            }
 	        } catch (Exception ex) {
-	        	response.setStatus(500);
-	        	response.setMessage("error: " + ex.toString());
+	        	System.out.println(ex);
+	        	job.add("result","error: " + ex.toString());
+	        	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	        
-	        return response;
 	    }
 	    
 		@PostMapping("{sign_id}/message/send")
