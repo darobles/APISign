@@ -45,7 +45,7 @@ public class SignService implements SignRepository{
 	@Override
 	public void flush() {
 		// TODO Auto-generated method stub
-		
+		signRepository.flush();
 	}
 
 	@Override

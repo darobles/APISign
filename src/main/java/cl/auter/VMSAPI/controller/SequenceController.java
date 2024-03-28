@@ -72,7 +72,6 @@ public class SequenceController {
 	
 	/*@PostMapping("/{id}")
 	public SequenceModel modifySecuence(@PathVariable("id") Integer id,@RequestBody Map<String, Object> json){
-		System.out.println(json.get("name"));
 		SequenceModel sequence = sequenceService.getById(id);
 		sequence.setName(String.valueOf(json.get("name")));
 		sequenceService.save(sequence);

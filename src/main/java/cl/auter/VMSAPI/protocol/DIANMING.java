@@ -12,6 +12,7 @@ import cl.auter.util.VMSUtils;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,8 +59,10 @@ public class DIANMING {
 		this.serverURL = letrero.getFono();
 		this.portURL = letrero.getPort();
 		try {
+			System.out.println(this.serverURL + "  " + this.portURL );
 			this.socket = new Socket(this.serverURL, this.portURL);
 		} catch (Exception ex) {
+			System.out.println(ex);
 			this.socket = null;
 		}
 	}
@@ -121,11 +124,12 @@ public class DIANMING {
 	private boolean sendPackage() {
 		// Cleans response object
 		this.cleanResponse();
-
+		System.out.println(this.connectionMode + " " +this.socket );
 		if ((this.connectionMode == 3) && (this.socket != null)) { // If it's a socket connection
 			boolean ok = true;
 			try {
 				boolean preOpened = true;
+				System.out.println(this.serverURL + " - " +  this.portURL);
 				if (!this.socket.isConnected()) {
 					preOpened = false;
 					this.socket = new Socket(this.serverURL, this.portURL);
@@ -140,8 +144,9 @@ public class DIANMING {
 				DataOutputStream outStream = new DataOutputStream(this.socket.getOutputStream());
 				bytesList.toArray(bytes);
 				outStream.write(ArrayUtils.toPrimitive(bytes), 0, bytesList.size());
+				System.out.println("write");
 				outStream.flush();
-
+				
 				// Lee respuesta de socket tras esperar hasta 3 segundos
 				DataInputStream inStream = new DataInputStream(this.socket.getInputStream());
 				int available = 0;
@@ -151,6 +156,7 @@ public class DIANMING {
 					attempts++;
 				}
 				if (available > 0) {
+					System.out.println("available");
 					List<Byte> readByteList = new ArrayList();
 					int readByte;
 					while (inStream.available() > 0) {
@@ -167,6 +173,7 @@ public class DIANMING {
 				}
 
 				if (!preOpened) {
+					System.out.println("asdasd1");
 					this.socket.close();
 				}
 
@@ -228,7 +235,7 @@ public class DIANMING {
 				}
 			}
 		} while (ok && (bytesRead == DM_PACKAGE_SIZE));
-
+		System.out.println("console log " + ok);
 		return ok;
 	}
 
@@ -256,6 +263,7 @@ public class DIANMING {
 				setPlaylist(0, playlist);
 			}
 		} catch (Exception ex) {
+			System.out.println(ex);
 			ok = false;
 		}
 
@@ -484,12 +492,22 @@ public class DIANMING {
 			items.add(sItem);
 
 			sent = sendAll(items, images);
-			this.socket.close();
+			
 		} catch (Exception ex) {
 			System.out.println(ex);
 			sent = false;
 		}
-
+		finally {
+			try {
+				System.out.println("error!");
+				if(this.socket != null)
+					this.socket.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		System.out.println("Sent? " + sent);
 		return sent;
 	}
 

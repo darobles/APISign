@@ -52,22 +52,15 @@ public class AuthenticationController {
 		try {
 			
 			//String tkn = this.wcPost();
-			//System.out.println(tkn);
 			//TokenAWS token = new ObjectMapper().readValue(tkn, TokenAWS.class);
-			System.out.println(authenticationRequest);
 			//String[] chunks = token.getIdToken().split("\\.");
 			Base64.Decoder decoder = Base64.getUrlDecoder();
 
 			//String header = new String(decoder.decode(chunks[0]));
 			//String payload = new String(decoder.decode(chunks[1]));
-			//System.out.println("-------------------------------------");
-			//System.out.println(header);
-			//System.out.println(payload);
 			
 			//IdToken idtoken = new ObjectMapper().readValue(payload, IdToken.class);
-			
-			//System.out.println(idtoken.getCognitoUsername());
-			//System.out.println(idtoken.getEmail());
+
 			
 			//SignatureAlgorithm sa = SignatureAlgorithm.HS256;
 			//SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), sa.getJcaName());
@@ -79,7 +72,6 @@ public class AuthenticationController {
 				//user = userService.findByEmail(user.getEmail());
 			}
 			
-			//System.out.println("authenticationRequest.getPassword() " + authenticationRequest.getPassword());
 			if (user != null) {
 				authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
 						authenticationRequest.getUsername(), authenticationRequest.getPassword()));

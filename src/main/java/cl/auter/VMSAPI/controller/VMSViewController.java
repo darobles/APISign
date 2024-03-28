@@ -2,11 +2,14 @@ package cl.auter.VMSAPI.controller;
 
 import java.util.List;
 
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 
 import java.util.ArrayList;
 
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,7 @@ import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
+import cl.auter.VMSAPI.model.NewSignModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -113,6 +117,37 @@ public class VMSViewController {
 		return vmsList;
 	}
 	
+	@PostMapping("")
+	public VMSResponseEntity newSign(@RequestBody NewSignModel json){
+		System.out.println(json.toString());
+		SignModel sign = new SignModel();
+		sign.setId_tipo_letrero(json.getSignTypeId());
+		sign.setLatitud(json.getLatitude());
+		sign.setLongitud(json.getLongitude());
+		sign.setNombre(json.getName());
+		sign.setObs(json.getObs());
+		sign.setUbicacion(json.getLocation());
+		System.out.println(sign.toString());
+		signService.save(sign);
+		signService.flush();
+		System.out.println(sign.toString());
+		if(sign.getId_letrero() > 0 )
+		{
+	    	LetreroComModel letreroCom = new LetreroComModel();
+	    	letreroCom.setId_letrero(sign.getId_letrero());
+	    	letreroCom.setId_conexion(json.getConnectionId());	    	
+	    	letreroCom.setFono(json.getPhoneOrIP());
+	    	letreroCom.setClave(json.getKey());
+	    	letreroCom.setCanal(json.getChannel());
+	    	letreroCom.setDireccion(json.getAddress());
+	    	letreroCom.setPort(json.getPort());
+	    	letreroCom.setId_camara(json.getCameraId());
+	    	signComService.save(letreroCom); 
+		}
+
+		return null;		
+	}
+	
 	@GetMapping("/{id}")
 	public VMSViewModel findById(@PathVariable("id") Integer vms_id){
 		VMSViewModel sign = vmsService.findVMSById(vms_id);
@@ -150,7 +185,7 @@ public class VMSViewController {
 	
 	@GetMapping("/{id}/message")
 	public List<SignMessageViewModel> getJson(@PathVariable("id") int idSign) {
-
+		System.out.println(idSign);
         List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
         return messages;
     }
@@ -258,9 +293,7 @@ public class VMSViewController {
 	    }
 	    
 	    @PutMapping("/{idSign}")
-	    public ResponseEntity<VMSResponseEntity> editSign(@PathVariable("idSign") Integer id, @RequestBody VMSViewModel vms) {
-	    	VMSResponseEntity response = new VMSResponseEntity();
-	    	System.out.println(vms.toString());
+	    public ResponseEntity<JsonObject> editSign(@PathVariable("idSign") Integer id, @RequestBody VMSViewModel vms) {
 	    	LetreroComModel letreroCom = new LetreroComModel();
 	    	letreroCom.setId_letrero(vms.getId_letrero());
 	    	letreroCom.setId_conexion(vms.getId_conexion());	    	
@@ -280,34 +313,37 @@ public class VMSViewController {
 	    	sign.setNombre(vms.getNombre());
 	    	sign.setObs(vms.getObs());
 	    	signService.save(sign);
-	    	return ResponseEntity.ok(response);
+			JsonObject json = Json.createObjectBuilder()
+					.add("result", "ok")
+					.build();
+	    	return new ResponseEntity<JsonObject>(json, HttpStatus.OK);
 	    }
 	    
 	    
 	    @DeleteMapping("/{idSign}")
-	    public ResponseEntity<VMSResponseEntity> deleteSign(@PathVariable("idSign") Integer idSign) {
+	    public ResponseEntity<JsonObject> deleteSign(@PathVariable("idSign") Integer idSign) {
 	    	SignModel sign = signService.getById(idSign);
-	    	VMSResponseEntity response = new VMSResponseEntity();
+	    	JsonObjectBuilder job = Json.createObjectBuilder();    	
 	    	if(sign != null) {
 		    	signService.deleteById(sign.getId_letrero());
-		    	messageService.deleteByType(sign.getId_tipo_letrero());
-		    	response.setStatus(200);
-		    	response.setMessage("ok");
+		    	messageService.deleteBySignId(sign.getId_letrero());
+		    	job.add("result", "ok");
+		    	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);	
 	    	}
 	    	else {
-		    	response.setStatus(501);
-		    	response.setMessage("Id no existe");
+		    	job.add("result","Id no existe");
+		    	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);	
 	    	}
 
-	    	return ResponseEntity.ok(response);
-	    }
+	    	
+	    	}
 	    
 	    @PostMapping("{sign_id}/message/{message_id}/send")
 		public VMSResponseEntity sendMessage(@PathVariable int sign_id, @PathVariable int message_id, @RequestBody MessageViewModel message) {
 	    	VMSResponseEntity response = new VMSResponseEntity();
 	    	VMSViewModel sign = vmsService.getById(sign_id);
 	    	MessageViewModel message0 = messageViewService.getById(message_id);
-	    	
+	    	System.out.println(message0.toString());
 	        try {	           
 	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
 
@@ -323,8 +359,10 @@ public class VMSViewController {
 	            	Thread t1 = new Thread(new Runnable() {
                 	    @Override
                 	    public void run() {
-        	                DIANMING dianming = new DIANMING(sign);	                
+        	                DIANMING dianming = new DIANMING(sign);	    
+        	                System.out.println(sign.toString());
         	                dianming.setAddresses(sign.getDireccion());
+        	                System.out.println(mi.toString());
         	                dianming.sendMessage(sign, mi);
         	                //MessageViewModel message0 = messageViewService.getById(message_id);
                 	    }
@@ -345,10 +383,9 @@ public class VMSViewController {
 	        return response;
 	    }
 	    
-		@PostMapping("{sign_id}/send")
-		public VMSResponseEntity sendTempMessage(@PathVariable("sign_id") int sign_id, @RequestBody MessagePreviewModel json) {
-	    	VMSResponseEntity response = new VMSResponseEntity();
-	    	
+		@PostMapping("{sign_id}/message/send")
+		public ResponseEntity<JsonObject> sendTempMessage(@PathVariable("sign_id") int sign_id, @RequestBody MessagePreviewModel json) {
+			JsonObjectBuilder job = Json.createObjectBuilder(); 
 	    	try {
 	    		// Recupera info para generar imagen
 	    		VMSViewModel      sign         = vmsService.getById(sign_id);
@@ -361,6 +398,9 @@ public class VMSViewController {
 				if (json.getGroupId() != null) {
 					messageModel.setGroup_id(json.getGroupId());
 				}
+				else {
+					messageModel.setGroup_id(7);
+				}
 				if (json.getColour() != null) {
 					messageModel.setFont_color(json.getColour());
 				}
@@ -371,7 +411,7 @@ public class VMSViewController {
 					messageModel.setMessage(json.getMessage());
 				}
 				if (json.getAlignmentId() != null) {
-					messageModel.setAlignment_id(json.getAlignmentId());
+					messageModel.setAlignmentId(json.getAlignmentId());
 				}
 				
 				List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
@@ -389,14 +429,13 @@ public class VMSViewController {
 				}
 				
 				// Genera imagen
-				MessageImage mi = new MessageImage(signType, messageModel.getAlignment_id(), messageModel.getFont_color(), messageModel.getSpacing(), messageModel.getMessage());
+				MessageImage mi = new MessageImage(signType, messageModel.getAlignmentId(), messageModel.getFont_color(), messageModel.getSpacing(), messageModel.getMessage());
 				mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
 	    	
     	    	// Envío a VMS
 				VMSViewModel signModel = new VMSViewModel();
     	    	signModel.setFono(sign.getFono());
     	    	signModel.setPort(sign.getPort());
-
     	    	if (signType.getProtocolId() == Constants.ID_DIANMING) {
                 	Thread t1 = new Thread(new Runnable() {
                 	    @Override
@@ -408,18 +447,18 @@ public class VMSViewController {
                 	});  
                 	t1.start();
 	                
-	                response.setStatus(200);
-	                response.setMessage("success");
+	                job.add("result","ok");
+	                new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
 	            } else {
-	            	response.setStatus(301);
-	            	response.setMessage("Sending messages to VMS with " + signModel.getDireccion() + " protocol is still not supported.");
+	            	job.add("result","Sending messages to VMS with " + signModel.getDireccion() + " protocol is still not supported.");
+	            	new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_ACCEPTABLE);
 	            }
 	        } catch (Exception ex) {
-	        	response.setStatus(500);
-	        	response.setMessage("error: " + ex.toString());
+	        	job.add("result","error " + ex);
+	        	new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
-
-			return response;
+	    	job.add("result","ok");
+	    	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
 		}
 	    
 }

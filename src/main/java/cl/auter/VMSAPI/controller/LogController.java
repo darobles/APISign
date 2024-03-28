@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.LogEntity;
+import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.repository.LogRepository;
 import cl.auter.util.DecodeJwt;
 import cl.auter.util.JWTResponse;
@@ -51,25 +52,27 @@ public class LogController {
 	}
 	
 	@PostMapping("")
-	public ResponseEntity<JsonObject> newLogRegister(@RequestBody LogEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+	public VMSResponseEntity newLogRegister(@RequestBody LogEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		VMSResponseEntity response = new VMSResponseEntity();
+		response.setMessage("error: Not authorized");
+		response.setStatus(401);
 		if ( jwtResponse.getGenMessage().equals("authorized") ) {
-			JsonObjectBuilder jsn = Json.createObjectBuilder();
+			//JsonObjectBuilder jsn = Json.createObjectBuilder();
+			
 			try {
 				logRepository.save(json);
-				jsn.add("result", "success");
+				response.setMessage("success");
+				response.setStatus(200);
 			}
 			catch(Exception e) {
 				System.out.println(e);
-				jsn.add("result", "error");
-				jsn.add("detail", e.toString());
+				response.setMessage("error");
+				response.setStatus(500);
 			}
 			
-			return ResponseEntity.ok(jsn.build());
-		}
-		else {
-			return null;
-		}
 			
+		}
+		return response;
     }
 }

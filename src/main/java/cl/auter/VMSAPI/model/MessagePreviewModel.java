@@ -21,6 +21,8 @@ public class MessagePreviewModel {
 	Integer verticalAlign_right;
 	@JsonProperty("imgRight")
 	String  imageB64_right;
+	@JsonProperty("sign_id")
+	Integer sign_id;
 	
 	public MessagePreviewModel() {
 		super();
@@ -122,13 +124,20 @@ public class MessagePreviewModel {
 		this.imageB64_right = imageB64_right;
 	}
 
+	public Integer getSign_id() {
+		return sign_id;
+	}
+
+	public void setSign_id(Integer sign_id) {
+		this.sign_id = sign_id;
+	}
+
 	@Override
 	public String toString() {
 		return "MessagePreviewModel [message=" + message + ", alignmentId=" + alignmentId + ", groupId=" + groupId
 				+ ", colour=" + colour + ", spacing=" + spacing + ", verticalAlign_left=" + verticalAlign_left
 				+ ", imageB64_left=" + imageB64_left + ", verticalAlign_right=" + verticalAlign_right
-				+ ", imageB64_right=" + imageB64_right + "]";
+				+ ", imageB64_right=" + imageB64_right + ", sign_id=" + sign_id + "]";
 	}
-
 
 }

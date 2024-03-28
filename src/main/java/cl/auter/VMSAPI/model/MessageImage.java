@@ -49,9 +49,7 @@ public class MessageImage {
         		this.symbols.add(symb);
         	}
             this.segmentWidth = this.message.getProtocol() == Constants.ID_DIANMING ? DIANMING.DM_SEGMENT_WIDTH : this.message.getSignTypeWidth();
-            System.out.println("test1");
             build(leftImage, rightImage);
-            System.out.println("test2");
         } 
     }
     
@@ -166,7 +164,6 @@ public class MessageImage {
                     } else if (leftImage.getVerticalAlign() == 2) {
                         offsetImgY = totalHeight - imageHeight;
                     }
-                    System.out.println(" imageWidth: " + imageWidth + " imageHeight: " + imageHeight + " offsetImgX: " + offsetImgX + " offsetImgY " + offsetImgY);
                     for (int i = 0; i < leftImage.getImage().getWidth(); i ++) {
                         for (int j = 0; j < leftImage.getImage().getHeight(); j ++) {
                         	if ((offsetImgX + i >= 0) && (offsetImgX + i < this.image.getWidth()) && (offsetImgY + j >= 0) && (offsetImgY + j < this.image.getHeight())) {
@@ -236,7 +233,6 @@ public class MessageImage {
 
                 offsetY += this.message.getMaxSymbolHeight() + this.message.getLineSpacing();
             }
-            System.out.println("Ends ");
         }
     }
 
@@ -251,7 +247,6 @@ public class MessageImage {
     }
     
     public byte[] getImageBytes() throws IOException {
-    	System.out.println("getImageBytes");
         RenderedImage         ri  = this.image;
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
@@ -307,4 +302,11 @@ public class MessageImage {
         return pixel;
     }
 
+	@Override
+	public String toString() {
+		return "MessageImage [message=" + message + ", symbols=" + symbols + ", image=" + image + ", customText="
+				+ customText + ", segmentWidth=" + segmentWidth + "]";
+	}
+    
+    
 }

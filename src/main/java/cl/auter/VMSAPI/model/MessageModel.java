@@ -1,7 +1,6 @@
 package cl.auter.VMSAPI.model;
 
 
-import javax.json.bind.annotation.JsonbProperty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,80 +16,132 @@ public class MessageModel{
 	@Id
 	@Column(name = "id_mensaje")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	private int message_id;
 	@Column(name = "id_tipo_letrero")
 	@JsonProperty("type_sign_id")
-	private Integer type;
+	private int type;
 	@Column(name = "nombre")
 	private String name;
 	@Column(name = "mensaje")
     private String message;
 	@Column(name = "id_alineacion")
-    private Integer  alignment_id;
+    private int  alignmentId;
 	@Column(name = "espaciado")
-    private Integer spacing;
+    private int spacing;
 	@Column(name = "id_grupo")
-    private Integer group_id;
+    private int group_id;
 	@Column(name = "color_letra")
-    private Integer font_color;
+    private int font_color;
+	@Column(name = "id_letrero")
+    private int sign_id;
+	
 	public MessageModel() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getId() {
-		return id;
-	}
-	public void setId(Integer id) {
-		this.id = id;
+	public int getMessage_id() {
+		return message_id;
 	}
 
-	
-	public Integer getType() {
+
+
+	public void setMessage_id(int message_id) {
+		this.message_id = message_id;
+	}
+
+
+
+	public int getType() {
 		return type;
 	}
 
-	public void setType(Integer type) {
+
+
+	public void setType(int type) {
 		this.type = type;
 	}
+
+
 
 	public String getName() {
 		return name;
 	}
+
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
+
+
 	public String getMessage() {
 		return message;
 	}
+
+
+
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	public Integer getAlignment_id() {
-		return alignment_id;
+
+
+
+	public int getAlignmentId() {
+		return alignmentId;
 	}
-	public void setAlignment_id(Integer alignment_id) {
-		this.alignment_id = alignment_id;
+
+	public void setAlignmentId(int alignmentId) {
+		this.alignmentId = alignmentId;
 	}
-	public Integer getSpacing() {
+
+	public int getSpacing() {
 		return spacing;
 	}
-	public void setSpacing(Integer spacing) {
+
+
+
+	public void setSpacing(int spacing) {
 		this.spacing = spacing;
 	}
-	public Integer getGroup_id() {
+
+
+
+	public int getGroup_id() {
 		return group_id;
 	}
-	public void setGroup_id(Integer group_id) {
+
+
+
+	public void setGroup_id(int group_id) {
 		this.group_id = group_id;
 	}
-	public Integer getFont_color() {
+
+
+
+	public int getFont_color() {
 		return font_color;
 	}
-	public void setFont_color(Integer font_color) {
+
+	public void setFont_color(int font_color) {
 		this.font_color = font_color;
 	}
 
+	public int getSign_id() {
+		return sign_id;
+	}
+
+	public void setSign_id(int sign_id) {
+		this.sign_id = sign_id;
+	}
+
+	@Override
+	public String toString() {
+		return "MessageModel [message_id=" + message_id + ", type=" + type + ", name=" + name + ", message=" + message
+				+ ", alignmentId=" + alignmentId + ", spacing=" + spacing + ", group_id=" + group_id + ", font_color="
+				+ font_color + ", sign_id=" + sign_id + "]";
+	}
+
 	
-    
 }

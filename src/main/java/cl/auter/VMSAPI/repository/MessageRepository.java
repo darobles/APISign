@@ -14,5 +14,10 @@ public interface MessageRepository extends JpaRepository<MessageModel, Integer>{
 	@Modifying
 	@Query(value = "delete FROM mensajes WHERE id_tipo_letrero =?1", nativeQuery = true)
 	public void deleteByType(Integer type);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "delete FROM mensajes WHERE id_letrero =?1", nativeQuery = true)
+	public void deleteBySignId(Integer sign_id);
 
 }

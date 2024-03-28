@@ -19,6 +19,10 @@ public class VMSResponseEntity {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+	@Override
+	public String toString() {
+		return "VMSResponseEntity [status=" + status + ", message=" + message + "]";
+	}
 	
 	
 }

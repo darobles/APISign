@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import cl.auter.VMSAPI.model.MensajeModel;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.repository.MessageRepository;
 
@@ -47,7 +48,7 @@ public class MessageService implements MessageRepository{
 	@Override
 	public void flush() {
 		// TODO Auto-generated method stub
-		
+		mRepository.flush();
 	}
 
 	@Override
@@ -115,6 +116,7 @@ public class MessageService implements MessageRepository{
 		// TODO Auto-generated method stub
 		return mRepository.save(entity);
 	}
+	
 
 	@Override
 	public Optional<MessageModel> findById(Integer id) {
@@ -194,5 +196,10 @@ public class MessageService implements MessageRepository{
 		// TODO Auto-generated method stub
 		mRepository.deleteByType(type);
 	}
-
+	
+	@Override
+	public void deleteBySignId(Integer signId) {
+		// TODO Auto-generated method stub
+		mRepository.deleteBySignId(signId);
+	}
 }
