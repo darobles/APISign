@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.SequenceModel;
-import cl.auter.VMSAPI.model.SequenceMessageEntity;
 import cl.auter.VMSAPI.model.view.SequenceMessageView;
 import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceMessageViewService;

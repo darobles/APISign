@@ -10,7 +10,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.SequenceMessageEntity;
 import cl.auter.VMSAPI.model.view.SequenceMessageView;
 import cl.auter.VMSAPI.repository.SequenceMessageViewRepository;
 
@@ -52,7 +51,7 @@ public class SequenceMessageViewService implements SequenceMessageViewRepository
 	@Override
 	public <S extends SequenceMessageView> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return sRepository.saveAndFlush(entity);
 	}
 
 	@Override

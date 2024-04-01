@@ -20,6 +20,7 @@ import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.SequenceMessageView;
+import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceMessageViewService;
 import cl.auter.VMSAPI.service.SequenceService;
 
@@ -33,6 +34,9 @@ public class SequenceController {
 	@Autowired
 	private SequenceMessageViewService smService;
 
+	@Autowired
+	private SequenceMessageService sequenceMessageService;
+	
 	@GetMapping("")
 	public List<SequenceModel> findAll(){
 		List<SequenceModel> sequences = sequenceService.findAll();
@@ -78,9 +82,21 @@ public class SequenceController {
 	}
 	
 	@PostMapping("/{id}/message")
-	public List<SequenceMessageView> addMessages(@PathVariable("id") Integer id,@RequestBody SequenceMessageModel sequenceMessage){
-		
-		return null;
+	public ResponseEntity<SequenceMessageModel> addMessages(@PathVariable("id") Integer id,@RequestBody SequenceMessageModel sequenceMessage){
+		sequenceMessageService.saveAndFlush(sequenceMessage);
+		return new ResponseEntity<SequenceMessageModel>(sequenceMessage, HttpStatus.OK);
+	}
+	
+	@DeleteMapping("/message/{id}")
+	public ResponseEntity<VMSResponseEntity> deleteMessagesFromSequence(@PathVariable("id") Integer id){
+		System.out.println("messageID " + id );
+		SequenceMessageModel seq = new SequenceMessageModel();
+		VMSResponseEntity response =  new VMSResponseEntity();
+		seq.setId(id);
+		sequenceMessageService.delete(seq);
+		response.setStatus(200);
+		response.setMessage("ok");
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
 	/*@PostMapping("/{id}")

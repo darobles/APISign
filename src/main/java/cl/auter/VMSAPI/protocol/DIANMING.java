@@ -2,11 +2,9 @@ package cl.auter.VMSAPI.protocol;
 
 import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
-import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
-import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.util.VMSUtils;
 
 import java.io.ByteArrayInputStream;
@@ -151,7 +149,7 @@ public class DIANMING {
 					attempts++;
 				}
 				if (available > 0) {
-					List<Byte> readByteList = new ArrayList();
+					List<Byte> readByteList = new ArrayList<>();
 					int readByte;
 					while (inStream.available() > 0) {
 						readByte = inStream.read();
@@ -173,9 +171,8 @@ public class DIANMING {
 			} catch (Exception ex) {
 				LOGGER.log(Level.SEVERE, "Exception in DIANMING.enviarPackage()", ex);
 				ok = false;
-			} finally {
-				return ok;
-			}
+			} 
+			return ok;
 		}
 
 		return false;
@@ -384,7 +381,7 @@ public class DIANMING {
 		int numCabinets = VMSUtils.BytesToInt(responseBytes, 7);
 		int index = 9;
 
-		List<DIANMINGInfo> cabinets = new ArrayList();
+		List<DIANMINGInfo> cabinets = new ArrayList<>();
 		for (int i = 0; i < numCabinets; i++, index += 32) {
 			DIANMINGInfo cabinetInfo = new DIANMINGInfo();
 			cabinetInfo.setAll(responseBytes, index);
@@ -439,8 +436,8 @@ public class DIANMING {
 		try {
 //            VMSDAO dao = new VMSDAO();
 
-			List<byte[]> images = new ArrayList();
-			List<String> items = new ArrayList();
+			List<byte[]> images = new ArrayList<>();
+			List<String> items = new ArrayList<>();
 
 			items.clear();
 			MessageImage mi = new MessageImage(message);
@@ -469,8 +466,8 @@ public class DIANMING {
 		boolean sent;
 
 		try {
-			List<byte[]> images = new ArrayList();
-			List<String> items  = new ArrayList();
+			List<byte[]> images = new ArrayList<>();
+			List<String> items  = new ArrayList<>();
 
 			items.clear();
 
@@ -494,15 +491,16 @@ public class DIANMING {
 	}
 
 	public boolean sendSequence(SignModel sign, SequenceModel sequence) {
-		int j, k;
-		int counter = 0, prevCounter = 0;
+		//int j, k;
+		//int counter = 0;
+		//int prevCounter = 0;
 		boolean bEnviado = false;
 
 		try {
 			// VMSDAO dao = new VMSDAO();
 //            List<SequenceMessageModel> sequenceMessages = new List<SequenceMessageModel>(); // = dao.getSequenceMessages(sequence);
-			List<byte[]> images = new ArrayList();
-			List<String> items = new ArrayList();
+			List<byte[]> images = new ArrayList<>();
+			List<String> items = new ArrayList<>();
 
 			items.clear();
 			/*

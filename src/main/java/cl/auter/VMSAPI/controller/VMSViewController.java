@@ -5,7 +5,6 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -31,7 +30,6 @@ import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.NewSignModel;
-import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -199,7 +197,7 @@ public class VMSViewController {
 	public List<GrupoModel> getGroups(@PathVariable("id") int idSign) {
 		//VMSViewModel vms = signMessageViewService.getById(idSign);
        // List<GrupoModel> messages = groupService.getById(idSign);
-        return new ArrayList();
+        return new ArrayList<>();
     }
 	
 	@GetMapping("/{id}/brightness")
