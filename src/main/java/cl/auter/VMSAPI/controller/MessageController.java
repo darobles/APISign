@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.HttpStatusCodeException;
 
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
@@ -27,7 +26,6 @@ import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.SideImageMessageEntity;
 import cl.auter.VMSAPI.model.SymbolModel;
-import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.service.GroupService;

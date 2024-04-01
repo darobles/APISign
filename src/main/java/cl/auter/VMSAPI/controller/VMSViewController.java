@@ -5,6 +5,7 @@ import java.util.List;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.NewSignModel;
+import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -43,6 +45,7 @@ import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
+import cl.auter.VMSAPI.service.SequenceService;
 import cl.auter.VMSAPI.service.SequenceViewService;
 import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SignComService;
@@ -81,6 +84,8 @@ public class VMSViewController {
 	GroupService groupService;
 	@Autowired
 	SideImageService sideImageService;
+	@Autowired
+	SequenceService sequenceService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -262,35 +267,7 @@ public class VMSViewController {
 	     * @param idSign resource URI parameter
 	     * @param content representation for the resource
 	     */
-	    @PutMapping("/{idSign}/sequence")
-	    public String putJson(@PathVariable("idSign") String idSign, String content) {
-	       /* JSONParser parser     = new JSONParser();
-	        JSONObject inputJSON;
-	        JSONObject outputJSON = new JSONObject();
 
-	        try {
-	            inputJSON = (JSONObject) parser.parse(content);
-
-	            Sequence sequence = new Sequence();
-	            sequence.setName((String) inputJSON.get("name"));
-	            
-	            try {	                
-	                Integer idSequence = dao.addSignSequence(Integer.valueOf(idSign), sequence);
-	                if (idSequence > 0) {
-	                    outputJSON.put("sequenceId", idSequence);
-	                } else {
-	                    outputJSON.put("error", "Sequence could not be created");
-	                }
-	            } catch (Exception ex) {
-	                outputJSON.put("error", ex.toString());
-	            }
-	        } catch (Exception ex) {
-	            outputJSON.put("error", ex.toString());
-	        }
-	        
-	        return outputJSON.toJSONString();*/
-	    	return "";
-	    }
 	    
 	    @PutMapping("/{idSign}")
 	    public ResponseEntity<JsonObject> editSign(@PathVariable("idSign") Integer id, @RequestBody VMSViewModel vms) {

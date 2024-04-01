@@ -4,16 +4,21 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
+import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.SequenceMessageView;
 import cl.auter.VMSAPI.service.SequenceMessageViewService;
 import cl.auter.VMSAPI.service.SequenceService;
@@ -34,26 +39,28 @@ public class SequenceController {
 		return sequences;	
 	}
 	
-	@PostMapping("")
-	public SequenceModel addSequence(@PathVariable("id") Integer id){
-		SequenceModel sequence = sequenceService.getById(id);
-		return sequence;
-	}
+    @PostMapping("")
+    public ResponseEntity<SequenceModel> newSequence(@RequestBody SequenceModel sequence) {
+    	sequenceService.save(sequence);
+    	sequenceService.flush();
+        return new ResponseEntity<SequenceModel>(sequence, HttpStatus.OK);
+    }
 	
-	@PostMapping("/{id}")
-	public SequenceModel editSequence(@PathVariable("id") Integer id,@RequestBody Map<String, Object> json){
-		System.out.println(json.get("name"));
-		SequenceModel sequence = sequenceService.getById(id);
-		sequence.setName(String.valueOf(json.get("name")));
+	@PutMapping("")
+	public ResponseEntity<SequenceModel> editSequence(@RequestBody SequenceModel sequence){
+		System.out.println(sequence.toString());
 		sequenceService.save(sequence);
-		return sequence;
+		return new ResponseEntity<SequenceModel>(sequence, HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{id}")
-	public SequenceModel deleteSequence(@PathVariable("id") Integer id){
+	public ResponseEntity<VMSResponseEntity> deleteSequence(@PathVariable("id") Integer id){
 		SequenceModel sequence = sequenceService.getById(id);
 		sequenceService.delete(sequence);
-		return sequence;
+		VMSResponseEntity response = new VMSResponseEntity();
+		response.setMessage("ok");
+		response.setStatus(200);
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
 	@GetMapping("/{id}")
@@ -68,6 +75,12 @@ public class SequenceController {
 	public List<SequenceMessageView> findMessages(@PathVariable("id") Integer id){
 		List<SequenceMessageView> sequenceMessage = smService.getMessagesSequenceById(id);
 		return sequenceMessage;
+	}
+	
+	@PostMapping("/{id}/message")
+	public List<SequenceMessageView> addMessages(@PathVariable("id") Integer id,@RequestBody SequenceMessageModel sequenceMessage){
+		
+		return null;
 	}
 	
 	/*@PostMapping("/{id}")
