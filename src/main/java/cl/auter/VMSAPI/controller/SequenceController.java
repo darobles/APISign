@@ -2,7 +2,9 @@ package cl.auter.VMSAPI.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,7 @@ import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.SequenceMessageView;
+import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceMessageViewService;
 import cl.auter.VMSAPI.service.SequenceService;
 
@@ -31,7 +34,9 @@ public class SequenceController {
 	SequenceService sequenceService;
 	
 	@Autowired
-	private SequenceMessageViewService smService;
+	SequenceMessageViewService smService;
+	@Autowired
+	SequenceMessageService smTableService;
 
 	@GetMapping("")
 	public List<SequenceModel> findAll(){
@@ -81,6 +86,87 @@ public class SequenceController {
 	public List<SequenceMessageView> addMessages(@PathVariable("id") Integer id,@RequestBody SequenceMessageModel sequenceMessage){
 		
 		return null;
+	}
+	
+
+	@PostMapping("/{id}/up/{index}")
+    public String sequenceUp(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		List<SequenceMessageView> sequenceMessages = smService.getMessagesSequenceById(id);
+		JSONObject                outputJSON       = new JSONObject();
+		boolean                   changed          = false;
+		int                       position         = -1;
+		int                       i                =  0;
+		
+		for (SequenceMessageView sequenceMessage : sequenceMessages) {
+			if (sequenceMessage.getIndex() == index) {
+				position = i;
+				break;
+			} 
+			i ++;
+		}
+
+		if ((position >= 1) && (position < sequenceMessages.size())) {
+			SequenceMessageView message      = sequenceMessages.get(position);
+			SequenceMessageView otherMessage = sequenceMessages.get(position - 1);
+			
+			int otherIndex = otherMessage.getIndex();
+			message.setIndex(otherIndex);
+			otherMessage.setIndex(index);
+			
+			Random random = new Random();
+			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
+			
+			smTableService.changeIndex(id, message.getId(), index, tempIndex);
+			smTableService.changeIndex(id, otherMessage.getId(), otherIndex, index);
+			smTableService.changeIndex(id, message.getId(), tempIndex, otherIndex);
+			
+			changed = true;  // For return JSON
+			index   = otherIndex;
+		}
+
+		outputJSON.put("changed", changed);
+		outputJSON.put("index", index);
+		return outputJSON.toString();
+	}
+	
+	@PostMapping("/{id}/down/{index}")
+    public String sequenceDown(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		List<SequenceMessageView> sequenceMessages = smService.getMessagesSequenceById(id);
+		JSONObject                outputJSON       = new JSONObject();
+		boolean                   changed          = false;
+		int                       position         = -1;
+		int                       i                =  0;
+		
+		for (SequenceMessageView sequenceMessage : sequenceMessages) {
+			if (sequenceMessage.getIndex() == index) {
+				position = i;
+				break;
+			} 
+			i ++;
+		}
+
+		if ((position >= 0) && (position < sequenceMessages.size() - 1)) {
+			SequenceMessageView message      = sequenceMessages.get(position);
+			SequenceMessageView otherMessage = sequenceMessages.get(position + 1);
+			
+			int otherIndex = otherMessage.getIndex();
+			message.setIndex(otherIndex);
+			otherMessage.setIndex(index);
+			
+			Random random = new Random();
+			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
+			
+			smTableService.changeIndex(id, message.getId(), index, tempIndex);
+			smTableService.changeIndex(id, otherMessage.getId(), otherIndex, index);
+			smTableService.changeIndex(id, message.getId(), tempIndex, otherIndex);
+			
+			changed = true;  // For return JSON
+			index   = otherIndex;
+		}
+
+		outputJSON.put("changed", changed);
+		outputJSON.put("index", index);
+		return outputJSON.toString();
 	}
 	
 	/*@PostMapping("/{id}")

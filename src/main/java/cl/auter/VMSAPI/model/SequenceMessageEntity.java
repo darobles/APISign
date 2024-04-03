@@ -34,7 +34,6 @@ public class SequenceMessageEntity {
 		this.order = index;
 		this.time = time;
 		this.message_id = message_id;
-	
 	}
 
 	public Integer getId() {

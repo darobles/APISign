@@ -187,4 +187,10 @@ public class SequenceMessageService implements SequenceMessageRepository {
 		return false;
 	}
 
+	// JPérez 2024.04.02
+	@Override
+	public void changeIndex(Integer idSequence, Integer idMessage, Integer oldIndex, Integer newIndex) {
+		sRepository.changeIndex(idSequence, idMessage, oldIndex, newIndex);
+	}
+
 }
