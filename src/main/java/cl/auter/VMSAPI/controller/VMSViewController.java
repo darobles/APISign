@@ -188,7 +188,6 @@ public class VMSViewController {
 	
 	@GetMapping("/{id}/message")
 	public List<SignMessageViewModel> getJson(@PathVariable("id") int idSign) {
-		System.out.println(idSign);
         List<SignMessageViewModel> messages = signMessageViewService.findAllBySignId(idSign);
         return messages;
     }

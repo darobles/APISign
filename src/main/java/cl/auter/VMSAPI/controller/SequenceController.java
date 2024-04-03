@@ -52,7 +52,6 @@ public class SequenceController {
 	
 	@PutMapping("")
 	public ResponseEntity<SequenceModel> editSequence(@RequestBody SequenceModel sequence){
-		System.out.println(sequence.toString());
 		sequenceService.save(sequence);
 		return new ResponseEntity<SequenceModel>(sequence, HttpStatus.OK);
 	}
@@ -89,7 +88,6 @@ public class SequenceController {
 	
 	@DeleteMapping("/message/{id}")
 	public ResponseEntity<VMSResponseEntity> deleteMessagesFromSequence(@PathVariable("id") Integer id){
-		System.out.println("messageID " + id );
 		SequenceMessageModel seq = new SequenceMessageModel();
 		VMSResponseEntity response =  new VMSResponseEntity();
 		seq.setId(id);

@@ -26,18 +26,8 @@ public class MessagePreviewModel {
 	
 	public MessagePreviewModel() {
 		super();
-		this.message = null;
-		this.alignmentId = null;
-		this.groupId = null;
-		this.colour = null;
-		this.spacing = null;
-		this.verticalAlign_left = null;
-		this.imageB64_left = null;
-		this.verticalAlign_right = null;
-		this.imageB64_right = null;
-		this.message = null;
 	}
-
+	
 	public MessagePreviewModel(String message, Integer alignmentId, Integer groupId, Integer colour, Integer spacing,
 			Integer verticalAlign_left, String imageB64_left, Integer verticalAlign_right, String imageB64_right) {
 		super();
