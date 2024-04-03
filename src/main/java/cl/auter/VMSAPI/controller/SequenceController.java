@@ -102,9 +102,7 @@ public class SequenceController {
 
 	@PostMapping("/{id}/up/{index}")
     public String sequenceUp(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
-		System.out.println("1");
 		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
-		System.out.println("2 " + sequenceMessages.size());
 		JSONObject                outputJSON       = new JSONObject();
 		boolean                   changed          = false;
 		int                       position         = -1;
@@ -128,8 +126,6 @@ public class SequenceController {
 			
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
-			System.out.println("3");
-//			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
@@ -145,13 +141,13 @@ public class SequenceController {
 	
 	@PostMapping("/{id}/down/{index}")
     public String sequenceDown(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
-		List<SequenceMessageView> sequenceMessages = smService.getMessagesSequenceById(id);
-		JSONObject                outputJSON       = new JSONObject();
-		boolean                   changed          = false;
-		int                       position         = -1;
-		int                       i                =  0;
+		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
+		JSONObject                 outputJSON       = new JSONObject();
+		boolean                    changed          = false;
+		int                        position         = -1;
+		int                        i                =  0;
 		
-		for (SequenceMessageView sequenceMessage : sequenceMessages) {
+		for (SequenceMessageModel sequenceMessage : sequenceMessages) {
 			if (sequenceMessage.getIndex() == index) {
 				position = i;
 				break;
@@ -160,8 +156,8 @@ public class SequenceController {
 		}
 
 		if ((position >= 0) && (position < sequenceMessages.size() - 1)) {
-			SequenceMessageView message      = sequenceMessages.get(position);
-			SequenceMessageView otherMessage = sequenceMessages.get(position + 1);
+			SequenceMessageModel message      = sequenceMessages.get(position);
+			SequenceMessageModel otherMessage = sequenceMessages.get(position + 1);
 			
 			int otherIndex = otherMessage.getIndex();
 			message.setIndex(otherIndex);
@@ -169,7 +165,6 @@ public class SequenceController {
 			
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
-			
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
