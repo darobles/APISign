@@ -28,7 +28,7 @@ public class SequenceMessageService implements SequenceMessageRepository {
 	@Override
 	public List<SequenceMessageModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
-		return null;
+		return sRepository.findAll();
 	}
 
 	@Override
@@ -187,13 +187,26 @@ public class SequenceMessageService implements SequenceMessageRepository {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
-	
 
+	@Override
+	public List<SequenceMessageModel> findByIdMessage(Integer message_id) {
+		// TODO Auto-generated method stub
+		return sRepository.findByIdMessage(message_id);
+		
+	}
+	
+	@Override
+	public List<SequenceMessageModel> findSeqAllById(Integer sequence_id) {
+		// TODO Auto-generated method stub
+		return sRepository.findSeqAllById(sequence_id);
+		
+	}
+	
 	// JPérez 2024.04.02
 	@Override
 	public void changeIndex(Integer idSequence, Integer idMessage, Integer oldIndex, Integer newIndex) {
 		sRepository.changeIndex(idSequence, idMessage, oldIndex, newIndex);
 	}
+
 
 }
