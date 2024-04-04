@@ -128,8 +128,8 @@ public class SequenceController {
 			
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
-			System.out.println("3");
 //			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
+			System.out.println(id + " " + message.getId() + " " + index + " " + tempIndex);
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
@@ -170,6 +170,7 @@ public class SequenceController {
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
 			
+			
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
@@ -190,4 +191,15 @@ public class SequenceController {
 		sequenceService.save(sequence);
 		return sequence;
 	}*/
+	
+	@PostMapping("/{id}/send")
+	public ResponseEntity<VMSResponseEntity> modifySecuence(@PathVariable("id") Integer id){
+		VMSResponseEntity response = new VMSResponseEntity();
+		
+		
+		
+		response.setMessage("ok");
+		response.setStatus(200);
+		return new ResponseEntity<VMSResponseEntity>(response,HttpStatus.OK);
+	}
 }
