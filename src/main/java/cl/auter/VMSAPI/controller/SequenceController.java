@@ -193,7 +193,7 @@ public class SequenceController {
 	}*/
 	
 	@PostMapping("/{id}/send")
-	public ResponseEntity<VMSResponseEntity> modifySecuence(@PathVariable("id") Integer id){
+	public ResponseEntity<VMSResponseEntity> sendSequence(@PathVariable("id") Integer id){
 		VMSResponseEntity response = new VMSResponseEntity();
 		
 		
