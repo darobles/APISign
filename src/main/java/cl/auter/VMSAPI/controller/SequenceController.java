@@ -100,18 +100,18 @@ public class SequenceController {
 	}
 	
 
-	@PostMapping("/{id}/up/{index}")
-    public String sequenceUp(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
-		System.out.println("1");
+	//@PostMapping("/{id}/up/{index}")
+	@PostMapping("/up")
+    public ResponseEntity<VMSResponseEntity> sequenceUp(@RequestBody SequenceMessageModel sequenceMessage) { //@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		int                        id               = sequenceMessage.getSequence_id();
+		int                        index            = sequenceMessage.getIndex();
 		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
-		System.out.println("2 " + sequenceMessages.size());
-		JSONObject                outputJSON       = new JSONObject();
-		boolean                   changed          = false;
-		int                       position         = -1;
-		int                       i                =  0;
+		boolean                    changed          = false;
+		int                        position         = -1;
+		int                        i                =  0;
 		
-		for (SequenceMessageModel sequenceMessage : sequenceMessages) {
-			if (sequenceMessage.getIndex() == index) {
+		for (SequenceMessageModel message : sequenceMessages) {
+			if (message.getIndex() == index) {
 				position = i;
 				break;
 			} 
@@ -128,8 +128,6 @@ public class SequenceController {
 			
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
-//			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
-			System.out.println(id + " " + message.getId() + " " + index + " " + tempIndex);
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
@@ -138,21 +136,24 @@ public class SequenceController {
 			index   = otherIndex;
 		}
 
-		outputJSON.put("changed", changed);
-		outputJSON.put("index", index);
-		return outputJSON.toString();
+		VMSResponseEntity response =  new VMSResponseEntity();
+		response.setMessage(changed ? "changed" : "not changed");
+		response.setStatus(index);
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/{id}/down/{index}")
-    public String sequenceDown(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
-		List<SequenceMessageView> sequenceMessages = smService.getMessagesSequenceById(id);
-		JSONObject                outputJSON       = new JSONObject();
-		boolean                   changed          = false;
-		int                       position         = -1;
-		int                       i                =  0;
+	//@PostMapping("/{id}/down/{index}")
+	@PostMapping("/down")
+    public ResponseEntity<VMSResponseEntity> sequenceDown(@RequestBody SequenceMessageModel sequenceMessage) { //@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		int                        id               = sequenceMessage.getSequence_id();
+		int                        index            = sequenceMessage.getIndex();
+		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
+		boolean                    changed          = false;
+		int                        position         = -1;
+		int                        i                =  0;
 		
-		for (SequenceMessageView sequenceMessage : sequenceMessages) {
-			if (sequenceMessage.getIndex() == index) {
+		for (SequenceMessageModel message : sequenceMessages) {
+			if (message.getIndex() == index) {
 				position = i;
 				break;
 			} 
@@ -160,8 +161,8 @@ public class SequenceController {
 		}
 
 		if ((position >= 0) && (position < sequenceMessages.size() - 1)) {
-			SequenceMessageView message      = sequenceMessages.get(position);
-			SequenceMessageView otherMessage = sequenceMessages.get(position + 1);
+			SequenceMessageModel message      = sequenceMessages.get(position);
+			SequenceMessageModel otherMessage = sequenceMessages.get(position + 1);
 			
 			int otherIndex = otherMessage.getIndex();
 			message.setIndex(otherIndex);
@@ -169,8 +170,6 @@ public class SequenceController {
 			
 			Random random = new Random();
 			int tempIndex = -(10000 + random.nextInt(90000));  // Unique index in case someone else is modifying at the same time
-			
-			
 			sequenceMessageService.changeIndex(id, message.getId(), index, tempIndex);
 			sequenceMessageService.changeIndex(id, otherMessage.getId(), otherIndex, index);
 			sequenceMessageService.changeIndex(id, message.getId(), tempIndex, otherIndex);
@@ -179,9 +178,10 @@ public class SequenceController {
 			index   = otherIndex;
 		}
 
-		outputJSON.put("changed", changed);
-		outputJSON.put("index", index);
-		return outputJSON.toString();
+		VMSResponseEntity response =  new VMSResponseEntity();
+		response.setMessage(changed ? "changed" : "not changed");
+		response.setStatus(index);
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
 	/*@PostMapping("/{id}")

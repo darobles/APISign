@@ -17,7 +17,7 @@ public interface SequenceMessageRepository extends JpaRepository<SequenceMessage
 	@Query(value = "select * from mensaje_secuencia where id_mensaje = ?1", nativeQuery = true)
 	public List<SequenceMessageModel> findByIdMessage(Integer message_id);
 	
-	@Query(value = "select * from mensaje_secuencia where id_secuencia = ?1", nativeQuery = true)
+	@Query(value = "SELECT * from mensaje_secuencia WHERE id_secuencia = ?1 ORDER BY indice ASC", nativeQuery = true)
 	public List<SequenceMessageModel> findSeqAllById(Integer sequence_id);
 
 	@Modifying
