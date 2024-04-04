@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "mensaje_secuencia")
 public class SequenceMessageModel {
@@ -14,10 +16,12 @@ public class SequenceMessageModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	Integer id;
+	@JsonProperty("sequenceId")
 	@Column(name = "id_secuencia")
     Integer sequence_id;
 	@Column(name = "id_mensaje")
 	Integer message_id;
+	@JsonProperty("index")
 	@Column(name = "indice")
     Integer index;
 	@Column(name = "tiempo")

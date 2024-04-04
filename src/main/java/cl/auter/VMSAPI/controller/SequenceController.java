@@ -100,16 +100,18 @@ public class SequenceController {
 	}
 	
 
-	@PostMapping("/{id}/up/{index}")
-    public String sequenceUp(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+	//@PostMapping("/{id}/up/{index}")
+	@PostMapping("/up")
+    public ResponseEntity<VMSResponseEntity> sequenceUp(@RequestBody SequenceMessageModel sequenceMessage) { //@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		int                        id               = sequenceMessage.getSequence_id();
+		int                        index            = sequenceMessage.getIndex();
 		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
-		JSONObject                outputJSON       = new JSONObject();
-		boolean                   changed          = false;
-		int                       position         = -1;
-		int                       i                =  0;
+		boolean                    changed          = false;
+		int                        position         = -1;
+		int                        i                =  0;
 		
-		for (SequenceMessageModel sequenceMessage : sequenceMessages) {
-			if (sequenceMessage.getIndex() == index) {
+		for (SequenceMessageModel message : sequenceMessages) {
+			if (message.getIndex() == index) {
 				position = i;
 				break;
 			} 
@@ -134,21 +136,24 @@ public class SequenceController {
 			index   = otherIndex;
 		}
 
-		outputJSON.put("changed", changed);
-		outputJSON.put("index", index);
-		return outputJSON.toString();
+		VMSResponseEntity response =  new VMSResponseEntity();
+		response.setMessage(changed ? "changed" : "not changed");
+		response.setStatus(index);
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
-	@PostMapping("/{id}/down/{index}")
-    public String sequenceDown(@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+	//@PostMapping("/{id}/down/{index}")
+	@PostMapping("/down")
+    public ResponseEntity<VMSResponseEntity> sequenceDown(@RequestBody SequenceMessageModel sequenceMessage) { //@PathVariable("id") Integer id, @PathVariable("index") Integer index) {
+		int                        id               = sequenceMessage.getSequence_id();
+		int                        index            = sequenceMessage.getIndex();
 		List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(id);
-		JSONObject                 outputJSON       = new JSONObject();
 		boolean                    changed          = false;
 		int                        position         = -1;
 		int                        i                =  0;
 		
-		for (SequenceMessageModel sequenceMessage : sequenceMessages) {
-			if (sequenceMessage.getIndex() == index) {
+		for (SequenceMessageModel message : sequenceMessages) {
+			if (message.getIndex() == index) {
 				position = i;
 				break;
 			} 
@@ -173,9 +178,10 @@ public class SequenceController {
 			index   = otherIndex;
 		}
 
-		outputJSON.put("changed", changed);
-		outputJSON.put("index", index);
-		return outputJSON.toString();
+		VMSResponseEntity response =  new VMSResponseEntity();
+		response.setMessage(changed ? "changed" : "not changed");
+		response.setStatus(index);
+		return new ResponseEntity<VMSResponseEntity>(response, HttpStatus.OK);
 	}
 	
 	/*@PostMapping("/{id}")
