@@ -30,6 +30,7 @@ import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.NewSignModel;
+import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -43,6 +44,7 @@ import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
+import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceService;
 import cl.auter.VMSAPI.service.SequenceViewService;
 import cl.auter.VMSAPI.service.SideImageService;
@@ -84,6 +86,9 @@ public class VMSViewController {
 	SideImageService sideImageService;
 	@Autowired
 	SequenceService sequenceService;
+	// JPérez 2024.04.04
+	@Autowired
+	SequenceMessageService sequenceMessageService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll(){
@@ -429,5 +434,53 @@ public class VMSViewController {
 	    	job.add("result","ok");
 	    	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
 		}
-	    
+
+		// JPérez 2024.04.04
+		@PostMapping("{sign_id}/sequence/{sequence_id}/send")
+		public ResponseEntity<JsonObject> sendSequence(@PathVariable int sign_id, @PathVariable int sequence_id) {
+	    	JsonObjectBuilder job = Json.createObjectBuilder(); 
+	    	VMSViewModel sign = vmsService.getById(sign_id);
+System.out.println("SIGN " + sign.toString());
+	    	try {	           
+	            if (sign.getCodificacion() == Constants.ID_DIANMING) {
+	    			List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(sequence_id);
+	                List<MessageImage>         images           = new ArrayList<MessageImage>();
+	                List<Integer>              times            = new ArrayList<Integer>();
+System.out.println("Messages: " + sequenceMessages.size());
+	    			for (SequenceMessageModel sm : sequenceMessages) {
+	    				MessageModel message0 = messageService.getById(sm.getMessage_id());
+System.out.println("Message: " + message0.toString());
+						SignTypeViewModel stv = signTypeViewService.getById(message0.getType());
+						SideImageModel simLeft = sideImageService.getSideImage(message0.getMessage_id(), 0);
+						SideImageModel simRight = sideImageService.getSideImage(message0.getMessage_id(), 1);
+						List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message0.getGroup_id(), VMSUtils.CharsAsStringList(message0.getMessage()));
+						MessageImage mi = new MessageImage(stv, message0.getAlignmentId(), message0.getFont_color(), message0.getSpacing(), message0.getMessage());
+						mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+System.out.println(mi.toString());						
+						images.add(mi);
+						times.add(sm.getTime());
+	    			}
+
+	            	Thread t1 = new Thread(new Runnable() {
+                	    @Override
+                	    public void run() {
+        	                DIANMING dianming = new DIANMING(sign);	    
+        	                dianming.setAddresses(sign.getDireccion());
+        	                dianming.sendSequence(images, times);
+                	    }
+                	});  
+                	t1.start();
+                	job.add("result","success");
+                	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);	
+	            } else {
+	            	job.add("result","Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+	            	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);	
+	            }
+	        } catch (Exception ex) {
+	        	System.out.println(ex);
+	        	job.add("result","error: " + ex.toString());
+	        	return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
+	        }
+		}
+		
 }

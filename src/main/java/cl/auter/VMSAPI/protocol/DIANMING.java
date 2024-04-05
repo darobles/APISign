@@ -185,6 +185,7 @@ public class DIANMING {
 		boolean ok = true;
 		// int amount = contents.available();
 
+System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());		
 		do {
 			bytesRead = contents.read(byteBuffer, 0, DM_PACKAGE_SIZE);
 
@@ -243,8 +244,8 @@ public class DIANMING {
 
 		try {
 			for (byte[] image : images) {
-				ok &= sendBMP(index++, image);
-				if (!ok) {
+				ok &= sendBMP(index ++, image);
+				if (! ok) {
 					break;
 				}
 			}
@@ -299,7 +300,6 @@ public class DIANMING {
 			}
 			i++;
 		}
-
 		try {
 			// 71: Sends playlist to VMS
 			return sendFile(71, playlistName(number), new ByteArrayInputStream(playlistSend.getBytes()));
@@ -490,33 +490,30 @@ public class DIANMING {
 		return sent;
 	}
 
-	public boolean sendSequence(SignModel sign, SequenceModel sequence) {
-		//int j, k;
-		//int counter = 0;
-		//int prevCounter = 0;
+	public boolean sendSequence(List<MessageImage> miList, List<Integer> times) {
+		int i = 0, j, k;
+		int counter = 0;
+		int prevCounter = 0;
 		boolean bEnviado = false;
 
 		try {
-			// VMSDAO dao = new VMSDAO();
-//            List<SequenceMessageModel> sequenceMessages = new List<SequenceMessageModel>(); // = dao.getSequenceMessages(sequence);
 			List<byte[]> images = new ArrayList<>();
-			List<String> items = new ArrayList<>();
+			List<String> items  = new ArrayList<>();
 
 			items.clear();
-			/*
-			 * for (SequenceMessageModel sequenceMessage : sequenceMessages) {
-			 * MessageViewModel message; //=
-			 * dao.getMessage(sequenceMessage.getMessage().getId()); MessageImage mi = new
-			 * MessageImage(message.getId());
-			 * 
-			 * List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
-			 * images.addAll(bytes); prevCounter = counter; counter += bytes.size();
-			 * 
-			 * String sItem = sequenceMessage.getTime().toString() + ",0,0,0,0,"; for (k =
-			 * prevCounter, j = 0; k < counter; k ++, j += DM_SEGMENT_WIDTH) { sItem +=
-			 * "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3); }
-			 * items.add(sItem); }
-			 */
+			for (MessageImage mi : miList) {
+				List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
+				images.addAll(bytes);
+				
+				prevCounter = counter;
+				counter    += bytes.size();
+				
+                String sItem  = times.get(i ++).toString() + ",0,0,0,0,";
+                for (k = prevCounter, j = 0; k < counter; k ++, j += DM_SEGMENT_WIDTH) {
+                    sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
+                }
+                items.add(sItem);
+			}
 
 			sendAll(items, images);
 		} catch (Exception ex) {

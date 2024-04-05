@@ -192,7 +192,7 @@ public class SequenceController {
 		return sequence;
 	}*/
 	
-	@PostMapping("/{id}/send")
+	/*@PostMapping("/{id}/send")
 	public ResponseEntity<VMSResponseEntity> sendSequence(@PathVariable("id") Integer id){
 		VMSResponseEntity response = new VMSResponseEntity();
 		
@@ -201,5 +201,5 @@ public class SequenceController {
 		response.setMessage("ok");
 		response.setStatus(200);
 		return new ResponseEntity<VMSResponseEntity>(response,HttpStatus.OK);
-	}
+	}*/
 }

@@ -239,9 +239,11 @@ public class MessageImage {
     public String getBase64() {
         String b64;
         try {
-            b64 = Base64.getEncoder().encodeToString(this.getImageBytes());
+        	b64 = Base64.getEncoder().encodeToString(this.getImageBytes());
+System.out.println("GetBase64 - Try");
         } catch (IOException ex) {
             b64 = "";
+System.out.println("GetBase64 - Catch");
         }
         return b64;
     }
