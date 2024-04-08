@@ -184,8 +184,8 @@ public class DIANMING {
 		int offset = 0;
 		boolean ok = true;
 		// int amount = contents.available();
-
-System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());		
+		
+		System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());		
 		do {
 			bytesRead = contents.read(byteBuffer, 0, DM_PACKAGE_SIZE);
 
@@ -227,6 +227,7 @@ System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.
 			}
 		} while (ok && (bytesRead == DM_PACKAGE_SIZE));
 
+		System.out.println("okdiangming " + ok);
 		return ok;
 	}
 
@@ -251,12 +252,13 @@ System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.
 			}
 
 			if (ok) {
+				System.out.println("set Playlist");
 				setPlaylist(0, playlist);
 			}
 		} catch (Exception ex) {
 			ok = false;
 		}
-
+		System.out.println("ok " + ok);
 		return ok;
 	}
 
@@ -290,20 +292,25 @@ System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.
 		String playlistSend = "";
 		int numItems = contents.size();
 		int i = 0;
-
+		System.out.println("number " + number);
+		System.out.println("contents " + contents.size());
 		playlistSend = playlistSend.concat("[PLAYLIST]" + DM_NEWLINE);
 		playlistSend = playlistSend.concat("ITEM_NO=" + VMSUtils.ZeroPad(numItems, 3) + DM_NEWLINE);
+		
 		for (String playlistString : contents) {
+			System.out.println(i + " - " + playlistString);
 			playlistSend = playlistSend.concat("ITEM" + VMSUtils.ZeroPad(i, 3) + "=" + playlistString);
 			if (i < numItems - 1) {
 				playlistSend = playlistSend.concat(DM_NEWLINE);
 			}
 			i++;
 		}
+		System.out.println(playlistName(number) + " -2 " + playlistSend);
 		try {
 			// 71: Sends playlist to VMS
 			return sendFile(71, playlistName(number), new ByteArrayInputStream(playlistSend.getBytes()));
 		} catch (Exception ex) {
+			System.out.println(ex);
 			return false;
 		}
 	}
@@ -495,12 +502,13 @@ System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.
 		int counter = 0;
 		int prevCounter = 0;
 		boolean bEnviado = false;
-
+		System.out.println("send SEQUENCES");
 		try {
 			List<byte[]> images = new ArrayList<>();
 			List<String> items  = new ArrayList<>();
 
 			items.clear();
+			System.out.println("Tamano miList " + miList.size());
 			for (MessageImage mi : miList) {
 				List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
 				images.addAll(bytes);
@@ -514,9 +522,10 @@ System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.
                 }
                 items.add(sItem);
 			}
-
+			System.out.println("Tamano items " + items.size());
 			sendAll(items, images);
 		} catch (Exception ex) {
+			System.out.println(ex.toString());
 		}
 
 		return bEnviado;
