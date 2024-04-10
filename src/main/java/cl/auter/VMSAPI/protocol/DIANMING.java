@@ -56,8 +56,12 @@ public class DIANMING {
 		this.serverURL = letrero.getFono();
 		this.portURL = letrero.getPort();
 		try {
+			System.out.println(this.serverURL);
+			System.out.println(this.portURL);
 			this.socket = new Socket(this.serverURL, this.portURL);
+			
 		} catch (Exception ex) {
+			System.out.println("error1 " + ex.toString());
 			this.socket = null;
 		}
 	}
@@ -119,7 +123,7 @@ public class DIANMING {
 	private boolean sendPackage() {
 		// Cleans response object
 		this.cleanResponse();
-
+		System.out.println("SendPackage " + this.connectionMode + " - " + this.socket);
 		if ((this.connectionMode == 3) && (this.socket != null)) { // If it's a socket connection
 			boolean ok = true;
 			try {
@@ -256,6 +260,7 @@ public class DIANMING {
 				setPlaylist(0, playlist);
 			}
 		} catch (Exception ex) {
+			System.out.println(ex.toString());
 			ok = false;
 		}
 		System.out.println("ok " + ok);
