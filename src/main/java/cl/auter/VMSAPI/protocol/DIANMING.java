@@ -5,6 +5,7 @@ import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
+import cl.auter.util.Constants;
 import cl.auter.util.VMSUtils;
 
 import java.io.ByteArrayInputStream;
@@ -12,6 +13,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,7 +115,7 @@ public class DIANMING {
 	}
 
 	private String BMPName(Integer numeroBMP) {
-		return VMSUtils.ZeroPad(numeroBMP, 3) + ".bmp";
+		return ((Constants.OLD_DIANMING) ? "" : "icon/") + VMSUtils.ZeroPad(numeroBMP, 3) + ".bmp";  // JPérez 2024.04.17
 	}
 
 	private boolean sendPackage() {
@@ -131,9 +133,14 @@ public class DIANMING {
 				this.socket.setSoTimeout(3000);
 				this.socket.setKeepAlive(true);
 				this.socket.setTcpNoDelay(true);
-
 				// Send bytes to socket
 				List<Byte> bytesList = this.command.getFrameBytes();
+				for (int i = 0; i < bytesList.size(); i ++) {
+					if (bytesList.get(i) < 0) {
+						bytesList.set(i, (byte) (bytesList.get(i) + 256));
+					}
+				}
+
 				Byte[] bytes = new Byte[bytesList.size()];
 				DataOutputStream outStream = new DataOutputStream(this.socket.getOutputStream());
 				bytesList.toArray(bytes);
@@ -171,7 +178,7 @@ public class DIANMING {
 			} catch (Exception ex) {
 				LOGGER.log(Level.SEVERE, "Exception in DIANMING.enviarPackage()", ex);
 				ok = false;
-			} 
+			}
 			return ok;
 		}
 
@@ -184,8 +191,8 @@ public class DIANMING {
 		int offset = 0;
 		boolean ok = true;
 		// int amount = contents.available();
-		
-		System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());		
+
+		System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());
 		do {
 			bytesRead = contents.read(byteBuffer, 0, DM_PACKAGE_SIZE);
 
@@ -194,17 +201,26 @@ public class DIANMING {
 				int idx = 0;
 				byte[] byteSend = new byte[bytesRead + fileName.length() + 9];
 
+				if (! Constants.OLD_DIANMING) {  // JPérez 2024.04.17
+					// File name
+					for (int i = 0; i < fileName.length(); i++) {
+						byteSend[idx++] = (byte) fileName.charAt(i);
+					}
+				}
+				
 				// (-) New contents, first package
 				// (+) Contents to add
-				byteSend[idx++] = ((offset == 0) ? (byte) '-' : (byte) '+');
+				byteSend[idx++] = ((offset == 0) && Constants.OLD_DIANMING ? (byte) '-' : (byte) '+');  // JPérez 2024.04.17
 				String offsetString = VMSUtils.ZeroPad(offset, 8); // Offset, "01234567" format
 				for (int i = 0; i < 8; i++) {
 					byteSend[idx++] = (byte) offsetString.charAt(i);
 				}
 
-				// File name
-				for (int i = 0; i < fileName.length(); i++) {
-					byteSend[idx++] = (byte) fileName.charAt(i);
+				if (Constants.OLD_DIANMING) {  // JPérez 2024.04.17
+					// File name
+					for (int i = 0; i < fileName.length(); i++) {
+						byteSend[idx++] = (byte) fileName.charAt(i);
+					}
 				}
 				System.arraycopy(byteBuffer, 0, byteSend, idx, bytesRead);
 
@@ -234,7 +250,8 @@ public class DIANMING {
 	// --------------------------------------------------------------------------
 
 	boolean sendBMP(int index, byte[] image) throws InterruptedException {
-		return sendFile(41, BMPName(index), new ByteArrayInputStream(image));
+		int commandHead = (Constants.OLD_DIANMING) ? 41 : 5;  // JPérez 2024.04.17
+		return sendFile(commandHead, BMPName(index), new ByteArrayInputStream(image));
 	}
 
 	// --------------------------------------------------------------------------
@@ -245,20 +262,18 @@ public class DIANMING {
 
 		try {
 			for (byte[] image : images) {
-				ok &= sendBMP(index ++, image);
-				if (! ok) {
+				ok &= sendBMP(index++, image);
+				if (!ok) {
 					break;
 				}
 			}
 
 			if (ok) {
-				System.out.println("set Playlist");
 				setPlaylist(0, playlist);
 			}
 		} catch (Exception ex) {
 			ok = false;
 		}
-		System.out.println("ok " + ok);
 		return ok;
 	}
 
@@ -292,11 +307,9 @@ public class DIANMING {
 		String playlistSend = "";
 		int numItems = contents.size();
 		int i = 0;
-		System.out.println("number " + number);
-		System.out.println("contents " + contents.size());
 		playlistSend = playlistSend.concat("[PLAYLIST]" + DM_NEWLINE);
 		playlistSend = playlistSend.concat("ITEM_NO=" + VMSUtils.ZeroPad(numItems, 3) + DM_NEWLINE);
-		
+
 		for (String playlistString : contents) {
 			System.out.println(i + " - " + playlistString);
 			playlistSend = playlistSend.concat("ITEM" + VMSUtils.ZeroPad(i, 3) + "=" + playlistString);
@@ -305,17 +318,24 @@ public class DIANMING {
 			}
 			i++;
 		}
-		System.out.println(playlistName(number) + " -2 " + playlistSend);
+		System.out.println(playlistName(number) + " -> " + playlistSend);
 		try {
 			// 71: Sends playlist to VMS
-			return sendFile(71, playlistName(number), new ByteArrayInputStream(playlistSend.getBytes()));
+			boolean result = false;
+			if (! Constants.OLD_DIANMING) {
+				result = sendFile(71, playlistName(number), new ByteArrayInputStream(playlistSend.getBytes()));
+			} else {
+				result = sendFile(39, playlistName(number), new ByteArrayInputStream(playlistSend.getBytes()));
+				showPlaylist(number);
+			}
+			return result;
 		} catch (Exception ex) {
 			System.out.println(ex);
 			return false;
 		}
 	}
 
-	public void getPlaylist(Integer numPlaylist) {
+	public void showPlaylist(Integer numPlaylist) {
 		String name = playlistName(numPlaylist);
 		Byte[] nameBytes = new Byte[name.length()];
 
@@ -389,10 +409,12 @@ public class DIANMING {
 		int index = 9;
 
 		List<DIANMINGInfo> cabinets = new ArrayList<>();
-		for (int i = 0; i < numCabinets; i++, index += 32) {
-			DIANMINGInfo cabinetInfo = new DIANMINGInfo();
-			cabinetInfo.setAll(responseBytes, index);
-			cabinets.add(cabinetInfo);
+		if (! Constants.OLD_DIANMING) {
+			for (int i = 0; i < numCabinets; i++, index += 32) {
+				DIANMINGInfo cabinetInfo = new DIANMINGInfo();
+				cabinetInfo.setAll(responseBytes, index);
+				cabinets.add(cabinetInfo);
+			}
 		}
 
 		return cabinets;
@@ -441,8 +463,6 @@ public class DIANMING {
 		boolean sent = true;
 
 		try {
-//            VMSDAO dao = new VMSDAO();
-
 			List<byte[]> images = new ArrayList<>();
 			List<String> items = new ArrayList<>();
 
@@ -459,7 +479,7 @@ public class DIANMING {
 			items.add(sItem);
 
 			sent &= sendAll(items, images);
-			this.socket.close();
+			// this.socket.close(); // JPérez 2024.04.09
 		} catch (Exception ex) {
 			sent = false;
 		}
@@ -467,14 +487,13 @@ public class DIANMING {
 		return sent;
 	}
 
-
 	public boolean sendMessage(VMSViewModel sign, MessageImage mi) {
 		int j, k;
 		boolean sent;
 
 		try {
 			List<byte[]> images = new ArrayList<>();
-			List<String> items  = new ArrayList<>();
+			List<String> items = new ArrayList<>();
 
 			items.clear();
 
@@ -482,13 +501,13 @@ public class DIANMING {
 			images.addAll(bytes);
 
 			String sItem = "1,0,0,0,0,";
-			for (k = 0, j = 0; k < bytes.size(); k ++, j += DM_SEGMENT_WIDTH) {
+			for (k = 0, j = 0; k < bytes.size(); k++, j += DM_SEGMENT_WIDTH) {
 				sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
 			}
 			items.add(sItem);
 
 			sent = sendAll(items, images);
-			this.socket.close();
+			// this.socket.close(); // JPérez 2024.04.09
 		} catch (Exception ex) {
 			System.out.println(ex);
 			sent = false;
@@ -505,22 +524,22 @@ public class DIANMING {
 		System.out.println("send SEQUENCES");
 		try {
 			List<byte[]> images = new ArrayList<>();
-			List<String> items  = new ArrayList<>();
+			List<String> items = new ArrayList<>();
 
 			items.clear();
 			System.out.println("Tamano miList " + miList.size());
 			for (MessageImage mi : miList) {
 				List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
 				images.addAll(bytes);
-				
+
 				prevCounter = counter;
-				counter    += bytes.size();
-				
-                String sItem  = times.get(i ++).toString() + ",0,0,0,0,";
-                for (k = prevCounter, j = 0; k < counter; k ++, j += DM_SEGMENT_WIDTH) {
-                    sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
-                }
-                items.add(sItem);
+				counter += bytes.size();
+
+				String sItem = times.get(i++).toString() + ",0,0,0,0,";
+				for (k = prevCounter, j = 0; k < counter; k++, j += DM_SEGMENT_WIDTH) {
+					sItem += "\\C" + VMSUtils.ZeroPad(j, 3) + "000" + "\\B" + VMSUtils.ZeroPad(k, 3);
+				}
+				items.add(sItem);
 			}
 			System.out.println("Tamano items " + items.size());
 			sendAll(items, images);
@@ -531,6 +550,29 @@ public class DIANMING {
 		return bEnviado;
 	}
 
+	// JPérez 2024.04.17
+	public String getVersion() {
+		// 31: Version
+		this.clean();
+		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 31, null);
+		this.sendPackage();
+
+		String version = "";
+		try {
+			for (int i = 0; i < 6; i++) {
+				version += (char) ((byte) this.getResponse().get(i + 7));
+				if ((i == 1) || (i == 3)) {
+					version += ".";
+				}
+			}
+		} catch (Exception ex) {
+			version = "Error";
+		}
+
+		return version;
+	}
+
+	
 	@Override
 	public String toString() {
 		return "DIANMING{" + "urlServidor=" + serverURL + ", puerto=" + portURL + ", socket=" + socket

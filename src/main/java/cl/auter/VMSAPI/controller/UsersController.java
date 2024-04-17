@@ -64,33 +64,36 @@ public class UsersController {
 	
 	
 	@GetMapping("")
-	public List<UsersEntity> findAll(@RequestHeader(name = "Authorization", required = false) String token) throws ParseException{
-		JWTResponse jwtResponse = decJwt.validateToken(token);
-		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+	//public List<UsersEntity> findAll(@RequestHeader(name = "Authorization", required = false) String token) throws ParseException{
+	public List<UsersEntity> findAll() throws ParseException {
+		//JWTResponse jwtResponse = decJwt.validateToken(token);
+		//if ( jwtResponse.getGenMessage().equals("authorized") ) {
 			return usrRepository.findAll();
-		}
+		/*}
 		else {
 			return null;
-		}
+		}*/
 		
 	}
 	
 	@GetMapping("/{username}")
-	public UsersEntity findByUsername(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") ) {
+	//public UsersEntity findByUsername(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+	public UsersEntity findByUsername(@PathVariable String username) throws ParseException{
+		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") ) {*/
 			return usrRepository.findByUsername(username);
-		}
+		/*}
 		else {
 			return null;
-		}
+		}*/
 		
 	}
 	
 	@PostMapping("/validate_password")
-	public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
+	//public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+	public ResponseEntity<JsonObject> validatePassword(@RequestBody ChangePasswordEntity json) throws ParseException{
+		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {*/
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
@@ -119,16 +122,17 @@ public class UsersController {
 				jsn.add("result","error");
 			}
 			return ResponseEntity.ok(jsn.build());
-		}
+		/*}
 		else {
 			return null;
-		}
+		}*/
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
+	@PostMapping("/update")
+	//public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
+	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json) throws ParseException{
+		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {*/
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
 			Util              util = new Util();
 			try {
@@ -148,17 +152,18 @@ public class UsersController {
 				jsn.add("result","error");
 			}
 			return ResponseEntity.ok(jsn.build());
-		}
+		/*}
 		else{
 			return null;
-		}
+		}*/
 			
 	}
 	
 	@DeleteMapping("/{username}")
-	public ResponseEntity<JsonObject> deleteUser(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
-		JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
-		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {
+	//public ResponseEntity<JsonObject> deleteUser(@PathVariable String username, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+	public ResponseEntity<JsonObject> deleteUser(@PathVariable String username) throws ParseException {
+		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
+		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {*/
 			JsonObjectBuilder jsn     = Json.createObjectBuilder();
 	        UsersEntity       usuario = usrRepository.findByUsername(username);
 	        if (usuario != null) {
@@ -175,17 +180,17 @@ public class UsersController {
 	        	jsn.add("result", "usuario no encontrado");
 	        }
 	        return ResponseEntity.ok(jsn.build());
-		}
+		/*}
 		else {
 			return null;
-		}
+		}*/
 			
     }
 	
 	
-	@PostMapping("/insert")
-	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
-		
+	@PutMapping("/insert")
+	//public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
+	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json) throws ParseException {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();			
 			try {
 				UsersEntity newuser = new UsersEntity();
@@ -221,9 +226,6 @@ public class UsersController {
 			}
 			
 			return ResponseEntity.ok(jsn.build());
-		
-		
-			
     }
 	
 	
@@ -255,7 +257,7 @@ public class UsersController {
 				        
 				        JsonObjectBuilder claimsBuilder = Json.createObjectBuilder()
 			                .add("sub",  usersList.get(i).getUsername())
-			                .add("upn",  usersList.get(i).getUsername())
+			                //.add("upn",  usersList.get(i).getUsername())  // ?
 			                .add("iat", currentTime)
 			                .add("iss", "quickstart-jwt-issuer")
 			                .add("aud", "jwt-audience")
