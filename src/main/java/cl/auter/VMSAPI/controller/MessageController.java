@@ -147,9 +147,11 @@ public class MessageController {
 				messageModel.setFont_color(json.getColour());
 			if(json.getSpacing() != null)
 				messageModel.setSpacing(json.getSpacing());
-			if(json.getMessage() != null)
-			{
+			if(json.getMessage() != null) 			{
 				messageModel.setMessage(json.getMessage());
+			}
+			if (json.getSpacing() != null) {  // JPérez 2024.04.25
+				messageModel.setSpacing(json.getSpacing());
 			}
 			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
 			if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
