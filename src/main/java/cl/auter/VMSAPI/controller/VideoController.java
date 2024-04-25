@@ -74,7 +74,6 @@ public class VideoController {
 	                });
     	}
     	catch(Exception e) {
-    		//System.out.println(e);
     		return null;
     	}
     }

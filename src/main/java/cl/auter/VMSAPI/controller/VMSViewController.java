@@ -95,7 +95,7 @@ public class VMSViewController {
 	@GetMapping("")
 	public List<VMSViewModel> findAll() {
 		List<VMSViewModel> vmsList = vmsService.findAll();
-		for (VMSViewModel sign : vmsList) {
+		/*for (VMSViewModel sign : vmsList) {
 			if (sign.getCodificacion() == 1) { // Diangming
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
@@ -122,7 +122,7 @@ public class VMSViewController {
 				sign.setCabinets(cabinets);
 			}
 
-		}
+		}*/
 		return vmsList;
 	}
 
@@ -219,6 +219,7 @@ public class VMSViewController {
 			@PathVariable("id") String brightnessValue) {
 
 		VMSResponseEntity response = new VMSResponseEntity();
+		response.setMessage("");
 		response.setStatus(500);
 		try {
 			if ((brightnessValue.compareToIgnoreCase("FF") == 0)

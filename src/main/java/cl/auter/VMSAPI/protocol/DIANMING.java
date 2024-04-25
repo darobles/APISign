@@ -58,8 +58,6 @@ public class DIANMING {
 		this.serverURL = letrero.getFono();
 		this.portURL = letrero.getPort();
 		try {
-			System.out.println(this.serverURL);
-			System.out.println(this.portURL);
 			this.socket = new Socket(this.serverURL, this.portURL);
 			
 		} catch (Exception ex) {
@@ -125,7 +123,6 @@ public class DIANMING {
 	private boolean sendPackage() {
 		// Cleans response object
 		this.cleanResponse();
-		System.out.println("SendPackage " + this.connectionMode + " - " + this.socket);
 		if ((this.connectionMode == 3) && (this.socket != null)) { // If it's a socket connection
 			boolean ok = true;
 			try {
@@ -196,7 +193,6 @@ public class DIANMING {
 		boolean ok = true;
 		// int amount = contents.available();
 
-		System.out.println("sendFile: " + commandHead + " " + fileName + " " + contents.toString());
 		do {
 			bytesRead = contents.read(byteBuffer, 0, DM_PACKAGE_SIZE);
 
@@ -247,7 +243,6 @@ public class DIANMING {
 			}
 		} while (ok && (bytesRead == DM_PACKAGE_SIZE));
 
-		System.out.println("okdiangming " + ok);
 		return ok;
 	}
 
@@ -316,14 +311,12 @@ public class DIANMING {
 		playlistSend = playlistSend.concat("ITEM_NO=" + VMSUtils.ZeroPad(numItems, 3) + DM_NEWLINE);
 
 		for (String playlistString : contents) {
-			System.out.println(i + " - " + playlistString);
 			playlistSend = playlistSend.concat("ITEM" + VMSUtils.ZeroPad(i, 3) + "=" + playlistString);
 			if (i < numItems - 1) {
 				playlistSend = playlistSend.concat(DM_NEWLINE);
 			}
 			i++;
 		}
-		System.out.println(playlistName(number) + " -> " + playlistSend);
 		try {
 			// 71: Sends playlist to VMS
 			boolean result = false;
@@ -526,13 +519,11 @@ public class DIANMING {
 		int counter = 0;
 		int prevCounter = 0;
 		boolean bEnviado = false;
-		System.out.println("send SEQUENCES");
 		try {
 			List<byte[]> images = new ArrayList<>();
 			List<String> items = new ArrayList<>();
 
 			items.clear();
-			System.out.println("Tamano miList " + miList.size());
 			for (MessageImage mi : miList) {
 				List<byte[]> bytes = mi.getImageBytes(DM_SEGMENT_WIDTH);
 				images.addAll(bytes);
@@ -546,7 +537,6 @@ public class DIANMING {
 				}
 				items.add(sItem);
 			}
-			System.out.println("Tamano items " + items.size());
 			sendAll(items, images);
 		} catch (Exception ex) {
 			System.out.println(ex.toString());
