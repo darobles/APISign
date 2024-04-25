@@ -117,7 +117,7 @@ public class DIANMING {
 	}
 
 	private String BMPName(Integer numeroBMP) {
-		return ((Constants.OLD_DIANMING) ? "" : "icon/") + VMSUtils.ZeroPad(numeroBMP, 3) + ".bmp";  // JPérez 2024.04.17
+		return /*((Constants.OLD_DIANMING) ? "" : "icon/") +*/ VMSUtils.ZeroPad(numeroBMP, 3) + ".bmp";  // JPérez 2024.04.17
 	}
 
 	private boolean sendPackage() {
@@ -201,26 +201,17 @@ public class DIANMING {
 				int idx = 0;
 				byte[] byteSend = new byte[bytesRead + fileName.length() + 9];
 
-				if (! Constants.OLD_DIANMING) {  // JPérez 2024.04.17
-					// File name
-					for (int i = 0; i < fileName.length(); i++) {
-						byteSend[idx++] = (byte) fileName.charAt(i);
-					}
-				}
-				
 				// (-) New contents, first package
 				// (+) Contents to add
-				byteSend[idx++] = ((offset == 0) && Constants.OLD_DIANMING ? (byte) '-' : (byte) '+');  // JPérez 2024.04.17
+				byteSend[idx++] = ((offset == 0) ? (byte) '-' : (byte) '+');  // JPérez 2024.04.17
 				String offsetString = VMSUtils.ZeroPad(offset, 8); // Offset, "01234567" format
 				for (int i = 0; i < 8; i++) {
 					byteSend[idx++] = (byte) offsetString.charAt(i);
 				}
 
-				if (Constants.OLD_DIANMING) {  // JPérez 2024.04.17
-					// File name
-					for (int i = 0; i < fileName.length(); i++) {
-						byteSend[idx++] = (byte) fileName.charAt(i);
-					}
+				// File name
+				for (int i = 0; i < fileName.length(); i++) {
+					byteSend[idx++] = (byte) fileName.charAt(i);
 				}
 				System.arraycopy(byteBuffer, 0, byteSend, idx, bytesRead);
 
@@ -249,8 +240,8 @@ public class DIANMING {
 	// --------------------------------------------------------------------------
 
 	boolean sendBMP(int index, byte[] image) throws InterruptedException {
-		int commandHead = (Constants.OLD_DIANMING) ? 41 : 5;  // JPérez 2024.04.17
-		return sendFile(commandHead, BMPName(index), new ByteArrayInputStream(image));
+		//int commandHead = (Constants.OLD_DIANMING) ? 41 : 5;  // JPérez 2024.04.17
+		return sendFile(41, BMPName(index), new ByteArrayInputStream(image));
 	}
 
 	// --------------------------------------------------------------------------
@@ -361,10 +352,8 @@ public class DIANMING {
 
 		// 23: Set brightness command
 		this.clean();
-		System.out.println("Cambio brillo a " + brightness);
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 23, brightnessBytes);
 		this.sendPackage();
-		System.out.println("Enviado");
 	}
 
 	public DIANMINGBrightness getBrightness() {
@@ -416,7 +405,7 @@ public class DIANMING {
 				cabinets.add(cabinetInfo);
 			}
 		}
-		
+
 		return cabinets;
 	}
 
