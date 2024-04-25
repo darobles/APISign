@@ -122,7 +122,7 @@ public class MessageController {
 	@PostMapping("/{id}/image")
 	public String getMessageImage(@PathVariable("id") int id_message, @RequestBody MessagePreviewModel json) {
 		System.out.println(json.toString());
-		json.setSpacing(2);
+		//json.setSpacing(2);
 		JSONObject outputJSON = new JSONObject();
 		try {
 			SideImageModel          simLeft  = null;
@@ -154,9 +154,11 @@ public class MessageController {
 				messageModel.setFont_color(json.getColour());
 			if(json.getSpacing() != null)
 				messageModel.setSpacing(json.getSpacing());
-			if(json.getMessage() != null)
-			{
+			if(json.getMessage() != null) 			{
 				messageModel.setMessage(json.getMessage());
+			}
+			if (json.getSpacing() != null) {  // JPérez 2024.04.25
+				messageModel.setSpacing(json.getSpacing());
 			}
 			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
 			System.out.println("sm2 " + symbolsModel.toString());
