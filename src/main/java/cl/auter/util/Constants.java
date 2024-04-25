@@ -23,5 +23,5 @@ public class Constants {
     
     public static final String[] CAM_TYPE = { "IP7330", "VS3100P" };
     
-    public static final boolean OLD_DIANMING = true;  // JPérez 2024.04.17 :: Should normally be false 
+    public static final boolean OLD_DIANMING = false;  // JPérez 2024.04.17 :: Should normally be false 
 }
