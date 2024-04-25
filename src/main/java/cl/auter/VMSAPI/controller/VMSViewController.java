@@ -164,6 +164,7 @@ public class VMSViewController {
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
 				List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
+				System.out.println("cabinetsInfo " + cabinetsInfo.size());
 				// socket.close();
 				List<Cabinet> cabinets = new ArrayList<Cabinet>();
 				int idGabinete = 1;

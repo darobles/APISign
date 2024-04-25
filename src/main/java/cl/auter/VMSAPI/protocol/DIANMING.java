@@ -361,8 +361,10 @@ public class DIANMING {
 
 		// 23: Set brightness command
 		this.clean();
+		System.out.println("Cambio brillo a " + brightness);
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 23, brightnessBytes);
 		this.sendPackage();
+		System.out.println("Enviado");
 	}
 
 	public DIANMINGBrightness getBrightness() {
@@ -414,7 +416,7 @@ public class DIANMING {
 				cabinets.add(cabinetInfo);
 			}
 		}
-
+		
 		return cabinets;
 	}
 

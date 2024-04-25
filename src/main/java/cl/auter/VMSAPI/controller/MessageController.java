@@ -90,11 +90,9 @@ public class MessageController {
 	public ResponseEntity<Integer> createMessage(@RequestBody MessageModel message ) {
 		messageService.save(message);
 		messageService.flush();
-		System.out.println("message " + message.getMessage_id());
 		JsonObject json = Json.createObjectBuilder()
 		.add("id", "10")
 		.build();
-		System.out.println(json.toString());
 		return new ResponseEntity<Integer>(message.getMessage_id(), HttpStatus.OK);	
 		
 	}
@@ -122,28 +120,23 @@ public class MessageController {
 	@PostMapping("/{id}/image")
 	public String getMessageImage(@PathVariable("id") int id_message, @RequestBody MessagePreviewModel json) {
 		System.out.println(json.toString());
-		json.setSpacing(2);
+		json.setSpacing(json.getSpacing());
 		JSONObject outputJSON = new JSONObject();
 		try {
 			SideImageModel          simLeft  = null;
 			SideImageModel          simRight = null;
 			String                  message  = json.getMessage();
 			MessageModel messageModel      = new MessageModel();
-			System.out.println("asdas");
 			if(id_message > 0)
 			{
-				System.out.println("id: " + id_message);
 				messageModel = messageService.getById(id_message);
 			}
-			System.out.println("12313");
-			System.out.println("m1 " + messageModel.toString());
 			List<SignTypeViewModel> st       = signTypeViewService.findAllBySignTypeId(messageModel.getType());
 			System.out.println("st " + st.toString());
 			if ((st == null) || st.isEmpty()) {
 				SignModel sign = signService.getById(json.getSign_id());
 				st = signTypeViewService.findAllBySignTypeId(sign.getId_tipo_letrero());
 				//throw new Exception("No sign type defined for the given VMS");
-				System.out.println(st.toString());
 			}
 			
 			if(json.getGroupId() != null)
@@ -159,7 +152,6 @@ public class MessageController {
 				messageModel.setMessage(json.getMessage());
 			}
 			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(), VMSUtils.CharsAsStringList(message));
-			System.out.println("sm2 " + symbolsModel.toString());
 			if ((json.getImageB64_left() != null) && (json.getVerticalAlign_left() != null)) {
 				simLeft = new SideImageModel();
 				simLeft.setUbicacion_hrz(0);
@@ -175,7 +167,6 @@ public class MessageController {
 			MessageImage mi = new MessageImage(st.get(0), messageModel.getAlignmentId(), messageModel.getFont_color(), messageModel.getSpacing(), messageModel.getMessage());
 			mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
         	String b64 = mi.getBase64();
-        	System.out.println("b64 " + b64);
             outputJSON.put("mime", "image/bmp");
             outputJSON.put("data", b64); 
         } catch (Exception ex) {
