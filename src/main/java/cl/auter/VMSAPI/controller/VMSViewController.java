@@ -96,7 +96,7 @@ public class VMSViewController {
 	public List<VMSViewModel> findAll() {
 		List<VMSViewModel> vmsList = vmsService.findAll();
 		/*for (VMSViewModel sign : vmsList) {
-			if (sign.getCodificacion() == 1) { // Diangming
+			if (sign.getCodificacion() == Constants.ID_DIANMING) { // Diangming
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
 				List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
@@ -160,7 +160,7 @@ public class VMSViewController {
 	public VMSViewModel findById(@PathVariable("id") Integer vms_id) {
 		VMSViewModel sign = vmsService.findVMSById(vms_id);
 		try {
-			if (sign.getCodificacion() == 1) { // Diangming
+			if (sign.getCodificacion() == Constants.ID_DIANMING) { // Diangming
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
 				List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
@@ -450,10 +450,8 @@ public class VMSViewController {
 				List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(sequence_id);
 				List<MessageImage> images = new ArrayList<MessageImage>();
 				List<Integer> times = new ArrayList<Integer>();
-				System.out.println("Messages: " + sequenceMessages.size());
 				for (SequenceMessageModel sm : sequenceMessages) {
 					MessageModel message0 = messageService.getById(sm.getMessage_id());
-					System.out.println("Message: " + message0.toString());
 					SignTypeViewModel stv = signTypeViewService.getById(message0.getType());
 					SideImageModel simLeft = sideImageService.getSideImage(message0.getMessage_id(), 0);
 					SideImageModel simRight = sideImageService.getSideImage(message0.getMessage_id(), 1);
@@ -463,7 +461,7 @@ public class VMSViewController {
 							message0.getSpacing(), message0.getMessage());
 					mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
 					images.add(mi);
-					times.add(sm.getTime());
+					times.add(sm.getTime()*10); //decimas a segundos
 				}
 
 				Thread t1 = new Thread(new Runnable() {
