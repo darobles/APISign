@@ -88,6 +88,12 @@ public class SequenceController {
 		return new ResponseEntity<SequenceMessageModel>(sequenceMessage, HttpStatus.OK);
 	}
 	
+	@PutMapping("/{id}/message")
+	public ResponseEntity<SequenceMessageModel> editMessageSequence(@RequestBody SequenceMessageModel sequenceMessage){
+		sequenceMessageService.save(sequenceMessage);
+		return new ResponseEntity<SequenceMessageModel>(sequenceMessage, HttpStatus.OK);
+	}
+	
 	@DeleteMapping("/message/{id}")
 	public ResponseEntity<VMSResponseEntity> deleteMessagesFromSequence(@PathVariable("id") Integer id){
 		SequenceMessageModel seq = new SequenceMessageModel();
