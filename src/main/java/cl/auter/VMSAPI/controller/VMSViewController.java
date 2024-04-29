@@ -487,4 +487,42 @@ public class VMSViewController {
 		}
 	}
 
+	// JPérez 2024.04.29
+	@GetMapping("{sign_id}/turnon/{is_on]")
+	public ResponseEntity<JsonObject> turnOn(@PathVariable int sign_id, @PathVariable int is_on) {
+		JsonObjectBuilder job = Json.createObjectBuilder();
+		VMSViewModel sign = vmsService.getById(sign_id);
+		
+		if ((is_on != 0) && (is_on != 1)) {
+			job.add("result", "Invalid value for turning on/off VMS.");
+			return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
+		}
+		try {
+			if (sign.getCodificacion() == Constants.ID_DIANMING) {
+				Thread t1 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						DIANMING dianming = new DIANMING(sign);
+						dianming.setAddresses(sign.getDireccion());
+						if (is_on == 0) {
+							dianming.turnOffVMS();
+						} else {
+							dianming.turnOnVMS();
+						}
+					}
+				});
+				t1.start();
+				job.add("result", "success");
+				return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
+			} else {
+				job.add("result", "Protocol not supported for this operation.");
+				return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
+			}
+		} catch (Exception ex) {
+			System.out.println(ex);
+			job.add("result", "error: " + ex.toString());
+			return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 }
