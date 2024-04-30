@@ -11,4 +11,5 @@ public interface MessageImageRepository extends JpaRepository<MessageImageModel,
 
 	@Query(value = "SELECT imagen_b64, ubicacion_vrt FROM mensaje_imagen WHERE id_mensaje =?1  AND ubicacion_hrz = ?2", nativeQuery = true)
 	public MessageImageModel getMessageImageModel(int id_message, int side);
+	
 }
