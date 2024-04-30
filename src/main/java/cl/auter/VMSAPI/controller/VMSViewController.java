@@ -488,7 +488,7 @@ public class VMSViewController {
 	}
 
 	// JPérez 2024.04.29
-	@GetMapping("{sign_id}/turnon/{is_on]")
+	@GetMapping("{sign_id}/turnon/{is_on}")
 	public ResponseEntity<JsonObject> turnOn(@PathVariable int sign_id, @PathVariable int is_on) {
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		VMSViewModel sign = vmsService.getById(sign_id);
