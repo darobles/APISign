@@ -156,8 +156,8 @@ public class VMSViewController {
 		return null;
 	}
 
-	@GetMapping("/{id}")
-	public VMSViewModel findById(@PathVariable("id") Integer vms_id) {
+	@GetMapping("/{id}/full")
+	public VMSViewModel findByIdWithCabs(@PathVariable("id") Integer vms_id) {
 		VMSViewModel sign = vmsService.findVMSById(vms_id);
 		try {
 			if (sign.getCodificacion() == Constants.ID_DIANMING) { // Diangming
@@ -189,6 +189,12 @@ public class VMSViewController {
 		} catch (Exception ex) {
 			// outputJSON.clear();
 		}
+		return sign;
+	}
+	
+	@GetMapping("/{id}")
+	public VMSViewModel findById(@PathVariable("id") Integer vms_id) {
+		VMSViewModel sign = vmsService.findVMSById(vms_id);
 		return sign;
 	}
 
