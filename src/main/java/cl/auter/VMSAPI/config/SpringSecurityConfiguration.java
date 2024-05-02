@@ -102,6 +102,7 @@ public class SpringSecurityConfiguration extends WebSecurityConfigurerAdapter {
 		source.registerCorsConfiguration("/api/signType", configuration);
 		source.registerCorsConfiguration("/api/sign", configuration);
 		source.registerCorsConfiguration("/api/sign/*", configuration);
+		source.registerCorsConfiguration("/api/sign/*/full", configuration);
 		source.registerCorsConfiguration("/api/sign/*/message", configuration);
 		source.registerCorsConfiguration("/api/sign/*/message/send", configuration);
 		source.registerCorsConfiguration("/api/sign/*/sequence/*/send", configuration);
