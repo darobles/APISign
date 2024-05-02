@@ -8,6 +8,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 public class MessageImageAllModel {
 	@Id
+	@JsonProperty("id")
+	int id;
 	@JsonProperty("messageId")
 	int id_mensaje;
 	@JsonProperty("side")
@@ -25,6 +27,14 @@ public class MessageImageAllModel {
 	public MessageImageAllModel(int id_mensaje) {
 		super();
 		this.id_mensaje = id_mensaje;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public int getId_mensaje() {
@@ -61,7 +71,7 @@ public class MessageImageAllModel {
 
 	@Override
 	public String toString() {
-		return "MessageImageAllModel [id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz
+		return "MessageImageAllModel [id=" + id + ", id_mensaje=" + id_mensaje + ", ubicacion_hrz=" + ubicacion_hrz
 				+ ", nombre_mensaje=" + nombre_mensaje + ", imagen_b64=" + imagen_b64 + "]";
 	}
 	
