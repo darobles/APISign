@@ -272,7 +272,7 @@ public class DIANMING {
 
 	public void turnOnVMS() {
 		Byte[] frame = new Byte[1];
-		frame[0] = (byte) 0x01;
+		frame[0] = (byte) 0x31;
 
 		this.clean();
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 11, frame);
@@ -281,7 +281,7 @@ public class DIANMING {
 
 	public void turnOffVMS() {
 		Byte[] frame = new Byte[1];
-		frame[0] = (byte) 0x00;
+		frame[0] = (byte) 0x30;
 
 		this.clean();
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 11, frame);
