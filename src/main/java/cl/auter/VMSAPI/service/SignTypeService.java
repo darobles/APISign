@@ -10,35 +10,35 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import cl.auter.VMSAPI.model.view.SignTypeViewModel;
-import cl.auter.VMSAPI.repository.SignTypeViewRepository;
+import cl.auter.VMSAPI.model.SignTypeModel;
+import cl.auter.VMSAPI.repository.SignTypeRepository;
 
 @Service
-public class SignTypeViewService implements SignTypeViewRepository{
+public class SignTypeService implements SignTypeRepository{
 	
 	@Autowired
-	SignTypeViewRepository signTypeViewRepository;
-	
-	@Override
-	public List<SignTypeViewModel> findAll() {
-		// TODO Auto-generated method stub
-		return signTypeViewRepository.findAll();
-	}
+	SignTypeRepository signTypeRepository;
 
 	@Override
-	public List<SignTypeViewModel> findAll(Sort sort) {
+	public List<SignTypeModel> findAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<SignTypeViewModel> findAllById(Iterable<Integer> ids) {
+	public List<SignTypeModel> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> List<S> saveAll(Iterable<S> entities) {
+	public List<SignTypeModel> findAllById(Iterable<Integer> ids) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends SignTypeModel> List<S> saveAll(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -50,19 +50,19 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> S saveAndFlush(S entity) {
+	public <S extends SignTypeModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> List<S> saveAllAndFlush(Iterable<S> entities) {
+	public <S extends SignTypeModel> List<S> saveAllAndFlush(Iterable<S> entities) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void deleteAllInBatch(Iterable<SignTypeViewModel> entities) {
+	public void deleteAllInBatch(Iterable<SignTypeModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -80,45 +80,44 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	}
 
 	@Override
-	public SignTypeViewModel getOne(Integer id) {
+	public SignTypeModel getOne(Integer id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public SignTypeViewModel getById(Integer id) {
-		// TODO Auto-generated method stub
-		return signTypeViewRepository.getById(id);
+	public SignTypeModel getById(Integer id) {
+		return signTypeRepository.getById(id);
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> List<S> findAll(Example<S> example) {
+	public <S extends SignTypeModel> List<S> findAll(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> List<S> findAll(Example<S> example, Sort sort) {
+	public <S extends SignTypeModel> List<S> findAll(Example<S> example, Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Page<SignTypeViewModel> findAll(Pageable pageable) {
+	public Page<SignTypeModel> findAll(Pageable pageable) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> S save(S entity) {
+	public <S extends SignTypeModel> S save(S entity) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Optional<SignTypeViewModel> findById(Integer id) {
+	public Optional<SignTypeModel> findById(Integer id) {
 		// TODO Auto-generated method stub
-		return signTypeViewRepository.findById(id);
+		return null;
 	}
 
 	@Override
@@ -134,13 +133,9 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	}
 
 	@Override
-	public void deleteById(Integer id) {
-		signTypeViewRepository.deleteById(id);
-	}
-
-	@Override
-	public void delete(SignTypeViewModel entity) {
+	public void delete(SignTypeModel entity) {
 		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -150,7 +145,7 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	}
 
 	@Override
-	public void deleteAll(Iterable<? extends SignTypeViewModel> entities) {
+	public void deleteAll(Iterable<? extends SignTypeModel> entities) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -162,35 +157,32 @@ public class SignTypeViewService implements SignTypeViewRepository{
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> Optional<S> findOne(Example<S> example) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
-	}
-
-	@Override
-	public <S extends SignTypeViewModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+	public <S extends SignTypeModel> Optional<S> findOne(Example<S> example) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> long count(Example<S> example) {
+	public <S extends SignTypeModel> Page<S> findAll(Example<S> example, Pageable pageable) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <S extends SignTypeModel> long count(Example<S> example) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public <S extends SignTypeViewModel> boolean exists(Example<S> example) {
+	public <S extends SignTypeModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	// JPérez 2024.02.22
 	@Override
-	public List<SignTypeViewModel> findAllBySignTypeId(Integer id) {
-		// TODO Auto-generated method stub
-		return signTypeViewRepository.findAllBySignTypeId(id);
+	public void deleteById(Integer id) {
+		signTypeRepository.deleteById(id);
 	}
-
 
 }
