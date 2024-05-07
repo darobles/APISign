@@ -55,13 +55,10 @@ public class SignTypeViewController {
 				}
 			} else {
 				job.add("result", "Id doesn't exist");
-System.out.println(">>> ELSE");
 			}
 		} catch (Exception ex) {
-System.out.println(">>> CATCH");
 			job.add("result", "Id doesn't exist");
 		}
-System.out.println(">>> STATUS: " + status);
 		return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
 	}
 	
