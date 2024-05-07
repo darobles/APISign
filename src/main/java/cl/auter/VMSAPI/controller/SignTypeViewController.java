@@ -59,7 +59,7 @@ public class SignTypeViewController {
 		} catch (Exception ex) {
 			job.add("result", "Id doesn't exist");
 		}
-		return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
+		return new ResponseEntity<JsonObject>(job.build(), status);
 	}
 	
 }
