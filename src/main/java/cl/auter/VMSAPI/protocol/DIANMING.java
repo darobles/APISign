@@ -381,6 +381,7 @@ public class DIANMING {
 			brightness.setAutomatic(true);
 		}
 
+System.out.println(">>> " + brightness.toString());		
 		return brightness;
 	}
 

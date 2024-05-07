@@ -42,6 +42,7 @@ import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.model.view.VMSViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
+import cl.auter.VMSAPI.protocol.DIANMINGBrightness;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
@@ -213,12 +214,15 @@ public class VMSViewController {
 
 	@GetMapping("/{id}/brightness")
 	public BrightnessEntity getBrightness(@PathVariable("id") int idSign) {
-
-		// List<GrupoModel> messages = groupService.findAllById(idSign);
-		BrightnessEntity demo = new BrightnessEntity();
-		demo.setAutomatic(false);
-		demo.setValue(45);
-		return demo;
+		try {
+			VMSViewModel sign = vmsService.findVMSById(idSign);
+			if (sign.getCodificacion() == Constants.ID_DIANMING) {
+				DIANMINGBrightness brightness = new DIANMING(sign).getBrightness();
+				return new BrightnessEntity(brightness);
+			}
+		} catch (Exception ex) {
+		}
+		return new BrightnessEntity();
 	}
 
 	@PutMapping("/{id}/brightness/{value}")
