@@ -24,6 +24,8 @@ public class SignTypeViewModel {
 	int symbolMaxHeight;
 	@Column(name = "id_tipo_ancho")
 	int widthTypeId;
+	@Column(name = "ancho_max_simbolo")
+	int symbolMaxWidth;
 	@Column(name = "espaciado")
 	int spacing;
 	@Column(name = "grano")
@@ -78,6 +80,13 @@ public class SignTypeViewModel {
 	public void setWidthTypeId(int widthTypeId) {
 		this.widthTypeId = widthTypeId;
 	}
+	
+	public int getSymbolMaxWidth() {
+		return symbolMaxWidth;
+	}
+	public void setSymbolMaxWidth(int symbolMaxWidth) {
+		this.symbolMaxWidth = symbolMaxWidth;
+	}
 	public int getSpacing() {
 		return spacing;
 	}
@@ -106,10 +115,10 @@ public class SignTypeViewModel {
 	public String toString() {
 		return "SignTypeViewModel [id=" + id + ", name=" + name + ", width=" + width + ", height=" + height
 				+ ", lineSpacing=" + lineSpacing + ", symbolMaxHeight=" + symbolMaxHeight + ", widthTypeId="
-				+ widthTypeId + ", spacing=" + spacing + ", grain=" + grain + ", protocolId=" + protocolId
-				+ ", widthTypeName=" + widthTypeName + "]";
+				+ widthTypeId + ", symbolMaxWidth=" + symbolMaxWidth + ", spacing=" + spacing + ", grain=" + grain
+				+ ", protocolId=" + protocolId + ", widthTypeName=" + widthTypeName + "]";
 	}
-	
+
 	
 	
 	
