@@ -13,9 +13,12 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import cl.auter.VMSAPI.model.NewSignModel;
 import cl.auter.VMSAPI.model.SignTypeModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.service.SignTypeService;
@@ -53,6 +56,30 @@ public class SignTypeViewController {
 				} catch (Exception ex) {
 					job.add("result", "Cannot be deleted");
 				}
+			} else {
+				job.add("result", "Id doesn't exist");
+			}
+		} catch (Exception ex) {
+			job.add("result", "Id doesn't exist");
+		}
+		return new ResponseEntity<JsonObject>(job.build(), status);
+	}
+	
+	// JPérez 2024.05.07
+	@PutMapping("/{idSignType}")
+	public ResponseEntity<JsonObject> updateSignType(@PathVariable("idSignType") Integer idSignType, @RequestBody SignTypeModel json) {
+		JsonObjectBuilder job = Json.createObjectBuilder();
+		HttpStatus        status = HttpStatus.NOT_MODIFIED;
+		try {
+			SignTypeModel st = signTypeService.getById(idSignType);
+			if (st != null) {
+				json.setId(idSignType); /////////
+				if ((json.getName() == null) || (json.getName().isEmpty())) {
+					json.setName(st.getName());
+				}
+				signTypeService.saveAndFlush(json);
+				job.add("result", "ok");
+				status = HttpStatus.OK;
 			} else {
 				job.add("result", "Id doesn't exist");
 			}

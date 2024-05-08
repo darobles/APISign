@@ -1,5 +1,6 @@
 package cl.auter.VMSAPI.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -8,133 +9,143 @@ import javax.persistence.Table;
 @Table(name = "tipo_letreros")
 public class SignTypeModel {
 	@Id
-	int    id_tipo_letrero;
-	String nombre;
-	int    ancho;
-	int    alto;
-	int    espacio_lineas;
-	int    alto_max_simbolo;
-	int    id_tipo_ancho;
-	int    ancho_max_simbolo;
-	int    espaciado;
-	int    grano;
-	int    codificacion;
+	@Column(name = "id_tipo_letrero")
+	int    id;
+	@Column(name = "nombre")
+	String name;
+	@Column(name = "ancho")
+	int width;
+	@Column(name = "alto")
+	int height;
+	@Column(name = "espacio_lineas")
+	int lineSpacing;
+	@Column(name = "alto_max_simbolo")
+	int symbolMaxHeight;
+	@Column(name = "id_tipo_ancho")
+	int widthTypeId;
+	@Column(name = "ancho_max_simbolo")
+	int symbolMaxWidth;
+	@Column(name = "espaciado")
+	int spacing;
+	@Column(name = "grano")
+	int grain;
+	@Column(name = "codificacion")
+	int protocolId;
 	
 	public SignTypeModel() {
 		super();
 	}
-	
-	public SignTypeModel(int id_tipo_letrero, String nombre, int ancho, int alto, int espacio_lineas,
-			int alto_max_simbolo, int id_tipo_ancho, int ancho_max_simbolo, int espaciado, int grano,
-			int codificacion) {
+
+	public SignTypeModel(int id, String name, int width, int height, int lineSpacing, int symbolMaxHeight,
+			int widthTypeId, int symbolMaxWidth, int spacing, int grain, int protocolId) {
 		super();
-		this.id_tipo_letrero = id_tipo_letrero;
-		this.nombre = nombre;
-		this.ancho = ancho;
-		this.alto = alto;
-		this.espacio_lineas = espacio_lineas;
-		this.alto_max_simbolo = alto_max_simbolo;
-		this.id_tipo_ancho = id_tipo_ancho;
-		this.ancho_max_simbolo = ancho_max_simbolo;
-		this.espaciado = espaciado;
-		this.grano = grano;
-		this.codificacion = codificacion;
+		this.id = id;
+		this.name = name;
+		this.width = width;
+		this.height = height;
+		this.lineSpacing = lineSpacing;
+		this.symbolMaxHeight = symbolMaxHeight;
+		this.widthTypeId = widthTypeId;
+		this.symbolMaxWidth = symbolMaxWidth;
+		this.spacing = spacing;
+		this.grain = grain;
+		this.protocolId = protocolId;
 	}
 
-	public int getId_tipo_letrero() {
-		return id_tipo_letrero;
+	public int getId() {
+		return id;
 	}
 
-	public void setId_tipo_letrero(int id_tipo_letrero) {
-		this.id_tipo_letrero = id_tipo_letrero;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getName() {
+		return name;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public int getAncho() {
-		return ancho;
+	public int getWidth() {
+		return width;
 	}
 
-	public void setAncho(int ancho) {
-		this.ancho = ancho;
+	public void setWidth(int width) {
+		this.width = width;
 	}
 
-	public int getAlto() {
-		return alto;
+	public int getHeight() {
+		return height;
 	}
 
-	public void setAlto(int alto) {
-		this.alto = alto;
+	public void setHeight(int height) {
+		this.height = height;
 	}
 
-	public int getEspacio_lineas() {
-		return espacio_lineas;
+	public int getLineSpacing() {
+		return lineSpacing;
 	}
 
-	public void setEspacio_lineas(int espacio_lineas) {
-		this.espacio_lineas = espacio_lineas;
+	public void setLineSpacing(int lineSpacing) {
+		this.lineSpacing = lineSpacing;
 	}
 
-	public int getAlto_max_simbolo() {
-		return alto_max_simbolo;
+	public int getSymbolMaxHeight() {
+		return symbolMaxHeight;
 	}
 
-	public void setAlto_max_simbolo(int alto_max_simbolo) {
-		this.alto_max_simbolo = alto_max_simbolo;
+	public void setSymbolMaxHeight(int symbolMaxHeight) {
+		this.symbolMaxHeight = symbolMaxHeight;
 	}
 
-	public int getId_tipo_ancho() {
-		return id_tipo_ancho;
+	public int getWidthTypeId() {
+		return widthTypeId;
 	}
 
-	public void setId_tipo_ancho(int id_tipo_ancho) {
-		this.id_tipo_ancho = id_tipo_ancho;
+	public void setWidthTypeId(int widthTypeId) {
+		this.widthTypeId = widthTypeId;
 	}
 
-	public int getAncho_max_simbolo() {
-		return ancho_max_simbolo;
+	public int getSymbolMaxWidth() {
+		return symbolMaxWidth;
 	}
 
-	public void setAncho_max_simbolo(int ancho_max_simbolo) {
-		this.ancho_max_simbolo = ancho_max_simbolo;
+	public void setSymbolMaxWidth(int symbolMaxWidth) {
+		this.symbolMaxWidth = symbolMaxWidth;
 	}
 
-	public int getEspaciado() {
-		return espaciado;
+	public int getSpacing() {
+		return spacing;
 	}
 
-	public void setEspaciado(int espaciado) {
-		this.espaciado = espaciado;
+	public void setSpacing(int spacing) {
+		this.spacing = spacing;
 	}
 
-	public int getGrano() {
-		return grano;
+	public int getGrain() {
+		return grain;
 	}
 
-	public void setGrano(int grano) {
-		this.grano = grano;
+	public void setGrain(int grain) {
+		this.grain = grain;
 	}
 
-	public int getCodificacion() {
-		return codificacion;
+	public int getProtocolId() {
+		return protocolId;
 	}
 
-	public void setCodificacion(int codificacion) {
-		this.codificacion = codificacion;
+	public void setProtocolId(int protocolId) {
+		this.protocolId = protocolId;
 	}
 
 	@Override
 	public String toString() {
-		return "SignTypeModel [id_tipo_letrero=" + id_tipo_letrero + ", nombre=" + nombre + ", ancho=" + ancho
-				+ ", alto=" + alto + ", espacio_lineas=" + espacio_lineas + ", alto_max_simbolo=" + alto_max_simbolo
-				+ ", id_tipo_ancho=" + id_tipo_ancho + ", ancho_max_simbolo=" + ancho_max_simbolo + ", espaciado="
-				+ espaciado + ", grano=" + grano + ", codificacion=" + codificacion + "]";
+		return "SignTypeModel [id=" + id + ", name=" + name + ", width=" + width + ", height=" + height
+				+ ", lineSpacing=" + lineSpacing + ", symbolMaxHeight=" + symbolMaxHeight + ", widthTypeId="
+				+ widthTypeId + ", symbolMaxWidth=" + symbolMaxWidth + ", spacing=" + spacing + ", grain=" + grain
+				+ ", protocolId=" + protocolId + "]";
 	}
 	
 }

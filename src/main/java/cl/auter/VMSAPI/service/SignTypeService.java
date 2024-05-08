@@ -52,7 +52,7 @@ public class SignTypeService implements SignTypeRepository{
 	@Override
 	public <S extends SignTypeModel> S saveAndFlush(S entity) {
 		// TODO Auto-generated method stub
-		return null;
+		return signTypeRepository.saveAndFlush(entity);
 	}
 
 	@Override
@@ -87,6 +87,7 @@ public class SignTypeService implements SignTypeRepository{
 
 	@Override
 	public SignTypeModel getById(Integer id) {
+		// TODO Auto-generated method stub
 		return signTypeRepository.getById(id);
 	}
 
@@ -110,7 +111,6 @@ public class SignTypeService implements SignTypeRepository{
 
 	@Override
 	public <S extends SignTypeModel> S save(S entity) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -130,6 +130,12 @@ public class SignTypeService implements SignTypeRepository{
 	public long count() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void deleteById(Integer id) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
@@ -180,9 +186,15 @@ public class SignTypeService implements SignTypeRepository{
 		return false;
 	}
 
-	@Override
-	public void deleteById(Integer id) {
-		signTypeRepository.deleteById(id);
-	}
+	/*public void updateSignType(Integer id_tipo_letrero, String nombre, Integer alto, Integer ancho, Integer espacio_lineas,
+			Integer alto_max_simbolo, Integer id_tipo_ancho, Integer ancho_max_simbolo, Integer espaciado, Integer grano,
+			Integer codificacion) {
+		signTypeRepository.updateSignType(id_tipo_letrero, nombre, ancho, alto, espacio_lineas, alto_max_simbolo, id_tipo_ancho, ancho_max_simbolo, espaciado, grano, codificacion);
+	}*/
 
+	/*@Override
+	public void updateSignType(Integer id_tipo_letrero, String nombre, Integer ancho, Integer alto, Integer espacio_lineas,
+			Integer alto_max_simbolo, Integer id_tipo_ancho, Integer ancho_max_simbolo, Integer espaciado,
+			Integer grano, Integer codificacion) {
+	}*/
 }

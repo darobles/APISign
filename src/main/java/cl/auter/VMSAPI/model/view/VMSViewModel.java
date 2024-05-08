@@ -55,6 +55,8 @@ public class VMSViewModel {
 	int id_camara;
 	@JsonProperty("cameraType")
 	String camera_type;
+	@JsonProperty("cameraIP")
+	String camera_IP;
 	@Transient	
 	List<Cabinet> cabinets;
 	@JsonProperty("status")
@@ -186,6 +188,15 @@ public class VMSViewModel {
 	public void setCamera_type(String camera_type) {
 		this.camera_type = camera_type;
 	}
+	
+	public String getCamera_IP() {
+		return camera_IP;
+	}
+
+	public void setCamera_IP(String camera_IP) {
+		this.camera_IP = camera_IP;
+	}
+
 	public String getCamara() {
 		return camara;
 	}
@@ -217,9 +228,11 @@ public class VMSViewModel {
 				+ ", nombre_tipo_letrero=" + nombre_tipo_letrero + ", protocol_name=" + protocol_name
 				+ ", codificacion=" + codificacion + ", obs=" + obs + ", id_conexion=" + id_conexion
 				+ ", nombre_conexion=" + nombre_conexion + ", fono=" + fono + ", clave=" + clave + ", canal=" + canal
-				+ ", direccion=" + direccion + ", port=" + port + ", id_camara=" + id_camara + ", camara=" + camara
-				+ ", camera_type=" + camera_type + ", cabinets=" + cabinets + ", status=" + status + "]";
+				+ ", direccion=" + direccion + ", port=" + port + ", camara=" + camara + ", id_camara=" + id_camara
+				+ ", camera_type=" + camera_type + ", camera_IP=" + camera_IP + ", cabinets=" + cabinets + ", status="
+				+ status + "]";
 	}
+
 
 	
 	
