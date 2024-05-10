@@ -134,8 +134,7 @@ public class SignTypeService implements SignTypeRepository{
 
 	@Override
 	public void deleteById(Integer id) {
-		// TODO Auto-generated method stub
-		
+		signTypeRepository.deleteById(id);
 	}
 
 	@Override
