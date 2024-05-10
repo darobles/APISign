@@ -128,7 +128,7 @@ public class UsersController {
 		}*/
 	}
 	
-	@PostMapping("/update")
+	@PutMapping("")
 	//public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException{
 	public ResponseEntity<JsonObject> updateUser(@RequestBody UsersEntity json) throws ParseException{
 		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
@@ -188,7 +188,7 @@ public class UsersController {
     }
 	
 	
-	@PutMapping("/insert")
+	@PostMapping("")
 	//public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json, @RequestHeader(value="authorization") String authorizationHeader) throws ParseException {
 	public ResponseEntity<JsonObject> saveNewUser(@RequestBody UsersEntity json) throws ParseException {
 			JsonObjectBuilder jsn = Json.createObjectBuilder();			
