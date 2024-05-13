@@ -227,7 +227,7 @@ public class VMSViewController {
 
 	@PutMapping("/{id}/brightness/{value}")
 	public VMSResponseEntity updateBrightness(@PathVariable("id") int idSign,
-			@PathVariable("id") String brightnessValue) {
+			@PathVariable("value") String brightnessValue) {
 
 		VMSResponseEntity response = new VMSResponseEntity();
 		response.setMessage("");
