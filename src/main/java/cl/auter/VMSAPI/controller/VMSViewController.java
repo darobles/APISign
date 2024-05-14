@@ -1,14 +1,12 @@
 package cl.auter.VMSAPI.controller;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,17 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.auter.VMSAPI.model.BrightnessEntity;
 import cl.auter.VMSAPI.model.Cabinet;
 import cl.auter.VMSAPI.model.GrupoModel;
+import cl.auter.VMSAPI.model.LastImageEntity2;
 import cl.auter.VMSAPI.model.LetreroComModel;
-import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.NewSignModel;
 import cl.auter.VMSAPI.model.SequenceMessageModel;
+import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
 import cl.auter.VMSAPI.model.SymbolModel;
+import cl.auter.VMSAPI.model.VMSResponseEntity;
 import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignMessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
@@ -45,6 +45,7 @@ import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.VMSAPI.protocol.DIANMINGBrightness;
 import cl.auter.VMSAPI.protocol.DIANMINGInfo;
 import cl.auter.VMSAPI.service.GroupService;
+import cl.auter.VMSAPI.service.LastImageService2;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
 import cl.auter.VMSAPI.service.SequenceMessageService;
@@ -59,7 +60,6 @@ import cl.auter.VMSAPI.service.SymbolService;
 import cl.auter.VMSAPI.service.VMSViewService;
 import cl.auter.util.Constants;
 import cl.auter.util.VMSUtils;
-import cl.auter.VMSAPI.model.VMSResponseEntity;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -92,6 +92,8 @@ public class VMSViewController {
 	// JPérez 2024.04.04
 	@Autowired
 	SequenceMessageService sequenceMessageService;
+	@Autowired
+	LastImageService2 lastImageService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll() {
@@ -343,6 +345,7 @@ public class VMSViewController {
 						VMSUtils.CharsAsStringList(message0.getMessage()));
 				MessageImage mi = new MessageImage(message0);
 				mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+				this.SaveImage(sign_id, mi, null, null, null);  // ---------- JPérez 2024.05.14
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -418,11 +421,13 @@ public class VMSViewController {
 			MessageImage mi = new MessageImage(signType, messageModel.getAlignmentId(), messageModel.getFont_color(),
 					messageModel.getSpacing(), messageModel.getMessage());
 			mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+			this.SaveImage(sign_id, mi, null, null, null);  // ---------- JPérez 2024.05.14
 
 			// Envío a VMS
 			VMSViewModel signModel = new VMSViewModel();
 			signModel.setFono(sign.getFono());
 			signModel.setPort(sign.getPort());
+			
 			if (signType.getProtocolId() == Constants.ID_DIANMING) {
 				Thread t1 = new Thread(new Runnable() {
 					@Override
@@ -460,6 +465,8 @@ public class VMSViewController {
 				List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(sequence_id);
 				List<MessageImage> images = new ArrayList<MessageImage>();
 				List<Integer> times = new ArrayList<Integer>();
+				Integer       indexSimple = 1;  // JPérez 2024.05.14
+				LocalDateTime now = LocalDateTime.now();
 				for (SequenceMessageModel sm : sequenceMessages) {
 					MessageModel message0 = messageService.getById(sm.getMessage_id());
 					SignTypeViewModel stv = signTypeViewService.getById(message0.getType());
@@ -470,6 +477,7 @@ public class VMSViewController {
 					MessageImage mi = new MessageImage(stv, message0.getAlignmentId(), message0.getFont_color(),
 							message0.getSpacing(), message0.getMessage());
 					mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+					SaveImage(sign_id, mi, now, sm.getSequence_id(), indexSimple ++);  // ---------- JPérez 2024.05.14
 					images.add(mi);
 					times.add(sm.getTime()*10); //decimas a segundos
 				}
@@ -533,6 +541,32 @@ public class VMSViewController {
 			job.add("result", "error: " + ex.toString());
 			return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
 		}
+	}
+	
+
+	@GetMapping("/{sign_id}/last")
+	public LastImageEntity2 getLastImage(@PathVariable("sign_id") Integer sign_id) {
+		LastImageEntity2 lastImage = lastImageService.findLastByVMS(sign_id);
+		return lastImage;
+	}
+	
+	
+	// JPérez 2024.05.14
+	private void SaveImage(Integer vmsId, MessageImage mi, LocalDateTime dateTime, Integer sequenceId, Integer sequenceIndex) {
+		LastImageEntity2 newRegister = new LastImageEntity2();
+		
+		newRegister.setId(0);
+		newRegister.setIdVMS(vmsId);
+		if (dateTime == null) {
+			newRegister.setDateTime(LocalDateTime.now());
+		} else {
+			newRegister.setDateTime(dateTime);
+		}
+		newRegister.setImageB64(mi.getBase64());
+		newRegister.setIdSequence(sequenceId);
+		newRegister.setIndexSequence(sequenceIndex);
+
+		lastImageService.save(newRegister);
 	}
 	
 }
