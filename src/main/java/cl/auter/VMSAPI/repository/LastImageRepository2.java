@@ -1,5 +1,7 @@
 package cl.auter.VMSAPI.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -12,5 +14,6 @@ public interface LastImageRepository2 extends JpaRepository<LastImageEntity2, In
 	@Query(value = "SELECT * FROM public.last_vms_images_2 WHERE id_vms = ?1 ORDER BY date_time DESC LIMIT 1", nativeQuery = true)
 	LastImageEntity2 findLastByVMS(Integer sign_id);
 
-	LastImageEntity2 findByIdVMS(Integer idVMS);
+	@Query(value = "SELECT * FROM public.last_vms_images_2 WHERE id_vms = ?1 ORDER BY date_time DESC", nativeQuery = true)
+	List<LastImageEntity2> findAllLastByVMS(Integer sign_id);
 }

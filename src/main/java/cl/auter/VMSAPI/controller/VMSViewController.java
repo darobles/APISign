@@ -550,6 +550,45 @@ public class VMSViewController {
 		return lastImage;
 	}
 	
+	@GetMapping("/{sign_id}/history")
+	public List<LastImageEntity2> getLastImages(@PathVariable("sign_id") Integer sign_id) {
+		List<LastImageEntity2> lastImages = lastImageService.findAllLastByVMS(sign_id);
+		return lastImages;
+	}
+	
+	
+	@PostMapping("{sign_id}/send")
+	public ResponseEntity<JsonObject> sendImage(@PathVariable int sign_id, @RequestBody LastImageEntity2 json) {
+		JsonObjectBuilder job = Json.createObjectBuilder();
+		VMSViewModel sign = vmsService.getById(sign_id);
+		try {
+			if (sign.getCodificacion() == Constants.ID_DIANMING) {
+				MessageImage mi = new MessageImage(json.getImageB64());
+				this.SaveImage(sign_id, mi, null, null, null);
+				Thread t1 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						DIANMING dianming = new DIANMING(sign);
+						dianming.setAddresses(sign.getDireccion());
+						dianming.sendMessage(sign, mi);
+					}
+				});
+				t1.start();
+				job.add("result", "success");
+				return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
+			} else {
+				job.add("result",
+						"Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+				return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
+			}
+		} catch (Exception ex) {
+			System.out.println(ex);
+			job.add("result", "error: " + ex.toString());
+			return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
 	
 	// JPérez 2024.05.14
 	private void SaveImage(Integer vmsId, MessageImage mi, LocalDateTime dateTime, Integer sequenceId, Integer sequenceIndex) {

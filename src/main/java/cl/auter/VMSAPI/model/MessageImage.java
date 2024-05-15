@@ -2,8 +2,10 @@ package cl.auter.VMSAPI.model;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -42,6 +44,14 @@ public class MessageImage {
         this.message = messageId;
     }
     
+    public MessageImage(String base64) {
+    	try {
+    		this.image = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(base64)));
+    	} catch (Exception ex) {
+    		this.image = null;
+    	}
+    }
+    
 	public void setSymbols(List<SymbolModel> symbolsModel, SideImage leftImage, SideImage rightImage) {
         if (message != null) {        	
         	for (SymbolModel symbolModel : symbolsModel) {
@@ -53,7 +63,7 @@ public class MessageImage {
         } 
     }
     
-    public MessageImage(Integer messageId, String customText) {
+    /*public MessageImage(Integer messageId, String customText) {
     	System.out.println("Correccion MessageImage");
        /* this.message    = messageService.getById(messageId);
         this.customText = customText;
@@ -69,7 +79,7 @@ public class MessageImage {
             this.symbols      = null;
             this.segmentWidth = null;
         } */
-    }
+    //}
 
     
     private boolean oldProtocol() {

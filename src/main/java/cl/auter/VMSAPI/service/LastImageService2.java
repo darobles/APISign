@@ -182,13 +182,15 @@ public class LastImageService2 implements LastImageRepository2 {
 		return false;
 	}
 
+	// JPérez 2024.05.14
 	@Override
-	public LastImageEntity2 findByIdVMS(Integer idVMS) {
-		return lastImageRepository.findByIdVMS(idVMS);
-	}
-
 	public LastImageEntity2 findLastByVMS(Integer sign_id) {
 		// TODO Auto-generated method stub
 		return lastImageRepository.findLastByVMS(sign_id);
+	}
+
+	@Override
+	public List<LastImageEntity2> findAllLastByVMS(Integer sign_id) {
+		return lastImageRepository.findAllLastByVMS(sign_id);
 	}
 }
