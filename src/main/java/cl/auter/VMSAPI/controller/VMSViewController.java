@@ -548,13 +548,18 @@ public class VMSViewController {
 	public List<LastImageEntity2> getLastImages(@PathVariable("sign_id") Integer sign_id) {
 		LastImageEntity2 lastImage = lastImageService.findLastByVMS(sign_id);
 		// First check if it's an image or a sequence
-		if (lastImage.getIdSequence() == null) {
-			List<LastImageEntity2> listOfOne = new ArrayList<>();
-			listOfOne.add(lastImage);
-			return listOfOne;
+		if (lastImage != null) {
+			if (lastImage.getIdSequence() == null) {
+				List<LastImageEntity2> listOfOne = new ArrayList<>();
+				listOfOne.add(lastImage);
+				return listOfOne;
+			} else {
+				return lastImageService.findLastSequenceByVMS(sign_id, lastImage.getIdSequence(), lastImage.getDateTime());
+			}
 		} else {
-			return lastImageService.findLastSequenceByVMS(sign_id, lastImage.getIdSequence(), lastImage.getDateTime());
+			return new ArrayList<>();
 		}
+		
 	}
 	
 	@GetMapping("/{sign_id}/history")
