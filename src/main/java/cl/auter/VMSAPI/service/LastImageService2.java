@@ -1,5 +1,6 @@
 package cl.auter.VMSAPI.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -193,4 +194,11 @@ public class LastImageService2 implements LastImageRepository2 {
 	public List<LastImageEntity2> findAllLastByVMS(Integer sign_id) {
 		return lastImageRepository.findAllLastByVMS(sign_id);
 	}
+
+	@Override
+	public List<LastImageEntity2> findLastSequenceByVMS(Integer sign_id, Integer sequence_id, LocalDateTime date_time) {
+		// TODO Auto-generated method stub
+		return lastImageRepository.findLastSequenceByVMS(sign_id, sequence_id, date_time);
+	}
+	
 }
