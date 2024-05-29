@@ -270,24 +270,55 @@ public class DIANMING {
 
 	// --------------------------------------------------------------------------
 
-	public void turnOnVMS() {
-		Byte[] frame = new Byte[1];
+	public boolean turnOnVMS() {
+		return turnOnOffVMS((byte) 0x31);
+		
+		/*Byte[] frame = new Byte[1];
 		frame[0] = (byte) 0x31;
 
 		this.clean();
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 11, frame);
-		this.sendPackage();
+		this.sendPackage();*/
 	}
 
-	public void turnOffVMS() {
-		Byte[] frame = new Byte[1];
+	public boolean turnOffVMS() {
+		return turnOnOffVMS((byte) 0x30);
+		
+		/*Byte[] frame = new Byte[1];
 		frame[0] = (byte) 0x30;
 
 		this.clean();
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 11, frame);
-		this.sendPackage();
+		this.sendPackage();*/
 	}
 
+	private boolean turnOnOffVMS(byte onOff) {
+		boolean ok = false;
+		int     attempt = 0;
+		Byte[]  frame = new Byte[1];
+		
+		frame[0] = onOff;
+		try {
+			while ((! ok) && (attempt < 3)) {
+				this.clean();
+				this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 11, frame);
+				this.sendPackage();
+		
+				Byte[] responseBytes = new Byte[this.getResponse().size()];
+				responseBytes = this.getResponse().toArray(responseBytes);
+				ok = (responseBytes[8] == 0x31);
+				if (! ok) {
+					attempt ++;
+					Thread.sleep(1000);
+				}
+			}
+		} catch (Exception ex) {
+			LOGGER.log(Level.SEVERE, "Exception in DIANMING.turn" + ((onOff == 0x31) ? "On" : "Off") + "VMS()", ex);
+			ok = false;
+		}
+		return ok;
+	}
+	
 	public void rebootVMS() {
 		this.clean();
 		this.command = new DIANMINGPackage(this.destinationAddress, this.sourceAddress, 67, null);
@@ -381,7 +412,6 @@ public class DIANMING {
 			brightness.setAutomatic(true);
 		}
 
-System.out.println(">>> " + brightness.toString());		
 		return brightness;
 	}
 

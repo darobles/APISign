@@ -517,20 +517,21 @@ public class VMSViewController {
 		}
 		try {
 			if (sign.getCodificacion() == Constants.ID_DIANMING) {
-				Thread t1 = new Thread(new Runnable() {
+				boolean ok = false;
+				/*Thread t1 = new Thread(new Runnable() {
 					@Override
-					public void run() {
-						DIANMING dianming = new DIANMING(sign);
-						dianming.setAddresses(sign.getDireccion());
-						if (is_on == 0) {
-							dianming.turnOffVMS();
-						} else {
-							dianming.turnOnVMS();
-						}
-					}
+					public void run() {*/
+				DIANMING dianming = new DIANMING(sign);
+				dianming.setAddresses(sign.getDireccion());
+				if (is_on == 0) {
+					ok = dianming.turnOffVMS();
+				} else {
+					ok = dianming.turnOnVMS();
+				}
+					/*}
 				});
-				t1.start();
-				job.add("result", "success");
+				t1.start();*/
+				job.add("result", ok ? "success" : "error");
 				return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
 			} else {
 				job.add("result", "Protocol not supported for this operation.");
