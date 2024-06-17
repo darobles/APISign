@@ -524,9 +524,73 @@ public class VMSViewController {
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
 				if (is_on == 0) {
-					ok = dianming.turnOffVMS();
+					//ok = dianming.turnOffVMS();
+					MessageViewModel message0 = messageViewService.getById(999);
+					try {
+						if (sign.getCodificacion() == Constants.ID_DIANMING) {
+
+							SideImageModel simLeft = sideImageService.getSideImage(999, 0);
+							SideImageModel simRight = sideImageService.getSideImage(999, 1);
+							List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message0.getGroupId(),
+									VMSUtils.CharsAsStringList(message0.getMessage()));
+							MessageImage mi = new MessageImage(message0);
+							mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
+							Thread t1 = new Thread(new Runnable() {
+								@Override
+								public void run() {
+									DIANMING dianming = new DIANMING(sign);
+									dianming.setAddresses(sign.getDireccion());
+									dianming.sendMessage(sign, mi);
+									// MessageViewModel message0 = messageViewService.getById(message_id);
+								}
+							});
+							t1.start();
+							job.add("result", "success");
+							return new ResponseEntity<JsonObject>(job.build(), HttpStatus.OK);
+						} else {
+							job.add("result",
+									"Sending messages to VMS with " + sign.getDireccion() + " protocol is still not supported.");
+							return new ResponseEntity<JsonObject>(job.build(), HttpStatus.NOT_MODIFIED);
+						}
+					} catch (Exception ex) {
+						System.out.println(ex);
+						job.add("result", "error: " + ex.toString());
+						return new ResponseEntity<JsonObject>(job.build(), HttpStatus.INTERNAL_SERVER_ERROR);
+					}
 				} else {
-					ok = dianming.turnOnVMS();
+					//ok = dianming.turnOnVMS();
+					//Send last message
+					LastImageEntity2 lastImage = lastImageService.findLastByVMS(sign_id);
+					if(lastImage.getIdSequence() != null &&  lastImage.getIdSequence() > 0)
+					{
+						this.sendSequence(sign_id, lastImage.getIdSequence());
+					}
+					else if(lastImage.getImageB64() != null && !lastImage.getImageB64().equals("")){
+						SignTypeViewModel stv = signTypeViewService.getById(21);
+						List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(6,
+								VMSUtils.CharsAsStringList(""));
+						SideImageModel simLeft = new SideImageModel();
+						simLeft.setUbicacion_hrz(0);
+						simLeft.setUbicacion_vrt(0);
+						simLeft.setImagen_b64(lastImage.getImageB64());						
+						
+						MessageViewModel message0 = messageViewService.getById(999);
+						MessageImage mi = new MessageImage(message0);
+						mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(null));
+						Thread t1 = new Thread(new Runnable() {
+							@Override
+							public void run() {
+								DIANMING dianming = new DIANMING(sign);
+								dianming.setAddresses(sign.getDireccion());
+								dianming.sendMessage(sign, mi);
+								// MessageViewModel message0 = messageViewService.getById(message_id);
+							}
+						});
+						t1.start();
+						
+						/*MessageImage mi = new MessageImage(stv,21, 0, 0,0,"");
+						mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(null));*/
+					}
 				}
 					/*}
 				});

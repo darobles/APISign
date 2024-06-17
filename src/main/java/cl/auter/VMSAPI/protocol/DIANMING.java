@@ -296,7 +296,7 @@ public class DIANMING {
 		boolean ok = false;
 		int     attempt = 0;
 		Byte[]  frame = new Byte[1];
-		
+		System.out.println("turn ON/OFF VMS");
 		frame[0] = onOff;
 		try {
 			while ((! ok) && (attempt < 3)) {
@@ -316,6 +316,7 @@ public class DIANMING {
 			LOGGER.log(Level.SEVERE, "Exception in DIANMING.turn" + ((onOff == 0x31) ? "On" : "Off") + "VMS()", ex);
 			ok = false;
 		}
+		System.out.println("Return " + ok);
 		return ok;
 	}
 	

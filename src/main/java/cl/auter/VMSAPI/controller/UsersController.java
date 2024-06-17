@@ -15,10 +15,8 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -28,7 +26,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,10 +39,8 @@ import com.nimbusds.jose.JWSSigner;
 
 import cl.auter.VMSAPI.model.ChangePasswordEntity;
 import cl.auter.VMSAPI.model.UsersEntity;
-import cl.auter.VMSAPI.repository.UsersRepository;
 import cl.auter.VMSAPI.service.UsersService;
 import cl.auter.util.DecodeJwt;
-import cl.auter.util.JWTResponse;
 import cl.auter.util.Util;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -95,18 +90,17 @@ public class UsersController {
 		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
 		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {*/
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
-			Util              util = new Util();
 			try {
 				UsersEntity user = usrRepository.findByUsername(json.getUsername());
 				if ( user != null ) {
-					authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-							user.getUsername(), user.getPassword()));
+					/*authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+							user.getUsername(), user.getPassword()));*/
 					UsersEntity newuser = new UsersEntity();
 					newuser.setId(user.getId());
 					newuser.setUsername( user.getUsername());
 					newuser.setNombre(   user.getNombre() );
 					PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-					String encodedPassword = passwordEncoder.encode(json.getPassword());
+					String encodedPassword = passwordEncoder.encode(json.getNewPassword());
 					newuser.setPassword(encodedPassword);
 					newuser.setUser_type(user.getUser_type() );
 					newuser.setRole_id(user.getRole_id());
@@ -114,10 +108,12 @@ public class UsersController {
 					jsn.add("result","success");
 				}
 				else {
+					System.out.println("Error1");
 					jsn.add("result","error");
 				}
 			}
 			catch(Exception e) {
+				System.out.println("Error2");
 				System.out.println(e);
 				jsn.add("result","error");
 			}
@@ -134,14 +130,21 @@ public class UsersController {
 		/*JWTResponse jwtResponse = decJwt.validateToken(authorizationHeader);
 		if ( jwtResponse.getGenMessage().equals("authorized") && jwtResponse.getRole().equals("ADMINISTRATOR") ) {*/
 			JsonObjectBuilder jsn  = Json.createObjectBuilder();
-			Util              util = new Util();
 			try {
 				UsersEntity user = usrRepository.findByUsername(json.getUsername());
 				UsersEntity newuser = new UsersEntity();
 				newuser.setId(user.getId());
-				newuser.setUsername( json.getUsername());
+				newuser.setUsername( user.getUsername());
 				newuser.setNombre(   json.getNombre() );
-				newuser.setPassword( user.getPassword() );
+				PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+				String encodedPassword = passwordEncoder.encode(json.getPassword());
+				if(!encodedPassword.equals(user.getPassword()))
+				{
+					newuser.setPassword(encodedPassword);					
+				}
+				else{
+					newuser.setPassword(user.getPassword());
+				}
 				newuser.setUser_type(json.getUser_type() );
 				usrRepository.save(newuser);
 				jsn.add("result","success");
