@@ -132,7 +132,7 @@ public class MessageController {
 			SideImageModel          simRight = null;
 			String                  message  = json.getMessage();
 			MessageModel messageModel      = new MessageModel();
-			if(id_message > 0)
+			if (id_message > 0)
 			{
 				messageModel = messageService.getById(id_message);
 			}

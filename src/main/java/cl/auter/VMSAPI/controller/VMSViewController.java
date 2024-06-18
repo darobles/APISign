@@ -391,15 +391,23 @@ public class VMSViewController {
 			}
 			if (json.getColour() != null) {
 				messageModel.setFont_color(json.getColour());
+			} else {
+				messageModel.setFont_color(1);
 			}
 			if (json.getSpacing() != null) {
 				messageModel.setSpacing(json.getSpacing());
+			} else {
+				messageModel.setSpacing(1);
 			}
 			if (json.getMessage() != null) {
 				messageModel.setMessage(json.getMessage());
+			} else {
+				messageModel.setMessage("");
 			}
 			if (json.getAlignmentId() != null) {
 				messageModel.setAlignmentId(json.getAlignmentId());
+			} else {
+				messageModel.setAlignmentId(3);
 			}
 
 			List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(messageModel.getGroup_id(),

@@ -16,6 +16,7 @@ import cl.auter.VMSAPI.model.view.MessageViewModel;
 import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.protocol.DIANMING;
 import cl.auter.util.Constants;
+import nonapi.io.github.classgraph.recycler.Resettable;
 
 public class MessageImage {
 		
@@ -27,6 +28,7 @@ public class MessageImage {
     
     // JPérez 2024.02.21 :: Constructor for previewing unattached messages   
     public MessageImage(SignTypeViewModel signTypeViewModel, Integer alignmentId, Integer colour, Integer spacing, String message) {
+    	initVars();
         this.message = new MessageViewModel();
         this.message.setProtocol(signTypeViewModel.getProtocolId());
         this.message.setSignTypeHeight(signTypeViewModel.getHeight());
@@ -41,10 +43,12 @@ public class MessageImage {
     }
 
     public MessageImage(MessageViewModel messageId) {    	
+    	initVars();
         this.message = messageId;
     }
     
     public MessageImage(String base64) {
+    	initVars();
     	try {
     		this.image = ImageIO.read(new ByteArrayInputStream(Base64.getDecoder().decode(base64)));
     	} catch (Exception ex) {
@@ -52,8 +56,16 @@ public class MessageImage {
     	}
     }
     
+    private void initVars() {
+    	this.message      = null;
+        this.image        = null;
+        this.customText   = null;
+        this.segmentWidth = 0;
+    }
+    
 	public void setSymbols(List<SymbolModel> symbolsModel, SideImage leftImage, SideImage rightImage) {
-        if (message != null) {        	
+        if (message != null) {
+        	this.symbols = new ArrayList<Symbol>();
         	for (SymbolModel symbolModel : symbolsModel) {
         		Symbol symb = new Symbol(symbolModel);
         		this.symbols.add(symb);
