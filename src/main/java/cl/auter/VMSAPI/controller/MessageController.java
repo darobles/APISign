@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
+import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.model.SideImage;
 import cl.auter.VMSAPI.model.SideImageModel;
 import cl.auter.VMSAPI.model.SignModel;
@@ -31,6 +32,7 @@ import cl.auter.VMSAPI.model.view.SignTypeViewModel;
 import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
+import cl.auter.VMSAPI.service.SequenceService;
 import cl.auter.VMSAPI.service.SideImageService;
 import cl.auter.VMSAPI.service.SignService;
 import cl.auter.VMSAPI.service.SignTypeViewService;
@@ -57,6 +59,9 @@ public class MessageController {
 	GroupService groupService;
 	@Autowired
 	SignService signService;
+	// JPérez 2024.06.17
+	@Autowired
+	SequenceService sequenceService;
 
 	@GetMapping("")
 	public List<MessageModel> findAll(){
@@ -226,10 +231,25 @@ public class MessageController {
 	
 	@DeleteMapping("/{message_id}")
 	public ResponseEntity<JsonObject> deleteMessage(@PathVariable int message_id){
+		// Check if message is used in any sequence :: JPérez 2024.06.17
+		List<SequenceModel> sequenceList = sequenceService.findByIdMessage(message_id);
+		if (! sequenceList.isEmpty()) {
+			String errorMessage = "El mensaje no puede borrarse, ya que está siendo usado en las siguientes secuencias: ";
+			for (SequenceModel sequence : sequenceList) {
+				errorMessage += sequence.getName() + ", ";
+			}
+			errorMessage = errorMessage.substring(0, errorMessage.length() - 2) + ".";
+			JsonObject json = Json.createObjectBuilder()
+                    .add("result", errorMessage)
+                    .build();
+			return new ResponseEntity<JsonObject>(json, HttpStatus.BAD_REQUEST);	
+		}
+		
+		// Delete
 		messageService.deleteById(message_id);
 		JsonObject json = Json.createObjectBuilder()
-		.add("result", "ok")
-		.build();
+		                      .add("result", "ok")
+		                      .build();
 		return new ResponseEntity<JsonObject>(json, HttpStatus.OK);	
 	
 	}

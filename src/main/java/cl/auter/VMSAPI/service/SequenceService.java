@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceModel;
 import cl.auter.VMSAPI.repository.SequenceRepository;
 
@@ -184,6 +185,13 @@ public class SequenceService implements SequenceRepository {
 	public <S extends SequenceModel> boolean exists(Example<S> example) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	// JPérez 2024.06.17
+	@Override
+	public List<SequenceModel> findByIdMessage(Integer message_id) {
+		// TODO Auto-generated method stub
+		return sequenceRepository.findByIdMessage(message_id);
 	}
 
 }
