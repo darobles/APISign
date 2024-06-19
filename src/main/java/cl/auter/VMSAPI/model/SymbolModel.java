@@ -12,8 +12,10 @@ public class SymbolModel{
 	/**
 	 * 
 	 */
-	Integer   id_grupo;
+
 	@Id
+	Integer id;
+	Integer   id_grupo;
 	Integer   codigo;
 	Character caracter;
 	String    data;
@@ -23,6 +25,20 @@ public class SymbolModel{
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	
+
+	public Integer getId() {
+		return id;
+	}
+
+
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+
 
 	public Integer getId_grupo() {
 		return id_grupo;
@@ -63,11 +79,12 @@ public class SymbolModel{
 	public void setAncho(Integer ancho) {
 		this.ancho = ancho;
 	}
+	
 
 	@Override
 	public String toString() {
-		return "SymbolModel [id_grupo=" + id_grupo + ", codigo=" + codigo + ", caracter=" + caracter + ", data=" + data
-				+ ", ancho=" + ancho + "]";
+		return "SymbolModel [id=" + id + ", id_grupo=" + id_grupo + ", codigo=" + codigo + ", caracter=" + caracter
+				+ ", data=" + data + ", ancho=" + ancho + "]";
 	}
 	
 }

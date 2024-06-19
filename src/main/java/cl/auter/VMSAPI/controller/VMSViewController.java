@@ -131,7 +131,6 @@ public class VMSViewController {
 
 	@PostMapping("")
 	public VMSResponseEntity newSign(@RequestBody NewSignModel json) {
-		System.out.println(json.toString());
 		SignModel sign = new SignModel();
 		sign.setId_tipo_letrero(json.getSignTypeId());
 		sign.setLatitud(json.getLatitude());
@@ -139,10 +138,8 @@ public class VMSViewController {
 		sign.setNombre(json.getName());
 		sign.setObs(json.getObs());
 		sign.setUbicacion(json.getLocation());
-		System.out.println(sign.toString());
 		signService.save(sign);
 		signService.flush();
-		System.out.println(sign.toString());
 		if (sign.getId_letrero() > 0) {
 			LetreroComModel letreroCom = new LetreroComModel();
 			letreroCom.setId_letrero(sign.getId_letrero());
@@ -167,7 +164,6 @@ public class VMSViewController {
 				DIANMING dianming = new DIANMING(sign);
 				dianming.setAddresses(sign.getDireccion());
 				List<DIANMINGInfo> cabinetsInfo = dianming.getDetailedStatus();
-				System.out.println("cabinetsInfo " + cabinetsInfo.size());
 				// socket.close();
 				List<Cabinet> cabinets = new ArrayList<Cabinet>();
 				int idGabinete = 1;
@@ -467,7 +463,6 @@ public class VMSViewController {
 	public ResponseEntity<JsonObject> sendSequence(@PathVariable int sign_id, @PathVariable int sequence_id) {
 		JsonObjectBuilder job = Json.createObjectBuilder();
 		VMSViewModel sign = vmsService.getById(sign_id);
-		System.out.println("SIGN " + sign.toString());
 		try {
 			if (sign.getCodificacion() == Constants.ID_DIANMING) {
 				List<SequenceMessageModel> sequenceMessages = sequenceMessageService.findSeqAllById(sequence_id);
@@ -482,6 +477,7 @@ public class VMSViewController {
 					SideImageModel simRight = sideImageService.getSideImage(message0.getMessage_id(), 1);
 					List<SymbolModel> symbolsModel = symbolService.getSymbolsByCharacterList(message0.getGroup_id(),
 							VMSUtils.CharsAsStringList(message0.getMessage()));
+
 					MessageImage mi = new MessageImage(stv, message0.getAlignmentId(), message0.getFont_color(),
 							message0.getSpacing(), message0.getMessage());
 					mi.setSymbols(symbolsModel, new SideImage(simLeft), new SideImage(simRight));
