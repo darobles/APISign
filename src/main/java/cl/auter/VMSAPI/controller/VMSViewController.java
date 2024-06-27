@@ -30,6 +30,8 @@ import cl.auter.VMSAPI.model.MessageImage;
 import cl.auter.VMSAPI.model.MessageModel;
 import cl.auter.VMSAPI.model.MessagePreviewModel;
 import cl.auter.VMSAPI.model.NewSignModel;
+import cl.auter.VMSAPI.model.ScheduleModel;
+import cl.auter.VMSAPI.model.ScheduleRequest;
 import cl.auter.VMSAPI.model.SequenceMessageModel;
 import cl.auter.VMSAPI.model.SequenceViewModel;
 import cl.auter.VMSAPI.model.SideImage;
@@ -48,6 +50,7 @@ import cl.auter.VMSAPI.service.GroupService;
 import cl.auter.VMSAPI.service.LastImageService2;
 import cl.auter.VMSAPI.service.MessageService;
 import cl.auter.VMSAPI.service.MessageViewService;
+import cl.auter.VMSAPI.service.ScheduleService;
 import cl.auter.VMSAPI.service.SequenceMessageService;
 import cl.auter.VMSAPI.service.SequenceService;
 import cl.auter.VMSAPI.service.SequenceViewService;
@@ -94,6 +97,8 @@ public class VMSViewController {
 	SequenceMessageService sequenceMessageService;
 	@Autowired
 	LastImageService2 lastImageService;
+	@Autowired
+	ScheduleService scheduleService;
 
 	@GetMapping("")
 	public List<VMSViewModel> findAll() {
@@ -669,7 +674,38 @@ public class VMSViewController {
 		}
 	}
 
+	// JPérez 2024.06.26
+	@PostMapping("{sign_id}/schedule")
+	public void scheduledSending(@PathVariable int sign_id, @RequestBody ScheduleRequest jsonSched) {
+		VMSViewModel sign = vmsService.getById(sign_id);
+		String       days = jsonSched.getDays();
+		String       hour = jsonSched.getHour();
+		
+		jsonSched.setVmsList(Integer.toString(sign_id));
+		if (! jsonSched.validate()) {
+			return;
+		}
+		List<Integer> idVMS = new ArrayList<Integer>();
+		
+		Integer day = jsonSched.getDayBinary();
+		idVMS.add(sign_id);
 
+System.out.println("Days = " + jsonSched.getDays() + " (" + day + ")");
+System.out.println("Hour = "  + jsonSched.getHour());
+System.out.println("VMSList = " + jsonSched.getVmsList());
+		
+		List<ScheduleModel> schedule = scheduleService.findByParams(idVMS, hour, day);
+		for (ScheduleModel entry : schedule) {
+			if ((entry.getId_sequence() != null) && (entry.getId_sequence() != 0)) {
+				sendSequence(sign_id, entry.getId_sequence());
+				//System.out.println ("Enviar secuencia " + entry.getId_sequence());
+			} else if ((entry.getId_message() != null) && (entry.getId_message() != 0)) {
+				sendMessage(sign_id, entry.getId_message(), null);
+				//System.out.println ("Enviar mensaje " + entry.getId_message());
+			}
+		}
+	}
+	
 	
 	// JPérez 2024.05.14
 	private void SaveImage(Integer vmsId, MessageImage mi, LocalDateTime dateTime, Integer sequenceId, Integer sequenceIndex) {
@@ -679,7 +715,7 @@ public class VMSViewController {
 		newRegister.setIdVMS(vmsId);
 		if (dateTime == null) {
 			newRegister.setDateTime(LocalDateTime.now());
-		} else {
+		 } else {
 			newRegister.setDateTime(dateTime);
 		}
 		newRegister.setImageB64(mi.getBase64());
